@@ -3,6 +3,7 @@ import { Lexend } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+
 const lexend = Lexend({ subsets: ["latin"] });
 
 export const metadata: Metadata = {

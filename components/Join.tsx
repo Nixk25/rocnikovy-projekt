@@ -2,13 +2,14 @@ import React from "react";
 import Image from "next/image";
 import people from "../public/people.png";
 import dot from "../public/dot.png";
+import Link from "next/link";
 
 const Join = () => {
   return (
     <section className="mb-20">
       <div className="container">
         <div className="w-full flex justify-center items-center lg:flex-row  flex-col border-2 border-primary rounded-lg mx-auto  bg-people lg:bg-none bg-no-repeat bg-center bg-cover">
-          <div className="backdrop-blur-sm bg-black/40 lg:bg-transparent lg:text-text w-full lg:w-1/2 ">
+          <div className="backdrop-blur-sm bg-black/60 lg:bg-transparent lg:text-text w-full lg:w-1/2 ">
             <div className="w-full text-center lg:text-start  lg:pl-10 p-8 lg:p-5 ">
               <h2 className="sm-clamp text-primary mb-5 tracking-tighter font-bold ">
                 Přidejte se do týmu
@@ -69,11 +70,11 @@ const Join = () => {
                 </li>
               </ul>
               <div className="mt-10 flex justify-center items-center lg:justify-start">
-                <a href="login.html">
+                <Link href="/login">
                   <button className="bg-primary shadow-lg p-5 rounded-lg text-lg text-white border-none outline-none cursor-pointer transition-all hover:scale-105 hover:bg-transparent hover:text-primary hover:shadow-none">
                     Přidat se
                   </button>
-                </a>
+                </Link>
               </div>
             </div>
           </div>

@@ -122,3 +122,23 @@ body {
 .sm-clamp {
   font-size: clamp(1.2rem, 5vw, 2.5rem);
 }
+
+svg {
+  transition: all ease 150ms;
+}
+
+.google:hover > svg {
+  fill: #c71510;
+}
+
+.facebook:hover > svg {
+  fill: #455ea9;
+}
+
+.apple:hover > svg {
+  fill: #515357;
+}
+
+.input:focus-within + svg {
+  fill: #02b192;
+}

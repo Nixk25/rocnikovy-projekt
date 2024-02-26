@@ -3,12 +3,13 @@ import { Lexend } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-
+import { NextAuthProvider } from "./Providers";
 const lexend = Lexend({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Cookify",
-  description: "Vyhledejte a nebo přidejte své oblíbené recepty a připojte se do skupiny nadšených domácích kuchařů",
+  description:
+    "Vyhledejte a nebo přidejte své oblíbené recepty a připojte se do skupiny nadšených domácích kuchařů",
 };
 
 export default function RootLayout({
@@ -19,10 +20,12 @@ export default function RootLayout({
   return (
     <html lang="cs">
       <body className={lexend.className}>
-        <Navbar/>
-        {children}
-        <Footer/>
-        </body>
+        <NextAuthProvider>
+          <Navbar />
+          {children}
+          <Footer />
+        </NextAuthProvider>
+      </body>
     </html>
   );
 }

@@ -14,9 +14,9 @@ const Navbar = () => {
   const isLoginOrRegister = ["/login", "/register"].includes(pathname);
 
   return (
-    <nav className="w-full bg-white/20 fixed top-0 left-0 backdrop-blur-md z-10">
-      <div className="container mx-auto">
-        <header className="w-full h-max">
+    <nav className="w-full bg-white/20 fixed top-0 left-0 backdrop-blur-md z-10 ">
+      <div className="container mx-auto relative">
+        <header className="w-full h-[80px] sm:h-max">
           <nav className="flex justify-center sm:justify-between items-center p-4">
             <ul className=" list-none sm:flex gap-10 hidden">
               <li className="link">
@@ -36,7 +36,10 @@ const Navbar = () => {
                 </Link>
               </li>
             </ul>
-            <Link href="/">
+            <Link
+              href="/"
+              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+            >
               <Image
                 src={logo}
                 width={150}

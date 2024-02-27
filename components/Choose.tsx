@@ -154,6 +154,7 @@ const Choose = () => {
           <p className="flex justify-center items-center cursor-pointer hover:text-primary transition-all">
             Zobrazit více
             <ChevronRight />
+            //TODO: Zmenit na react icons
           </p>
         </header>
         <Tabs defaultValue="populární">

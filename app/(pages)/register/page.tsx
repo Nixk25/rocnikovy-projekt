@@ -1,18 +1,40 @@
 "use client";
 
-import React, { useState, SyntheticEvent } from "react";
+import React, { useState, FormEvent } from "react";
 import { FaLock, FaEye, FaUser } from "react-icons/fa";
 import { IoMdMail } from "react-icons/io";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+
+//@ts-ignore
+import { CldUploadWidget } from "next-cloudinary";
 
 const Register = () => {
+  const router = useRouter();
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [profilePictureUrl, setProfilePictureUrl] = useState<string>("");
 
-  const handleSubmit = async (e: SyntheticEvent) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
+      const resUserExists = await fetch("/api/userExists", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      const { user } = await resUserExists.json();
+
+      if (user) {
+        console.log("User exists");
+        return;
+      }
+
       const res = await fetch(`/api/register`, {
         method: "POST",
         headers: {
@@ -22,15 +44,17 @@ const Register = () => {
           name,
           email,
           password,
+          profilePicture: profilePictureUrl,
         }),
       });
+
       if (res.ok) {
-        console.log("Registered");
-      } else {
-        console.log("failed to register");
+        const form = e.target as HTMLFormElement;
+        form.reset();
+        router.push("/login");
       }
     } catch (err) {
-      console.log("error occured during registration ", err);
+      console.log("error occurred during registration ", err);
     }
   };
 
@@ -84,24 +108,35 @@ const Register = () => {
               <FaLock className="absolute top-1/2 -translate-y-1/2 left-2" />
               <FaEye className="absolute top-1/2 -translate-y-1/2 right-2 cursor-pointer" />
             </div>
+            <CldUploadWidget
+              uploadPreset="pmhofx0x"
+              //@ts-ignore
+              sources={["local", "url", "camera", "image_search"]}
+              onSuccess={(result, { widget }) => {
+                //@ts-ignore
+                setProfilePictureUrl(result?.info?.url);
+                widget.close();
+              }}
+            >
+              {({ open }) => {
+                function handleOnClick() {
+                  open();
+                }
+                return <button onClick={handleOnClick}>Upload an Image</button>;
+              }}
+            </CldUploadWidget>
           </div>
 
-          <div className="flex justify-between items-center mt-3 md:gap-10 md:flex-row flex-col gap-5  ">
-            <div className="flex justify-start items-center gap-2 w-full">
-              <input type="checkbox" className=" accent-primary" />
-              <span>Zůstat přihlášený</span>
-            </div>
-            <span className="cursor-pointer hover:text-primary transition-all">
-              {" "}
-              Zapomenuté heslo?{" "}
-            </span>
-          </div>
           <button
             type="submit"
             className="p-3 bg-primary text-white border-none outline-none rounded-lg mt-3 cursor-pointer transition-all hover:scale-105 hover:brightness-105 active:scale-95 active:brightness-95"
           >
-            Přihlásit se
+            Zaregistrovat se
           </button>
+          <span>Už mezi nás patříte?</span>
+          <Link className=" text-primary" href="/login">
+            Přihlašte se
+          </Link>
         </form>
       </main>
     </section>

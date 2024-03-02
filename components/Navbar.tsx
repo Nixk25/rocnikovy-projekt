@@ -1,5 +1,4 @@
 "use client";
-
 import Link from "@/node_modules/next/link";
 import avatar from "../public/avatar.png";
 import logo from "../public/logo.svg";
@@ -76,11 +75,17 @@ const Navbar = () => {
               {status === "authenticated" ? (
                 <Link href="/user">
                   <Image
-                    src={session?.user?.image as any}
+                    // @ts-ignore
+                    src={
+                      session?.user?.image ||
+                      //@ts-ignore
+                      session?.user?.profilePicture ||
+                      avatar
+                    }
                     width={40}
-                    height={40}
+                    height={50}
                     alt="avatar"
-                    className="rounded-lg"
+                    className="rounded-lg object-cover h-[50px] w-[50px]"
                   />
                 </Link>
               ) : (

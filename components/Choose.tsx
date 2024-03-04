@@ -1,6 +1,8 @@
 import React from "react";
 import Image, { StaticImageData } from "next/image";
-import { ChevronRight, Eye, Star } from "lucide-react";
+import { FaChevronRight } from "react-icons/fa6";
+import { IoIosStar } from "react-icons/io";
+
 import firstImage from "../public/first-img.png";
 import secondImage from "../public/second-img.png";
 import thirdImage from "../public/third-img.png";
@@ -151,10 +153,9 @@ const Choose = () => {
           <h2 className=" uppercase text-3xl font-bold  sm-clamp">
             Vyberte si!
           </h2>
-          <p className="flex justify-center items-center cursor-pointer hover:text-primary transition-all">
+          <p className="flex justify-center items-center cursor-pointer hover:text-primary transition-all all">
             Zobrazit více
-            <ChevronRight />
-            //TODO: Zmenit na react icons
+            <FaChevronRight />
           </p>
         </header>
         <Tabs defaultValue="populární">
@@ -183,9 +184,9 @@ const Choose = () => {
                     </CardHeader>
                     <CardContent className="flex justify-between items-center flex-col text-center md:text-start gap-2 md:gap-0 md:flex-row">
                       <h3 className="text-lg font-semibold">{pop.name}</h3>
-                      <div className="flex gap-1">
+                      <div className="flex gap-1 justify-center items-center">
                         <span>{pop.stars}</span>
-                        <Star color="#f4d301" fill="#f4d301" />
+                        <IoIosStar color="#f4d301" fill="#f4d301" />
                       </div>
                     </CardContent>
                     <CardFooter className="flex justify-between items-center flex-col text-center md:text-start gap-2 md:gap-0 md:flex-row">
@@ -216,9 +217,9 @@ const Choose = () => {
                     </CardHeader>
                     <CardContent className="flex justify-between items-center flex-col text-center md:text-start gap-2 md:gap-0 md:flex-row">
                       <h3 className="text-lg font-semibold">{rec.name}</h3>
-                      <div className="flex gap-1">
+                      <div className="flex gap-1 justify-center items-center">
                         <span>{rec.stars}</span>
-                        <Star color="#f4d301" fill="#f4d301" />
+                        <IoIosStar color="#f4d301" fill="#f4d301" />
                       </div>
                     </CardContent>
                     <CardFooter className="flex justify-between items-center flex-col text-center md:text-start gap-2 md:gap-0 md:flex-row">
@@ -249,9 +250,9 @@ const Choose = () => {
                     </CardHeader>
                     <CardContent className="flex justify-between items-center flex-col text-center md:text-start gap-2 md:gap-0 md:flex-row">
                       <h3 className="text-lg font-semibold">{meat.name}</h3>
-                      <div className="flex gap-1">
+                      <div className="flex gap-1 justify-center items-center">
                         <span>{meat.stars}</span>
-                        <Star color="#f4d301" fill="#f4d301" />
+                        <IoIosStar color="#f4d301" fill="#f4d301" />
                       </div>
                     </CardContent>
                     <CardFooter className="flex justify-between items-center flex-col text-center md:text-start gap-2 md:gap-0 md:flex-row">
@@ -284,9 +285,9 @@ const Choose = () => {
                     </CardHeader>
                     <CardContent className="flex justify-between items-center flex-col text-center md:text-start gap-2 md:gap-0 md:flex-row">
                       <h3 className="text-lg font-semibold">{veg.name}</h3>
-                      <div className="flex gap-1">
+                      <div className="flex gap-1 justify-center items-center">
                         <span>{veg.stars}</span>
-                        <Star color="#f4d301" fill="#f4d301" />
+                        <IoIosStar color="#f4d301" fill="#f4d301" />
                       </div>
                     </CardContent>
                     <CardFooter className="flex justify-between items-center flex-col text-center md:text-start gap-2 md:gap-0 md:flex-row">
@@ -317,9 +318,9 @@ const Choose = () => {
                     </CardHeader>
                     <CardContent className="flex justify-between items-center flex-col text-center md:text-start gap-2 md:gap-0 md:flex-row">
                       <h3 className="text-lg font-semibold">{fish.name}</h3>
-                      <div className="flex gap-1">
+                      <div className="flex gap-1 justify-center items-center">
                         <span>{fish.stars}</span>
-                        <Star color="#f4d301" fill="#f4d301" />
+                        <IoIosStar color="#f4d301" fill="#f4d301" />
                       </div>
                     </CardContent>
                     <CardFooter className="flex justify-between items-center flex-col text-center md:text-start gap-2 md:gap-0 md:flex-row">

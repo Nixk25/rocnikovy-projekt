@@ -10,7 +10,14 @@ const authOptions = {
       // @ts-ignore
       clientId: process.env.GOOGLE_CLIENT_ID,
       // @ts-ignore
-      clientSecret: process.env.GOOGLE_SECRET,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      authorization: {
+        params: {
+          prompt: "consent",
+          access_type: "offline",
+          response_type: "code",
+        },
+      },
     }),
     // @ts-ignore
 
@@ -59,7 +66,7 @@ const authOptions = {
           const userExists = await User.findOne({ email });
 
           if (!userExists) {
-            const res = await fetch("/api/user", {
+            const res = await fetch(`${process.env.NEXTAUTH_URL}/api/user`, {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
@@ -74,7 +81,7 @@ const authOptions = {
             }
           }
         } catch (err) {
-          console.log(err);
+          console.log("Problém : ", err);
         }
       }
       return user;

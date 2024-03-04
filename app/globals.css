@@ -131,6 +131,10 @@ svg {
   fill: #02b192;
 }
 
-.google:hover svg {
-  fill: #c71510;
+.all svg {
+  fill: #000;
+}
+
+.all:hover svg {
+  fill: #02b192;
 }

@@ -87,7 +87,7 @@ const Hero = () => {
   return (
     <section className="hero h-dvh w-full">
       <div className="bg-hero bg-no-repeat bg-cover bg-center w-full h-full flex justify-center items-center">
-        <div className="w-full h-full bg-white/70 flex justify-center items-center">
+        <div className="w-full h-full bg-white/80 flex justify-center items-center">
           <div className="container flex flex-col justify-center items-center">
             <h1 className="text-primary text-center clamp leading-[55px] mb-5 mt-[100px] font-extrabold">
               Vyhledejte svůj recept

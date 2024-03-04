@@ -4,6 +4,8 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { NextAuthProvider } from "./Providers";
+import { Toaster } from "@/components/ui/sonner";
+
 const lexend = Lexend({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -25,6 +27,7 @@ export default function RootLayout({
           {children}
           <Footer />
         </NextAuthProvider>
+        <Toaster richColors />
       </body>
     </html>
   );

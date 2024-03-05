@@ -84,7 +84,7 @@ const authOptions = {
             }
           }
         } catch (err) {
-          console.log("Problém : ", err);
+          console.log(err);
         }
       }
       return user;

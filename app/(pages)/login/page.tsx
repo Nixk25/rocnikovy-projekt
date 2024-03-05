@@ -36,7 +36,7 @@ const Login = () => {
         return;
       } else {
         form.reset();
-        router.replace("/user");
+        router.replace("/");
       }
     } catch (err) {
       console.log("error:", err);

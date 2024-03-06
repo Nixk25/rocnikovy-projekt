@@ -16,6 +16,10 @@ const navLinks: navLinksType[] = [
     name: "Co vařit",
     href: "#",
   },
+  {
+    name: "Katalog",
+    href: "#",
+  },
 ];
 
 type MenuProps = {

@@ -62,6 +62,7 @@ const authOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
     async signIn({ user, account }: any) {
+      user.provider = account.provider;
       if (account.provider === "google") {
         const { name, email } = user;
         try {
@@ -80,6 +81,8 @@ const authOptions = {
               }),
             });
             if (res.ok) {
+              const newUser = await res.json();
+              user.id = newUser.id;
               return user;
             }
           }
@@ -89,13 +92,19 @@ const authOptions = {
       }
       return user;
     },
-    async jwt({ token, user }: any) {
+
+    async jwt({ token, user, trigger, session }: any) {
+      if (trigger === "update") {
+        return { ...token, ...session.user };
+      }
       if (user) {
         token.email = user.email;
         token.name = user.name;
         token.profilePicture = user.profilePicture;
+        token.id = user.id;
+        token.provider = user.provider;
       }
-      return token;
+      return { ...token, ...user };
     },
 
     async session({ session, token }: any) {
@@ -103,6 +112,8 @@ const authOptions = {
         session.user.email = token.email;
         session.user.name = token.name;
         session.user.profilePicture = token.profilePicture;
+        session.user.id = token.id;
+        session.user.provider = token.provider;
       }
       return session;
     },

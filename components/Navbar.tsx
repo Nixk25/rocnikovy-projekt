@@ -54,6 +54,14 @@ const Navbar = () => {
                   Co vařit
                 </Link>
               </li>
+              <li className="link">
+                <Link
+                  className="text-black select-none hover:text-primary focus-visible:text-primary outline-none active:text-[#02b192] "
+                  href="stepper.html"
+                >
+                  Katalog
+                </Link>
+              </li>
             </ul>
             {!isOpen && (
               <button

@@ -101,7 +101,7 @@ const Register = () => {
   });
 
   return (
-    <section className="flex justify-center items-center flex-col  w-screen mt-20  ">
+    <section className="flex justify-center items-center flex-col  w-screen my-20  ">
       <main className=" text-center py-8 px-10 flex flex-col relative gap-3 rounded-lg w-max ">
         <h2 className=" font-bold sm-clamp ">Zaregistruj se</h2>
         <p className="text-sm mb-5">
@@ -168,7 +168,7 @@ const Register = () => {
                     <div className="relative w-full">
                       <Input
                         type={showPassword ? "text" : "password"}
-                        placeholder="Zadejte své heslo"
+                        placeholder="Zadejte své heslo..."
                         className="outline-2 shadow-lg px-5 py-2 rounded-lg pl-10 w-full focus-within:outline-primary focus-within:outline-2 transition-all duration-300 input"
                         {...field}
                       />
@@ -235,7 +235,7 @@ const Register = () => {
                               <Button
                                 type="button"
                                 variant="outline"
-                                className=" mt-5 outline-primary outline"
+                                className=" mt-5 outline-primary outline hover:scale-105 active:scale-95 transition-all duration-300"
                                 onClick={handleOnClick}
                               >
                                 Nahrát profilový obrázek
@@ -254,12 +254,15 @@ const Register = () => {
 
             <Button
               type="submit"
-              className="p-3 bg-primary text-white border-none outline-none rounded-lg mt-3 cursor-pointer transition-all hover:scale-105 hover:brightness-105 active:scale-95 active:brightness-95"
+              className="p-3 bg-primary text-white border-none outline-none rounded-lg mt-3 cursor-pointer transition-all duration-300 hover:scale-105 hover:brightness-105 active:scale-95 active:brightness-95"
             >
               Zaregistrovat se
             </Button>
             <span>Už mezi nás patříte?</span>
-            <Link className=" text-primary" href="/login">
+            <Link
+              className=" text-primary font-bold hover:brightness-105"
+              href="/login"
+            >
               Přihlašte se
             </Link>
           </form>

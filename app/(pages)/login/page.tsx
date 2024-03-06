@@ -1,6 +1,6 @@
 "use client";
 
-import React, { FormEvent, useState } from "react";
+import React, { useState } from "react";
 import { FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
 import { IoMdMail } from "react-icons/io";
 import Link from "next/link";
@@ -45,7 +45,7 @@ const Login = () => {
 
   const formSchema = z.object({
     email: z.string().email({ message: "Neplatný email" }),
-    password: z.string().min(8, { message: "Heslo musí mít alespoň 8 písmen" }),
+    password: z.string(),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -98,7 +98,7 @@ const Login = () => {
                     <div className="relative w-full">
                       <Input
                         type={showPassword ? "text" : "password"}
-                        placeholder="Zadejte své heslo"
+                        placeholder="Zadejte své heslo..."
                         className="outline-2 shadow-lg px-5 py-2 rounded-lg pl-10 w-full focus-within:outline-primary focus-within:outline-2 transition-all duration-300 input"
                         {...field}
                       />
@@ -124,13 +124,14 @@ const Login = () => {
 
             <button
               type="submit"
-              className="p-3 bg-primary text-white border-none outline-none rounded-lg mt-3 cursor-pointer transition-all hover:scale-105 hover:brightness-105 active:scale-95 active:brightness-95"
+              className="p-3 bg-primary text-white border-none outline-none rounded-lg mt-3 cursor-pointer transition-all hover:scale-105 hover:brightness-105 active:scale-95 active:brightness-95 duration-300"
             >
               Přihlásit se
             </button>
           </form>
         </Form>
         <div className="w-full h-[2px] #bfc3cc] relative mt-5">
+          <div className=" h-px bg-[#212121] w-full" />
           <span className="absolute left-1/2 -top-3 -translate-x-1/2 bg-white px-3">
             NEBO
           </span>

@@ -8,7 +8,7 @@ const GoogleLoginBtn = () => {
   const router = useRouter();
 
   const handleLogin = async () => {
-    const result = await signIn("google", { callbackUrl: "/user" });
+    const result = await signIn("google", { callbackUrl: "/" });
 
     if (result?.error) {
       router.push("/login");
@@ -17,9 +17,9 @@ const GoogleLoginBtn = () => {
   return (
     <Button
       onClick={handleLogin}
-      className="cursor-pointer flex gap-2  google transition-all duration-300 border-none bg-[#c71510]  text-white hover:bg-transparent hover:text-[#c71510] hover:brightness-100 text-lg "
+      className="cursor-pointer flex gap-2  google transition-all duration-300 border-none bg-[#c71510]  text-white  hover:brightness-110 hover:bg-[#c71510] hover:scale-105 active:scale-95 active:brightness-95 text-lg "
     >
-      Příhlásit se pomocí
+      Příhlásit se pomocí Google
       <span className="google">
         <FaGoogle fill="#fff" size={20} />
       </span>

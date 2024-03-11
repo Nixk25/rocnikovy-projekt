@@ -16,8 +16,22 @@ import {
 import { IoMdMenu } from "react-icons/io";
 import { useState } from "react";
 import Menu from "./Menu";
+import { motion, useScroll, useMotionValueEvent } from "framer-motion";
 
 const Navbar = () => {
+  const [isHidden, setIsHidden] = useState(false);
+
+  const { scrollY } = useScroll();
+
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    const prev = scrollY.getPrevious();
+    //@ts-ignore
+    if (latest > prev && latest > 150) {
+      setIsHidden(true);
+    } else {
+      setIsHidden(false);
+    }
+  });
   const { status, data: session } = useSession();
   const pathname = usePathname();
 
@@ -26,12 +40,33 @@ const Navbar = () => {
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  const closeMenu = () => {
-    setIsOpen((prev) => !prev);
+  const toggleMenu = () => {
+    setIsOpen((prevIsOpen) => {
+      const body = document.body;
+
+      if (prevIsOpen) {
+        body.style.overflow = "auto";
+      } else {
+        body.style.overflow = "hidden";
+      }
+
+      return !prevIsOpen;
+    });
   };
 
   return (
-    <nav
+    <motion.nav
+      variants={{
+        visible: { opacity: 1, y: 0 },
+        hidden: { opacity: 0, y: "-100%" },
+      }}
+      animate={isHidden ? "hidden" : "visible"}
+      transition={{
+        type: "spring",
+        duration: 0.3,
+        stiffness: 260,
+        damping: 20,
+      }}
       className={`w-full bg-white/20 fixed top-0 left-0 backdrop-blur-md z-10 `}
     >
       <div className="container mx-auto relative pt-3">
@@ -66,12 +101,12 @@ const Navbar = () => {
             {!isOpen && (
               <button
                 className=" sm:hidden absolute left-5 top-1/2 -translate-y-1/2 "
-                onClick={() => setIsOpen((prev) => !prev)}
+                onClick={toggleMenu}
               >
                 <IoMdMenu size={30} />
               </button>
             )}
-            <Menu isOpen={isOpen} closeMenu={closeMenu} />
+            <Menu isOpen={isOpen} closeMenu={toggleMenu} />
             <Link
               href="/"
               className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
@@ -89,7 +124,7 @@ const Navbar = () => {
                 {status === "unauthenticated" && !isLoginOrRegister && (
                   <Link
                     href="/login"
-                    className="hover:text-primary focus-visible:text-primary outline-none active:brightness-75"
+                    className="hover:text-primary focus-visible:text-primary outline-none active:brightness-75 hidden sm:flex"
                   >
                     Přihlásit se
                   </Link>
@@ -138,7 +173,7 @@ const Navbar = () => {
           </nav>
         </header>
       </div>
-    </nav>
+    </motion.nav>
   );
 };
 

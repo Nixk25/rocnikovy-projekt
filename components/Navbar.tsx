@@ -23,7 +23,7 @@ const Navbar = () => {
 
   const { scrollY } = useScroll();
 
-  useMotionValueEvent(scrollY, "change", (latest) => {
+  useMotionValueEvent(scrollY, "change", (latest: any) => {
     const prev = scrollY.getPrevious();
     //@ts-ignore
     if (latest > prev && latest > 150) {
@@ -92,7 +92,7 @@ const Navbar = () => {
               <li className="link">
                 <Link
                   className="text-black select-none hover:text-primary focus-visible:text-primary outline-none active:text-[#02b192] "
-                  href="stepper.html"
+                  href="/catalog"
                 >
                   Katalog
                 </Link>
@@ -149,6 +149,11 @@ const Navbar = () => {
                       <Link href="/user">
                         <DropdownMenuItem className="hover:text-primary focus-visible:text-primary outline-none active:brightness-75 cursor-pointer">
                           Můj účet
+                        </DropdownMenuItem>
+                      </Link>
+                      <Link href="/addNewRecipe">
+                        <DropdownMenuItem className="hover:text-primary focus-visible:text-primary outline-none active:brightness-75 cursor-pointer">
+                          Přidat recept
                         </DropdownMenuItem>
                       </Link>
                       <DropdownMenuSeparator />

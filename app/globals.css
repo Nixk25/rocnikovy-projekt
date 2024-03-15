@@ -117,10 +117,12 @@ body {
 
 .clamp {
   font-size: clamp(3rem, 10vw, 4rem);
+  font-weight: bold;
 }
 
 .sm-clamp {
   font-size: clamp(1.2rem, 5vw, 2.5rem);
+  font-weight: bold;
 }
 
 svg {

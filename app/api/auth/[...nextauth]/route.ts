@@ -64,25 +64,27 @@ const authOptions = {
     async signIn({ user, account }: any) {
       user.provider = account.provider;
       if (account.provider === "google") {
+        const googleId = account.providerAccountId;
         const { name, email } = user;
         try {
           await connectDatabase();
           const userExists = await User.findOne({ email });
 
           if (!userExists) {
-            const res = await fetch(`/api/user`, {
+            const res = await fetch(`${process.env.NEXTAUTH_URL}/api/user`, {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
               },
               body: JSON.stringify({
+                googleId: googleId,
                 name,
                 email,
               }),
             });
             if (res.ok) {
-              const newUser = await res.json();
-              user.id = newUser.id;
+              const id = googleId;
+              user.id = id;
               return user;
             }
           }

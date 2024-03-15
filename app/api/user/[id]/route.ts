@@ -1,6 +1,7 @@
 import { connectDatabase } from "@/lib/mongodb";
 import User from "@/models/user";
 import { NextResponse } from "next/server";
+import mongoose from "mongoose";
 
 export async function PUT(req: Request, { params }: any) {
   const { id } = params;
@@ -22,6 +23,13 @@ export async function PUT(req: Request, { params }: any) {
 export async function GET(req: Request, { params }: any) {
   const { id } = params;
   await connectDatabase();
-  const user = await User.findOne({ _id: id });
+  let query = {};
+  if (mongoose.Types.ObjectId.isValid(id)) {
+    query = { _id: id };
+  } else {
+    query = { googleId: id };
+  }
+  const user = await User.findOne(query);
+
   return NextResponse.json({ user });
 }

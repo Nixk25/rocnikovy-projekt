@@ -1,13 +1,13 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import avatar from "../../../public/avatar.png";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { IoMdMail } from "react-icons/io";
 import { FaUser } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
-import Image, { StaticImageData } from "next/image";
+import Image from "next/image";
 import Link from "next/link";
 import {
   Card,
@@ -15,50 +15,53 @@ import {
   CardFooter,
   CardHeader,
 } from "@/components/ui/card";
-
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { IoIosStar } from "react-icons/io";
-import firstImage from "../../../public/first-img.png";
-import secondImage from "../../../public/second-img.png";
-import thirdImage from "../../../public/third-img.png";
-import fourthImage from "../../../public/fourth-img.png";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import RemoveBtn from "@/components/RemoveBtn";
+import UpdateBtn from "@/components/UpdateBtn";
 
-export interface recipe {
-  name: string;
-  img: StaticImageData;
-  time: string;
-  stars: number;
+interface Recipe {
+  title: string;
+  desc: string;
+  ingredients: string;
+  author: string;
+  authorId: string;
+  authorProfilePicture: string;
+  time: number;
+  procedure: string;
+  image: string;
 }
 
-const popular: recipe[] = [
-  {
-    name: "Těstoviny Aglio",
-    img: firstImage,
-    time: "5-10 min",
-    stars: 3.7,
-  },
-  {
-    name: "Kuře na česneku",
-    img: secondImage,
-    time: "2-3 hodiny",
-    stars: 4.8,
-  },
-  {
-    name: "Domácí lasagne",
-    img: thirdImage,
-    time: "30 min",
-    stars: 4.5,
-  },
-  {
-    name: "Snídaňové lívance",
-    img: fourthImage,
-    time: "20 min",
-    stars: 4.1,
-  },
-];
-
 const User = () => {
+  const [userRecipes, setUserRecipes] = useState<Recipe[]>([]);
   const { status, data: session } = useSession();
+  const getMyRecipes = async () => {
+    try {
+      const response = await fetch(
+        //@ts-ignore
+        `/api/recipes/getById?userId=${session.user.id}`
+      );
+      if (response.ok) {
+        const data = await response.json();
+        setUserRecipes(data.recipes);
+      } else {
+        console.log("Error:", response.status);
+      }
+    } catch (err) {
+      console.log("Error getting user recipes", err);
+    }
+  };
+  useEffect(() => {
+    if (status !== "loading") {
+      getMyRecipes();
+    }
+  }, [status]);
+
   return (
     <section className=" my-[100px] ">
       <div className="container">
@@ -116,33 +119,85 @@ const User = () => {
             <TabsTrigger value="recepty">Tvoje recepty</TabsTrigger>
             <TabsTrigger value="doporučujeme">Oblíbené recepty</TabsTrigger>
           </TabsList>
-          <TabsContent value="recepty">
-            <div className="flex justify-evenly w-full gap-4 md:gap-10 py-5 flex-wrap">
-              {popular.map((pop, i) => (
-                <Card
-                  key={i}
-                  className="p-0 overflow-hidden w-[300px]  hover:scale-105 transition-all cursor-pointer border-none outline-none shadow-lg"
-                >
-                  <CardHeader className="p-0 mb-5">
-                    <Image
-                      src={pop.img}
-                      alt={pop.name}
-                      className="object-cover max-h-[200px] w-[300px]"
-                      placeholder="blur"
-                    />
-                  </CardHeader>
-                  <CardContent className="flex justify-between items-center flex-col text-center md:text-start gap-2 md:gap-0 md:flex-row">
-                    <h3 className="text-lg font-semibold">{pop.name}</h3>
-                    <div className="flex gap-1 justify-center items-center">
-                      <span>{pop.stars}</span>
-                      <IoIosStar color="#f4d301" fill="#f4d301" />
-                    </div>
-                  </CardContent>
-                  <CardFooter className="flex justify-between items-center flex-col text-center md:text-start gap-2 md:gap-0 md:flex-row">
-                    <span className="text-primary font-bold">{pop.time}</span>
-                  </CardFooter>
-                </Card>
-              ))}
+          <TabsContent value="recepty" className="w-full">
+            <div className="flex justify-center sm:justify-start items-stretch  w-full gap-4 md:gap-10 py-5 flex-wrap ">
+              {userRecipes.length === 0 ? (
+                <div className="flex justify-center items-center flex-col w-full gap-5">
+                  <p>Zatím nemáte vytvořené žádné recepty..😢</p>
+                  <Link href="/addNewRecipe">
+                    <Button className="text-white">
+                      {" "}
+                      Vytvořit nový recept
+                    </Button>
+                  </Link>
+                </div>
+              ) : (
+                userRecipes.map((userRec, i) => (
+                  //@ts-ignore
+                  <Link href={`/recipePage/${userRec._id}`}>
+                    <Card
+                      key={i}
+                      className="group p-0 overflow-hidden w-[300px]  hover:scale-105 transition-all cursor-pointer border-none outline-none shadow-lg ease-in-out duration-200"
+                    >
+                      <CardHeader className="p-0 mb-5">
+                        <Image
+                          src={userRec.image}
+                          alt={userRec.title}
+                          width={300}
+                          height={300}
+                          className="object-cover max-[300px] w-[300px]"
+                          placeholder="blur"
+                          blurDataURL={userRec.image}
+                        />
+                      </CardHeader>
+                      <CardContent className="flex justify-between items-center flex-col text-center md:text-start gap-2 md:gap-0 md:flex-row">
+                        <h3 className="text-lg font-semibold">
+                          {userRec.title}
+                        </h3>
+                      </CardContent>
+                      <CardFooter className="group-hover:hidden flex justify-between items-center flex-col text-center md:text-start gap-2 md:gap-0 md:flex-row">
+                        <div className="flex items-center gap-3">
+                          <Avatar className=" h-[50px] w-[50px]">
+                            <AvatarImage
+                              alt="avatar"
+                              className="rounded-lg object-cover "
+                              src={userRec.authorProfilePicture}
+                            />
+                          </Avatar>
+                          <span>{userRec.author}</span>
+                        </div>
+                        <span className="text-primary font-bold">
+                          {userRec.time} minut
+                        </span>
+                      </CardFooter>
+                      <CardFooter className="hidden group-hover:flex justify-center items-center gap-5">
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger>
+                              <Link href={`/updateRecipe/${userRec._id}`}>
+                                <UpdateBtn />
+                              </Link>
+                            </TooltipTrigger>
+                            <TooltipContent className="bg-primary text-white">
+                              Upravte svůj recept
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger>
+                              <RemoveBtn id={userRec._id} />
+                            </TooltipTrigger>
+                            <TooltipContent className="bg-red-500 text-white">
+                              Smažte tento recept
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      </CardFooter>
+                    </Card>
+                  </Link>
+                ))
+              )}
             </div>
           </TabsContent>
         </Tabs>

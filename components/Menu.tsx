@@ -21,7 +21,7 @@ const navLinks: navLinksType[] = [
   },
   {
     name: "Katalog",
-    href: "#",
+    href: "/catalog",
   },
 ];
 

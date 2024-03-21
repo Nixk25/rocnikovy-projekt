@@ -31,27 +31,27 @@ const page = async ({ params }: any) => {
     authorId,
   } = recipe;
   return (
-    <section className=" mt-20">
+    <section className="mt-20 ">
       <div className="container">
-        <h1 className="mb-10 clamp text-primary font-bold text-center">
+        <h1 className="mb-10 font-bold text-center sm-clamp text-primary">
           {title}
         </h1>
-        <div className="flex gap-10 mb-20">
-          <div className="flex flex-col gap-3 w-[50%] max-w-[50%]">
+        <div className="flex flex-col w-full gap-10 mb-10 md:mb-20 md:flex-row">
+          <div className="flex flex-col gap-3 md:w-[50%] md:max-w-[50%] justify-center items-center md:justify-center sm:items-start w-full">
             <Image
               src={image}
               width={500}
               height={500}
               alt={`obrázek receptu ${title}`}
-              className="w-full object-cover rounded-md"
+              className="object-cover w-full rounded-md"
             />
             <Link href={`/viewProfile/${authorId}`}>
-              <div className="flex gap-3 items-center ">
+              <div className="flex items-center gap-3 ">
                 <span>Vytvořil: </span>
                 <Avatar className=" h-[60px] w-[60px]">
                   <AvatarImage
                     alt="avatar"
-                    className="rounded-lg object-cover "
+                    className="object-cover rounded-lg "
                     src={authorProfilePicture || avatar}
                   />
                 </Avatar>
@@ -59,19 +59,32 @@ const page = async ({ params }: any) => {
               </div>
             </Link>
           </div>
-          <div className="flex flex-col gap-5 text-center ">
-            <h3 className="sm-clamp text-primary ">Popis receptu</h3>
-            <p>{desc}</p>
+          <div
+            className="flex flex-col gap-3 md:w-[50%] md:max-w-[50%]  items-center  w-full 
+          "
+          >
+            <h3 className="text-center sm-clamp text-primary">Popis receptu</h3>
+            <p className="text-center">{desc}</p>
           </div>
         </div>
-        <div className="flex gap-10 mb-20">
-          <div className="flex flex-col gap-5 text-center w-[50%]">
+        <div className="flex flex-col items-center justify-center gap-10 mb-20 md:flex-row">
+          <div className="flex flex-col gap-3 text-center md:w-[50%] w-full">
             <h3 className="sm-clamp text-primary">Ingredience</h3>
-            <p>{ingredients}</p>
+            {ingredients.map((ingredient: any, i: any) => (
+              <p key={i} className="flex items-center justify-center gap-2 ">
+                <span>{i + 1})</span>
+                <span>{ingredient}</span>
+              </p>
+            ))}
           </div>
-          <div className="flex flex-col gap-5 text-center w-[50%] ">
+          <div className="flex flex-col gap-3 text-center md:w-[50%] w-full ">
             <h3 className="sm-clamp text-primary">Postup</h3>
-            <p>{procedure}</p>
+            {procedure.map((proc: any, i: any) => (
+              <p key={i} className="flex items-center justify-center gap-2">
+                <span>{i + 1})</span>
+                <span>{proc}</span>
+              </p>
+            ))}
           </div>
         </div>
       </div>

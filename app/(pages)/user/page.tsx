@@ -24,7 +24,7 @@ import {
 } from "@/components/ui/tooltip";
 import RemoveBtn from "@/components/RemoveBtn";
 import UpdateBtn from "@/components/UpdateBtn";
-
+import RemoveBtnFavorite from "@/components/RemoveBtnFavorite";
 interface Recipe {
   title: string;
   desc: string;
@@ -39,6 +39,7 @@ interface Recipe {
 
 const User = () => {
   const [userRecipes, setUserRecipes] = useState<Recipe[]>([]);
+  const [favoriteRecipes, setFavoriteRecipes] = useState<Recipe[]>([]);
   const { status, data: session } = useSession();
   const getMyRecipes = async () => {
     try {
@@ -56,25 +57,53 @@ const User = () => {
       console.log("Error getting user recipes", err);
     }
   };
+
+  const getFavoriteRecipes = async () => {
+    try {
+      //@ts-ignore
+      const response = await fetch(`/api/user/${session?.user?.id}/favorites`);
+      if (response.ok) {
+        const favoriteRecipeIds = await response.json();
+        const favoriteRecipes = await Promise.all(
+          favoriteRecipeIds.map(async (recipeId: any) => {
+            const response = await fetch(`/api/recipes/${recipeId}`);
+            if (response.ok) {
+              return response.json();
+            } else {
+              console.error(`Failed to fetch recipe with id ${recipeId}`);
+              return null;
+            }
+          })
+        );
+        setFavoriteRecipes(favoriteRecipes.filter((recipe) => recipe !== null));
+      } else {
+        console.log("Error:", response.status);
+      }
+    } catch (err) {
+      console.log("Error getting favorite recipes", err);
+    }
+  };
+
   useEffect(() => {
     if (status !== "loading") {
       getMyRecipes();
+      getFavoriteRecipes();
     }
   }, [status]);
 
   return (
     <section className=" my-[100px] ">
       <div className="container">
-        <h1 className="sm-clamp font-bold sm:text-start text-center">
+        <h1 className="font-bold text-center sm-clamp sm:text-start">
           Dobrý den, <span className="text-primary">{session?.user?.name}</span>
           !
         </h1>
-        <div className="mt-10 flex items-center gap-10 sm:flex-row flex-col sm:text-start text-center ">
+        <div className="flex flex-col items-center gap-10 mt-10 text-center sm:flex-row sm:text-start ">
           {status === "authenticated" ? (
             <Avatar className=" h-[200px] w-[200px]">
               <AvatarImage
                 alt="avatar"
-                className="rounded-lg object-cover "
+                className="object-cover rounded-lg "
                 src={
                   session?.user?.image ||
                   //@ts-ignore
@@ -90,12 +119,12 @@ const User = () => {
           <div className="flex flex-col gap-7">
             <h2 className="text-2xl font-semibold">Informace o vašem účtu</h2>
             <div className="flex flex-col gap-2">
-              <div className="flex gap-3 items-center">
+              <div className="flex items-center gap-3">
                 <FaUser fill="#02b192" />
                 <h3 className="text-lg font-semibold">Vaše jméno:</h3>
                 <p>{session?.user?.name}</p>
               </div>
-              <div className="flex gap-3 items-center">
+              <div className="flex items-center gap-3">
                 <IoMdMail fill="#02b192" />
                 <h3 className="text-lg font-semibold">Email:</h3>
                 <p>{session?.user?.email}</p>
@@ -112,17 +141,17 @@ const User = () => {
           </div>
         </div>
         <Tabs
-          className="flex justify-start flex-col items-center sm:items-start mt-20 "
+          className="flex flex-col items-center justify-start mt-20 sm:items-start "
           defaultValue="recepty"
         >
           <TabsList className="flex flex-wrap bg-transparent ">
             <TabsTrigger value="recepty">Tvoje recepty</TabsTrigger>
-            <TabsTrigger value="doporučujeme">Oblíbené recepty</TabsTrigger>
+            <TabsTrigger value="oblíbené">Oblíbené recepty</TabsTrigger>
           </TabsList>
           <TabsContent value="recepty" className="w-full">
-            <div className="flex justify-center sm:justify-start items-stretch  w-full gap-4 md:gap-10 py-5 flex-wrap ">
+            <div className="flex flex-wrap items-stretch justify-center w-full gap-4 py-5 sm:justify-start md:gap-10 ">
               {userRecipes.length === 0 ? (
-                <div className="flex justify-center items-center flex-col w-full gap-5">
+                <div className="flex flex-col items-center justify-center w-full gap-5">
                   <p>Zatím nemáte vytvořené žádné recepty..😢</p>
                   <Link href="/addNewRecipe">
                     <Button className="text-white">
@@ -134,11 +163,11 @@ const User = () => {
               ) : (
                 userRecipes.map((userRec, i) => (
                   //@ts-ignore
-                  <Link href={`/recipePage/${userRec._id}`}>
-                    <Card
-                      key={i}
-                      className="group p-0 overflow-hidden w-[300px]  hover:scale-105 transition-all cursor-pointer border-none outline-none shadow-lg ease-in-out duration-200"
-                    >
+                  <Card
+                    key={i}
+                    className="group p-0 overflow-hidden w-[300px]  hover:scale-105 transition-all cursor-pointer border-none outline-none shadow-lg ease-in-out duration-200"
+                  >
+                    <Link href={`/recipePage/${userRec._id}`}>
                       <CardHeader className="p-0 mb-5">
                         <Image
                           src={userRec.image}
@@ -150,53 +179,126 @@ const User = () => {
                           blurDataURL={userRec.image}
                         />
                       </CardHeader>
-                      <CardContent className="flex justify-between items-center flex-col text-center md:text-start gap-2 md:gap-0 md:flex-row">
+                    </Link>
+                    <CardContent className="flex flex-col items-center justify-between gap-2 text-center md:text-start md:gap-0 md:flex-row">
+                      <h3 className="text-lg font-semibold">{userRec.title}</h3>
+                    </CardContent>
+                    <CardFooter className="flex flex-col items-center justify-between gap-2 text-center group-hover:hidden md:text-start md:gap-0 md:flex-row">
+                      <div className="flex items-center gap-3">
+                        <Avatar className=" h-[50px] w-[50px]">
+                          <AvatarImage
+                            alt="avatar"
+                            className="object-cover rounded-lg "
+                            src={userRec.authorProfilePicture}
+                          />
+                        </Avatar>
+                        <span>{userRec.author}</span>
+                      </div>
+                      <span className="font-bold text-primary">
+                        {userRec.time} minut
+                      </span>
+                    </CardFooter>
+                    <CardFooter className="items-center justify-center hidden gap-5 group-hover:flex">
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger>
+                            <Link href={`/updateRecipe/${userRec._id}`}>
+                              <UpdateBtn />
+                            </Link>
+                          </TooltipTrigger>
+                          <TooltipContent className="text-white bg-primary">
+                            Upravte svůj recept
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger>
+                            <RemoveBtn id={userRec._id} />
+                          </TooltipTrigger>
+                          <TooltipContent className="text-white bg-red-500">
+                            Smažte tento recept
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    </CardFooter>
+                  </Card>
+                ))
+              )}
+            </div>
+          </TabsContent>
+          <TabsContent value="oblíbené" className="w-full">
+            <div className="flex flex-wrap items-stretch justify-center w-full gap-4 py-5 sm:justify-start md:gap-10 ">
+              {favoriteRecipes.length === 0 ? (
+                <div className="flex flex-col items-center justify-center w-full gap-5">
+                  <p>Zatím nemáte žádné oblíbené recepty..😢</p>
+                  <Link href="/catalog">
+                    <Button className="text-white">
+                      {" "}
+                      Prohlídněte si náš katalog
+                    </Button>
+                  </Link>
+                </div>
+              ) : (
+                favoriteRecipes.map((recipe, i) => {
+                  //@ts-ignore
+                  const favRecipe = recipe.recipe;
+                  return (
+                    <Card
+                      key={i}
+                      className="group p-0 overflow-hidden w-[300px]  hover:scale-105 transition-all cursor-pointer border-none outline-none shadow-lg ease-in-out duration-200"
+                    >
+                      <Link href={`/recipePage/${favRecipe._id}`}>
+                        <CardHeader className="p-0 mb-5">
+                          <Image
+                            src={favRecipe.image}
+                            alt={favRecipe.title}
+                            width={300}
+                            height={300}
+                            className="object-cover max-[300px] w-[300px]"
+                            placeholder="blur"
+                            blurDataURL={favRecipe.image}
+                          />
+                        </CardHeader>
+                      </Link>
+                      <CardContent className="flex flex-col items-center justify-between gap-2 text-center md:text-start md:gap-0 md:flex-row">
                         <h3 className="text-lg font-semibold">
-                          {userRec.title}
+                          {favRecipe.title}
                         </h3>
                       </CardContent>
-                      <CardFooter className="group-hover:hidden flex justify-between items-center flex-col text-center md:text-start gap-2 md:gap-0 md:flex-row">
+                      <CardFooter className="flex flex-col items-center justify-between gap-2 text-center group-hover:hidden md:text-start md:gap-0 md:flex-row">
                         <div className="flex items-center gap-3">
                           <Avatar className=" h-[50px] w-[50px]">
                             <AvatarImage
                               alt="avatar"
-                              className="rounded-lg object-cover "
-                              src={userRec.authorProfilePicture}
+                              className="object-cover rounded-lg "
+                              src={favRecipe.authorProfilePicture}
                             />
                           </Avatar>
-                          <span>{userRec.author}</span>
+                          <span>{favRecipe.author}</span>
                         </div>
-                        <span className="text-primary font-bold">
-                          {userRec.time} minut
+                        <span className="font-bold text-primary">
+                          {favRecipe.time} minut
                         </span>
                       </CardFooter>
-                      <CardFooter className="hidden group-hover:flex justify-center items-center gap-5">
+                      <CardFooter className="items-center justify-center hidden gap-5 group-hover:flex">
                         <TooltipProvider>
                           <Tooltip>
                             <TooltipTrigger>
-                              <Link href={`/updateRecipe/${userRec._id}`}>
-                                <UpdateBtn />
-                              </Link>
+                              <RemoveBtnFavorite
+                                userId={session?.user?.id}
+                                id={favRecipe._id}
+                              />
                             </TooltipTrigger>
-                            <TooltipContent className="bg-primary text-white">
-                              Upravte svůj recept
-                            </TooltipContent>
-                          </Tooltip>
-                        </TooltipProvider>
-                        <TooltipProvider>
-                          <Tooltip>
-                            <TooltipTrigger>
-                              <RemoveBtn id={userRec._id} />
-                            </TooltipTrigger>
-                            <TooltipContent className="bg-red-500 text-white">
-                              Smažte tento recept
+                            <TooltipContent className="text-white bg-red-500">
+                              Smažte tento recept z oblíbených
                             </TooltipContent>
                           </Tooltip>
                         </TooltipProvider>
                       </CardFooter>
                     </Card>
-                  </Link>
-                ))
+                  );
+                })
               )}
             </div>
           </TabsContent>

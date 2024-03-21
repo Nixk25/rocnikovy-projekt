@@ -34,6 +34,12 @@ const addNewRecipe = () => {
   const [previewRecipe, setPreviewRecipe] = useState<string>("");
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    const ingredientsArray = values.ingredients
+      .split(",")
+      .map((item) => item.trim());
+    const procedureArray = values.procedure
+      .split(",")
+      .map((step) => step.trim());
     try {
       const res = await fetch(`/api/recipes`, {
         method: "POST",
@@ -43,7 +49,7 @@ const addNewRecipe = () => {
         body: JSON.stringify({
           title: values.title,
           desc: values.desc,
-          ingredients: values.ingredients,
+          ingredients: ingredientsArray,
           author: session?.user?.name,
           //@ts-ignore
           authorId: session?.user?.id,
@@ -51,7 +57,7 @@ const addNewRecipe = () => {
             //@ts-ignore
             session?.user?.image || session?.user?.profilePicture || avatar,
           time: values.time,
-          procedure: values.procedure,
+          procedure: procedureArray,
           image: recipeImg,
         }),
       });
@@ -94,16 +100,16 @@ const addNewRecipe = () => {
     },
   });
   return (
-    <section className="flex justify-center items-center flex-col  w-screen my-20   ">
-      <main className=" text-center py-8 px-10 flex flex-col relative gap-3 rounded-lg w-max ">
-        <h2 className=" font-bold sm-clamp ">Přidejte recept</h2>
+    <section className="flex flex-col items-center justify-center w-screen my-20 ">
+      <main className="relative flex flex-col gap-3 px-10 py-8 text-center rounded-lg  w-max">
+        <h2 className="font-bold  sm-clamp">Přidejte recept</h2>
         <p>
           Všechny pole jsou{" "}
-          <span className="text-primary font-bold">povinná!</span>
+          <span className="font-bold text-primary">povinná!</span>
         </p>
         <Form {...form}>
           <form
-            className="w-full flex flex-col gap-5"
+            className="flex flex-col w-full gap-5"
             onSubmit={form.handleSubmit(onSubmit)}
           >
             <FormField
@@ -118,7 +124,7 @@ const addNewRecipe = () => {
                         autoFocus
                         type="text"
                         placeholder="Zadejte název receptu..."
-                        className="outline-2 outline-transparent shadow-lg  py-2 rounded-lg px-5  w-full focus-within:outline-primary focus-within:outline-2 transition-all duration-300 input"
+                        className="w-full px-5 py-2 transition-all duration-300 rounded-lg shadow-lg outline-2 outline-transparent focus-within:outline-primary focus-within:outline-2 input"
                         {...field}
                       />
                     </div>
@@ -138,7 +144,7 @@ const addNewRecipe = () => {
                     <div className="relative w-full">
                       <Textarea
                         placeholder="Popište recept..."
-                        className="outline-2 outline-transparent shadow-lg px-5 py-2 rounded-lg  w-full focus-within:outline-primary focus-within:outline-2 transition-all duration-300 input"
+                        className="w-full px-5 py-2 transition-all duration-300 rounded-lg shadow-lg outline-2 outline-transparent focus-within:outline-primary focus-within:outline-2 input"
                         {...field}
                       />
                     </div>
@@ -159,7 +165,7 @@ const addNewRecipe = () => {
                     <div className="relative w-full">
                       <Textarea
                         placeholder="Napište všechny ingredience"
-                        className="outline-2 outline-transparent shadow-lg px-5 py-2 rounded-lg  w-full focus-within:outline-primary focus-within:outline-2 transition-all duration-300 input"
+                        className="w-full px-5 py-2 transition-all duration-300 rounded-lg shadow-lg outline-2 outline-transparent focus-within:outline-primary focus-within:outline-2 input"
                         {...field}
                       />
                     </div>
@@ -180,7 +186,7 @@ const addNewRecipe = () => {
                       <Input
                         type="number"
                         placeholder="Zadejte čas na přípravu...(min)"
-                        className="outline-2 outline-transparent shadow-lg px-5 py-2 rounded-lg  w-full focus-within:outline-primary focus-within:outline-2 transition-all duration-300 input"
+                        className="w-full px-5 py-2 transition-all duration-300 rounded-lg shadow-lg outline-2 outline-transparent focus-within:outline-primary focus-within:outline-2 input"
                         {...field}
                       />
                     </div>
@@ -200,7 +206,7 @@ const addNewRecipe = () => {
                     <div className="relative w-full">
                       <Textarea
                         placeholder="Zadejte postup..."
-                        className="outline-2 outline-transparent shadow-lg px-5 py-2 rounded-lg  w-full focus-within:outline-primary focus-within:outline-2 transition-all duration-300 input"
+                        className="w-full px-5 py-2 transition-all duration-300 rounded-lg shadow-lg outline-2 outline-transparent focus-within:outline-primary focus-within:outline-2 input"
                         {...field}
                       />
                     </div>
@@ -218,11 +224,11 @@ const addNewRecipe = () => {
                   <div>
                     {previewRecipe ? (
                       <>
-                        <div className="mt-5 rounded-lg flex justify-center items-center flex-col">
-                          <h3 className="text-lg mb-3">Obrázek receptu</h3>
+                        <div className="flex flex-col items-center justify-center mt-5 rounded-lg">
+                          <h3 className="mb-3 text-lg">Obrázek receptu</h3>
                           <Avatar className="h-[150px] w-[150px]">
                             <AvatarImage
-                              className="rounded-lg object-cover "
+                              className="object-cover rounded-lg "
                               src={previewRecipe}
                             />
                           </Avatar>
@@ -251,7 +257,7 @@ const addNewRecipe = () => {
                               <Button
                                 type="button"
                                 variant="outline"
-                                className=" mt-5 outline-primary outline hover:scale-105 active:scale-95 transition-all duration-300"
+                                className="mt-5 transition-all duration-300  outline-primary outline hover:scale-105 active:scale-95"
                                 onClick={handleOnClick}
                               >
                                 Vyberte obrázek receptu
@@ -270,7 +276,7 @@ const addNewRecipe = () => {
 
             <Button
               type="submit"
-              className="p-3 bg-primary text-white border-none outline-none rounded-lg mt-3 cursor-pointer transition-all duration-300 hover:scale-105 hover:brightness-105 active:scale-95 active:brightness-95"
+              className="p-3 mt-3 text-white transition-all duration-300 border-none rounded-lg outline-none cursor-pointer bg-primary hover:scale-105 hover:brightness-105 active:scale-95 active:brightness-95"
             >
               Přidat recept
             </Button>

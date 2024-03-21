@@ -53,11 +53,11 @@ const ViewProfile = async ({ params }: any) => {
   return (
     <section className=" my-[100px] ">
       <div className="container">
-        <div className="mt-10 flex items-center gap-10 sm:flex-row flex-col sm:text-start text-center ">
+        <div className="flex flex-col items-center gap-10 mt-10 text-center sm:flex-row sm:text-start ">
           <Avatar className=" h-[200px] w-[200px]">
             <AvatarImage
               alt="avatar"
-              className="rounded-lg object-cover "
+              className="object-cover rounded-lg "
               src={profilePicture || avatar}
             />
           </Avatar>
@@ -65,12 +65,12 @@ const ViewProfile = async ({ params }: any) => {
           <div className="flex flex-col gap-7">
             <h2 className="text-2xl font-semibold">Informace o účtu</h2>
             <div className="flex flex-col gap-2">
-              <div className="flex gap-3 items-center">
+              <div className="flex items-center gap-3">
                 <FaUser fill="#02b192" />
                 <h3 className="text-lg font-semibold">Jméno:</h3>
                 <p>{name}</p>
               </div>
-              <div className="flex gap-3 items-center">
+              <div className="flex items-center gap-3">
                 <IoMdMail fill="#02b192" />
                 <h3 className="text-lg font-semibold">Email:</h3>
                 <p>{email}</p>
@@ -79,15 +79,14 @@ const ViewProfile = async ({ params }: any) => {
           </div>
         </div>
         <Tabs
-          className="flex justify-start flex-col items-center sm:items-start mt-20 "
+          className="flex flex-col items-center justify-start mt-20 sm:items-start "
           defaultValue="recepty"
         >
           <TabsList className="flex flex-wrap bg-transparent ">
             <TabsTrigger value="recepty">Recepty tohoto uživatele</TabsTrigger>
-            <TabsTrigger value="doporučujeme">Oblíbené recepty</TabsTrigger>
           </TabsList>
           <TabsContent value="recepty" className="w-full">
-            <div className="flex justify-center sm:justify-start items-stretch  w-full gap-4 md:gap-10 py-5 flex-wrap ">
+            <div className="flex flex-wrap items-stretch justify-center w-full gap-4 py-5 sm:justify-start md:gap-10 ">
               {recipes.map((userRec: any, i: any) => (
                 //@ts-ignore
                 <Link href={`/recipePage/${userRec._id}`}>
@@ -106,21 +105,21 @@ const ViewProfile = async ({ params }: any) => {
                         blurDataURL={userRec.image}
                       />
                     </CardHeader>
-                    <CardContent className="flex justify-between items-center flex-col text-center md:text-start gap-2 md:gap-0 md:flex-row">
+                    <CardContent className="flex flex-col items-center justify-between gap-2 text-center md:text-start md:gap-0 md:flex-row">
                       <h3 className="text-lg font-semibold">{userRec.title}</h3>
                     </CardContent>
-                    <CardFooter className=" flex justify-between items-center flex-col text-center md:text-start gap-2 md:gap-0 md:flex-row">
+                    <CardFooter className="flex flex-col items-center justify-between gap-2 text-center  md:text-start md:gap-0 md:flex-row">
                       <div className="flex items-center gap-3">
                         <Avatar className=" h-[50px] w-[50px]">
                           <AvatarImage
                             alt="avatar"
-                            className="rounded-lg object-cover "
+                            className="object-cover rounded-lg "
                             src={userRec.authorProfilePicture}
                           />
                         </Avatar>
                         <span>{userRec.author}</span>
                       </div>
-                      <span className="text-primary font-bold">
+                      <span className="font-bold text-primary">
                         {userRec.time} minut
                       </span>
                     </CardFooter>

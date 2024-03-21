@@ -69,10 +69,10 @@ const Navbar = () => {
       }}
       className={`w-full bg-white/20 fixed top-0 left-0 backdrop-blur-md z-10 `}
     >
-      <div className="container mx-auto relative pt-3">
+      <div className="container relative pt-3 mx-auto">
         <header className="w-full h-[80px] sm:h-max">
-          <nav className="flex justify-center sm:justify-between items-center p-4">
-            <ul className=" list-none sm:flex gap-10 hidden">
+          <nav className="flex items-center justify-center p-4 sm:justify-between">
+            <ul className="hidden gap-10 list-none  sm:flex">
               <li className="link">
                 <Link
                   className="text-black select-none hover:text-primary focus-visible:text-primary outline-none active:text-[#02b192]  active"
@@ -100,7 +100,7 @@ const Navbar = () => {
             </ul>
             {!isOpen && (
               <button
-                className=" sm:hidden absolute left-5 top-1/2 -translate-y-1/2 "
+                className="absolute -translate-y-1/2  sm:hidden left-5 top-1/2"
                 onClick={toggleMenu}
               >
                 <IoMdMenu size={30} />
@@ -109,22 +109,22 @@ const Navbar = () => {
             <Menu isOpen={isOpen} closeMenu={toggleMenu} />
             <Link
               href="/"
-              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+              className="absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
             >
               <Image
                 src={logo}
                 width={150}
                 height={100}
-                className="mt-3 select-none cursor-pointer hover:brightness-110 active:brightness-75 "
+                className="mt-3 cursor-pointer select-none hover:brightness-110 active:brightness-75 "
                 alt="logo"
               />
             </Link>
             {!isUser && (
-              <div className="absolute right-5 top-1/2 -translate-y-1/2 flex justify-center items-center">
+              <div className="absolute flex items-center justify-center -translate-y-1/2 right-5 top-1/2">
                 {status === "unauthenticated" && !isLoginOrRegister && (
                   <Link
                     href="/login"
-                    className="hover:text-primary focus-visible:text-primary outline-none active:brightness-75 hidden sm:flex"
+                    className="hidden outline-none hover:text-primary focus-visible:text-primary active:brightness-75 sm:flex"
                   >
                     Přihlásit se
                   </Link>
@@ -132,7 +132,7 @@ const Navbar = () => {
                 {status === "authenticated" ? (
                   <DropdownMenu>
                     <DropdownMenuTrigger>
-                      <Avatar className=" outline-none outline-offset-0 outline-black">
+                      <Avatar className="outline-none  outline-offset-0 outline-black">
                         <AvatarImage
                           alt="avatar"
                           className="rounded-lg object-cover h-[50px] w-[50px]"
@@ -147,18 +147,18 @@ const Navbar = () => {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
                       <Link href="/user">
-                        <DropdownMenuItem className="hover:text-primary focus-visible:text-primary outline-none active:brightness-75 cursor-pointer">
+                        <DropdownMenuItem className="outline-none cursor-pointer hover:text-primary focus-visible:text-primary active:brightness-75">
                           Můj účet
                         </DropdownMenuItem>
                       </Link>
                       <Link href="/addNewRecipe">
-                        <DropdownMenuItem className="hover:text-primary focus-visible:text-primary outline-none active:brightness-75 cursor-pointer">
+                        <DropdownMenuItem className="outline-none cursor-pointer hover:text-primary focus-visible:text-primary active:brightness-75">
                           Přidat recept
                         </DropdownMenuItem>
                       </Link>
                       <DropdownMenuSeparator />
                       <Link onClick={() => signOut()} href="/login">
-                        <DropdownMenuItem className="hover:text-primary focus-visible:text-primary outline-none active:brightness-75 cursor-pointer">
+                        <DropdownMenuItem className="outline-none cursor-pointer hover:text-primary focus-visible:text-primary active:brightness-75">
                           Odhlásit se
                         </DropdownMenuItem>
                       </Link>

@@ -18,6 +18,7 @@ const userSchema = new Schema(
     profilePicture: {
       type: String,
     },
+    favoriteRecipes: [{ type: mongoose.Schema.Types.ObjectId, ref: "Recipe" }],
   },
   { timestamps: true }
 );

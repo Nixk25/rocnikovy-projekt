@@ -11,7 +11,7 @@ const recipeSchema = new Schema(
       required: true,
     },
     ingredients: {
-      type: String,
+      type: [String],
       required: true,
     },
     author: {
@@ -30,7 +30,7 @@ const recipeSchema = new Schema(
       required: true,
     },
     procedure: {
-      type: String,
+      type: [String],
       required: true,
     },
     image: {

@@ -11,18 +11,12 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-
 import { Button } from "./ui/button";
+import { useRouter } from "next/navigation";
 
 interface Recipe {
   value: string;
   label: string;
-}
-
-interface TestRecipes {
-  label: string;
-  value: string;
-  time: string;
 }
 
 const popular: Recipe[] = [
@@ -48,18 +42,26 @@ const popular: Recipe[] = [
   },
 ];
 
-const testRecipes: TestRecipes[] = [
-  {
-    label: "Spaghetti Bolognese",
-    time: "5-10 min",
-    value: "spaghetti bolognese",
-  },
-  { label: "Margherita Pizza", time: "2-3 hodiny", value: "margherita pizza" },
-  { label: "Domácí lasagne", time: "30 min", value: "domácí lasagne" },
-  { label: "Snídaňové lívance", time: "20 min", value: "snídaňové lívance" },
-];
+const getRecipes = async () => {
+  try {
+    const res = await fetch(`${process.env.NEXTAUTH_URL}/api/recipes`, {
+      cache: "no-store",
+    });
+
+    if (!res.ok) {
+      throw new Error("failed to fetch");
+    }
+
+    return res.json();
+  } catch (err) {
+    console.log("Error loading recipes", err);
+  }
+};
 
 const Hero = () => {
+  const router = useRouter();
+  //@ts-ignore
+  const [recipes, setRecipes] = useState([]);
   const [open, setOpen] = useState<boolean>(false);
   const [value, setValue] = useState<string>("Vyhledejte recept...");
   const [isHidden, setIsHidden] = useState<boolean>(false);
@@ -83,6 +85,10 @@ const Hero = () => {
       setIsHidden(true);
     }
   };
+
+  useEffect(() => {
+    getRecipes().then((data) => setRecipes(data.recipes));
+  }, []);
 
   return (
     <section className="hero h-dvh w-full">
@@ -131,18 +137,20 @@ const Hero = () => {
                 </CommandEmpty>
                 {isHidden ? (
                   <CommandGroup heading="Máte na mysli">
-                    {testRecipes.map((test) => (
+                    {recipes.map((rec: any, i: number) => (
                       <CommandItem
-                        key={test.value}
-                        value={test.value}
-                        onSelect={(currentValue) => {
-                          setValue(currentValue === value ? "" : currentValue);
+                        key={i}
+                        //@ts-ignore
+                        value={rec.title}
+                        onSelect={() => {
+                          router.push(`/recipePage/${rec._id}`);
+
                           setOpen(false);
                         }}
                       >
                         <div className="flex w-full justify-between items-center">
-                          <span>{test.label}</span>
-                          <span>{test.time}</span>
+                          <span>{rec.title}</span>
+                          <span>{rec.time} minut</span>
                         </div>
                       </CommandItem>
                     ))}

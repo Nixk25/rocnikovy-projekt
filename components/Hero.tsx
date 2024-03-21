@@ -91,18 +91,18 @@ const Hero = () => {
   }, []);
 
   return (
-    <section className="hero h-dvh w-full">
-      <div className="bg-hero bg-no-repeat bg-cover bg-center w-full h-full flex justify-center items-center">
-        <div className="w-full h-full bg-white/80 flex justify-center items-center">
-          <div className="container flex flex-col justify-center items-center">
+    <section className="w-full hero h-dvh">
+      <div className="flex items-center justify-center w-full h-full bg-center bg-no-repeat bg-cover bg-hero">
+        <div className="flex items-center justify-center w-full h-full bg-white/80">
+          <div className="container flex flex-col items-center justify-center">
             <h1 className="text-primary text-center clamp leading-[55px] mb-5 mt-[100px] font-extrabold">
               Vyhledejte svůj recept
             </h1>
             <p className="mb-5 text-lg text-center ">
               Vítejte ve světě, kde se vaření mění ve vášeň a každý pokrm je
-              <span className="text-primary font-bold"> dobrodružstvím</span>.
+              <span className="font-bold text-primary"> dobrodružstvím</span>.
               Objevte recepty od vášnivých kuchařů jako jste
-              <span className="text-primary font-bold"> Vy</span>. Společně
+              <span className="font-bold text-primary"> Vy</span>. Společně
               rozvíjejte chuťové hranice!
             </p>
             <div className="relative max-w-[350px] flex  ">
@@ -119,7 +119,7 @@ const Hero = () => {
                 color="#bfc3cc"
                 className="absolute top-1/2 left-0 -translate-y-1/2   w-[3rem]"
               />
-              <div className="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2  justify-center items-center   text-white px-3 cursor-pointer  ">
+              <div className="absolute right-0 items-center justify-center hidden px-3 text-white -translate-y-1/2 cursor-pointer sm:flex top-1/2 ">
                 <Command size={16} color="#bfc3cc" />
                 <span className="text-[#bfc3cc] ">H</span>
               </div>
@@ -148,7 +148,7 @@ const Hero = () => {
                           setOpen(false);
                         }}
                       >
-                        <div className="flex w-full justify-between items-center">
+                        <div className="flex items-center justify-between w-full">
                           <span>{rec.title}</span>
                           <span>{rec.time} minut</span>
                         </div>

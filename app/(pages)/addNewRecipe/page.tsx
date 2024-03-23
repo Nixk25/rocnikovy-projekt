@@ -1,9 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, Fragment } from "react";
 import { useRouter } from "next/navigation";
-
-import { toast } from "sonner";
+import { Listbox, Transition } from "@headlessui/react";
 
 import { z } from "zod";
 
@@ -26,6 +25,8 @@ import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { useSession } from "next-auth/react";
 import { Textarea } from "@/components/ui/textarea";
 import avatar from "../../../public/avatar.png";
+import { toast } from "sonner";
+import { FaCheck, FaChevronDown } from "react-icons/fa";
 
 const addNewRecipe = () => {
   const { data: session } = useSession();
@@ -33,13 +34,47 @@ const addNewRecipe = () => {
   const [recipeImg, setRecipeImg] = useState<string>("");
   const [previewRecipe, setPreviewRecipe] = useState<string>("");
 
+  const allCategories = [
+    { id: 1, name: "Maso" },
+    { id: 2, name: "Ryby" },
+    { id: 3, name: "Vegan" },
+  ];
+  const [selectedCategories, setSelectedCategories] = useState([]);
+
+  const handleCategoryChange = (selected: any) => {
+    const newCategory = selected[selected.length - 1];
+    const alreadySelected = selectedCategories.find(
+      (category) => category.id === newCategory.id
+    );
+
+    if (alreadySelected) {
+      setSelectedCategories(
+        selectedCategories.filter((category) => category.id !== newCategory.id)
+      );
+      toast.error("Tato kategorie byla odstraněna.");
+    } else if (selected.length <= selectedCategories.length) {
+      setSelectedCategories(
+        selectedCategories.filter((category) => selected.includes(category))
+      );
+    } else {
+      setSelectedCategories(selected);
+      toast.success("Kategorie byla přidána.");
+    }
+  };
+
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const ingredientsArray = values.ingredients
       .split(",")
       .map((item) => item.trim());
+
+    const categoriesArray = selectedCategories.map(
+      (category: any) => category.name
+    );
+
     const procedureArray = values.procedure
       .split(",")
       .map((step) => step.trim());
+
     try {
       const res = await fetch(`/api/recipes`, {
         method: "POST",
@@ -49,6 +84,7 @@ const addNewRecipe = () => {
         body: JSON.stringify({
           title: values.title,
           desc: values.desc,
+          categories: categoriesArray,
           ingredients: ingredientsArray,
           author: session?.user?.name,
           //@ts-ignore
@@ -79,6 +115,9 @@ const addNewRecipe = () => {
       .min(2, { message: "Název musí mít alespoň 2 písmena" })
       .max(50, { message: "Název nesmí být delší než 50 písmen" }),
     desc: z.string(),
+    categories: z.string({
+      required_error: "Prosím vyberte kategorii",
+    }),
     ingredients: z.string(),
     time: z.coerce
       .number()
@@ -93,6 +132,7 @@ const addNewRecipe = () => {
     defaultValues: {
       title: "",
       desc: "",
+      categories: "",
       ingredients: "",
       time: 0,
       procedure: "",
@@ -149,6 +189,90 @@ const addNewRecipe = () => {
                       />
                     </div>
                   </FormControl>
+
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="categories"
+              render={({ field }) => (
+                <FormItem className="flex flex-col gap-2">
+                  <FormLabel>Kategorie</FormLabel>
+
+                  <Listbox
+                    value={selectedCategories}
+                    onChange={handleCategoryChange}
+                    multiple
+                  >
+                    <div className="relative mt-1 z-10">
+                      <Listbox.Button className="w-full">
+                        {({ open }) => (
+                          <div className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
+                            <span className="block truncate">
+                              {selectedCategories.length > 0 ? (
+                                selectedCategories
+                                  .map((category) => category.name)
+                                  .join(", ")
+                              ) : (
+                                <span className="text-slate-500">
+                                  Vyberte Kategorii
+                                </span>
+                              )}
+                            </span>
+                            <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                              <FaChevronDown
+                                className={`h-5 w-5 text-gray-400 transform ${
+                                  open ? "rotate-180" : ""
+                                }`}
+                                aria-hidden="true"
+                              />
+                            </span>
+                          </div>
+                        )}
+                      </Listbox.Button>
+                      <Transition
+                        as={Fragment}
+                        leave="transition ease-in duration-200"
+                        leaveFrom="opacity-100"
+                        leaveTo="opacity-0"
+                      >
+                        <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm">
+                          {allCategories.map((category) => (
+                            <Listbox.Option
+                              key={category.id}
+                              className={({ active }) =>
+                                `relative cursor-default select-none py-2 pl-10 pr-4 ${
+                                  active
+                                    ? "bg-accent text-white"
+                                    : "text-gray-900"
+                                }`
+                              }
+                              value={category}
+                            >
+                              {({ selected }) => (
+                                <>
+                                  <span
+                                    className={`block truncate ${
+                                      selected ? "font-medium " : "font-normal"
+                                    }`}
+                                  >
+                                    {category.name}
+                                  </span>
+                                  {selected ? (
+                                    <span className="absolute inset-y-0 left-0 flex items-center pl-3 ">
+                                      <FaCheck size={20} color="black" />
+                                    </span>
+                                  ) : null}
+                                </>
+                              )}
+                            </Listbox.Option>
+                          ))}
+                        </Listbox.Options>
+                      </Transition>
+                    </div>
+                  </Listbox>
 
                   <FormMessage />
                 </FormItem>

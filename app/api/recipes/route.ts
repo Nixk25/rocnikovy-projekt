@@ -6,6 +6,7 @@ export async function POST(req: Request) {
   const {
     title,
     desc,
+    categories,
     ingredients,
     author,
     authorId,
@@ -18,6 +19,7 @@ export async function POST(req: Request) {
   await Recipe.create({
     title,
     desc,
+    categories,
     ingredients,
     author,
     authorId,

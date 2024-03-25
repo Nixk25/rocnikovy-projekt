@@ -1,8 +1,7 @@
 import React from "react";
 import { toast } from "sonner";
 import Image from "next/image";
-import avatar from "../../../../public/avatar.png";
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import Link from "next/link";
 const getRecipeById = async (id: any) => {
   try {
@@ -54,8 +53,14 @@ const page = async ({ params }: any) => {
                     <AvatarImage
                       alt="avatar"
                       className="object-cover rounded-lg "
-                      src={authorProfilePicture || avatar}
+                      src={authorProfilePicture}
                     />
+                    <AvatarFallback className=" size-full text-white bg-primary text-2xl font-semibold">
+                      {author
+                        ?.split(" ")
+                        .map((word: any) => word[0])
+                        .join("")}
+                    </AvatarFallback>
                   </Avatar>
                   <span>{author}</span>
                 </div>
@@ -93,7 +98,7 @@ const page = async ({ params }: any) => {
               {procedure.map((proc: any, i: any) => (
                 <li
                   key={i}
-                  className="flex items-center sm:justify-start justify-center gap-3"
+                  className="flex items-center sm:justify-start text-center sm:text-start justify-center gap-3"
                 >
                   <span className="text-primary">{i + 1})</span>
                   <span>{proc}</span>

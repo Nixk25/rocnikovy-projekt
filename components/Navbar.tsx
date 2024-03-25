@@ -5,7 +5,7 @@ import logo from "../public/logo.svg";
 import Image from "next/image";
 import { useSession, signOut } from "next-auth/react";
 import { usePathname } from "next/navigation";
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -135,17 +135,45 @@ const Navbar = () => {
                       <Avatar className="outline-none  outline-offset-0 outline-black">
                         <AvatarImage
                           alt="avatar"
-                          className="rounded-lg object-cover h-[50px] w-[50px]"
+                          className="object-cover rounded-lg "
                           src={
                             session?.user?.image ||
                             //@ts-ignore
-                            session?.user?.profilePicture ||
-                            avatar
+                            session?.user?.profilePicture
                           }
                         />
+                        <AvatarFallback className=" size-full text-white bg-primary text-xl font-semibold">
+                          {session?.user?.name
+                            ?.split(" ")
+                            .map((word) => word[0])
+                            .join("")}
+                        </AvatarFallback>
                       </Avatar>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent>
+                    <DropdownMenuContent
+                      className="mr-5 mt-2
+                    "
+                    >
+                      <div className="flex gap-3 items-center p-2">
+                        <Avatar>
+                          <AvatarImage
+                            alt="avatar"
+                            className="object-cover rounded-lg "
+                            src={
+                              session?.user?.image ||
+                              //@ts-ignore
+                              session?.user?.profilePicture
+                            }
+                          />
+                          <AvatarFallback className=" size-full text-white bg-primary text-xl font-semibold">
+                            {session?.user?.name
+                              ?.split(" ")
+                              .map((word) => word[0])
+                              .join("")}
+                          </AvatarFallback>
+                        </Avatar>
+                        <span>{session?.user?.name}</span>
+                      </div>
                       <Link href="/user">
                         <DropdownMenuItem className="outline-none cursor-pointer hover:text-primary focus-visible:text-primary active:brightness-75">
                           Můj účet

@@ -8,18 +8,24 @@ import {
   CardHeader,
 } from "@/components/ui/card";
 import Image from "next/image";
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import avatar from "../../../public/avatar.png";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import Link from "next/link";
-
-import { FaStar } from "react-icons/fa";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { FaStar, FaFilter } from "react-icons/fa";
 import { CiStar } from "react-icons/ci";
-
+import { Badge } from "@/components/ui/badge";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const getRecipes = async () => {
   try {
@@ -41,12 +47,13 @@ const Catalog = () => {
   const [query, setQuery] = useState("");
   const { status, data: session } = useSession();
   const [recipes, setRecipes] = useState([]);
-
-  const searchRecipes = async (query: string) => {
-    const res = await fetch(`/api/recipes/search?query=${query}`);
+  const [category, setCategory] = useState("");
+  const searchRecipes = async (query: string, category: string) => {
+    const res = await fetch(
+      `/api/recipes/search?query=${query}&category=${category}`
+    );
     const data = await res.json();
-    console.log(data.recipes);
-    return data.recipes;
+    return data.filteredRecipes;
   };
 
   const toggleFavorite = async (id: any) => {
@@ -92,25 +99,24 @@ const Catalog = () => {
   };
 
   useEffect(() => {
-    if (query !== "") {
-      searchRecipes(query).then((data) => {
-        console.log(data);
-        const recipesWithFavorites = data.map((recipe: any) => {
-          const isFavorite = localStorage.getItem(recipe._id) !== null;
-          return { ...recipe, isFavorite };
-        });
-        setRecipes(recipesWithFavorites);
+    searchRecipes(query || "", category).then((data) => {
+      const recipesWithFavorites = data.map((recipe: any) => {
+        const isFavorite = localStorage.getItem(recipe._id) !== null;
+        return { ...recipe, isFavorite };
       });
-    } else {
-      getRecipes().then((data) => {
-        const recipesWithFavorites = data.recipes.map((recipe: any) => {
-          const isFavorite = localStorage.getItem(recipe._id) !== null;
-          return { ...recipe, isFavorite };
-        });
-        setRecipes(recipesWithFavorites);
+      setRecipes(recipesWithFavorites);
+    });
+  }, [query, category]);
+  useEffect(() => {
+    getRecipes().then((data) => {
+      const recipesWithFavorites = data.recipes.map((recipe: any) => {
+        const isFavorite = localStorage.getItem(recipe._id) !== null;
+        return { ...recipe, isFavorite };
       });
-    }
-  }, [query]);
+      setRecipes(recipesWithFavorites);
+    });
+  }, []);
+
   return (
     <section className="mt-20">
       <div className="container">
@@ -118,14 +124,60 @@ const Catalog = () => {
           <h1 className="mb-4 text-center sm-clamp">
             Vítejte v našem katalogu receptů
           </h1>
-          <Input
-            id="recept"
-            type="text"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Vyhledejte recept..."
-            className="mb-5 max-w-[50%]"
-          />
+          <div className="flex flex-col items-center justify-center w-full h-full gap-5 mb-5 sm:flex-row">
+            <div className="relative w-full sm:w-1/2">
+              <Input
+                id="recept"
+                type="text"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Vyhledejte recept..."
+                className="w-full"
+              />
+              {category !== "" && (
+                <Badge
+                  onClick={() => setCategory("")}
+                  className="absolute flex items-center justify-center gap-2 text-white -translate-y-1/2 cursor-pointer bg-primary right-2 top-1/2"
+                >
+                  <span className="text-xs text-white font-extralight">X</span>
+                  {category}
+                </Badge>
+              )}
+            </div>
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <div className="flex items-center justify-center rounded-full size-10 bg-primary ">
+                  <FaFilter fill="white" size={20} />
+                </div>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="px-5 ">
+                <DropdownMenuLabel>Filtrovat</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <RadioGroup
+                  className="flex flex-col gap-5 py-2"
+                  defaultValue={category}
+                  onValueChange={setCategory}
+                >
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="" id="vše" />
+                    <Label htmlFor="vše">Vše</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="Maso" id="maso" />
+                    <Label htmlFor="maso">Maso</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="Vegan" id="vegan" />
+                    <Label htmlFor="vegan">Vegan</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="Ryby" id="ryba" />
+                    <Label htmlFor="ryba">Ryby</Label>
+                  </div>
+                </RadioGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
         </div>
         {recipes.length > 0 ? (
           <div className="grid grid-cols-1 grid-rows-1 gap-5 sm:grid-cols-2 sm:grid-rows-2 md:grid-cols-3 md:grid-rows-3 xl:grid-cols-4 xl:grid-rows-4 place-items-center sm:place-items-start">
@@ -167,8 +219,14 @@ const Catalog = () => {
                         <AvatarImage
                           alt="avatar"
                           className="object-cover rounded-lg "
-                          src={recipe.authorProfilePicture || avatar}
+                          src={recipe.authorProfilePicture}
                         />
+                        <AvatarFallback className="text-sm font-semibold text-white  size-full bg-primary">
+                          {recipe.author
+                            ?.split(" ")
+                            .map((word: any) => word[0])
+                            .join("")}
+                        </AvatarFallback>
                       </Avatar>
                       <span>{recipe.author}</span>
                     </div>

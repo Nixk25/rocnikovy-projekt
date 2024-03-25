@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import avatar from "../../../public/avatar.png";
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { IoMdMail } from "react-icons/io";
 import { FaUser } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
@@ -64,11 +64,12 @@ const User = () => {
       const response = await fetch(`/api/user/${session?.user?.id}/favorites`);
       if (response.ok) {
         const favoriteRecipeIds = await response.json();
+
         const favoriteRecipes = await Promise.all(
           favoriteRecipeIds.map(async (recipeId: any) => {
             const response = await fetch(`/api/recipes/${recipeId}`);
             if (response.ok) {
-              return response.json();
+              return await response.json();
             } else {
               console.error(`Failed to fetch recipe with id ${recipeId}`);
               return null;
@@ -107,10 +108,15 @@ const User = () => {
                 src={
                   session?.user?.image ||
                   //@ts-ignore
-                  session?.user?.profilePicture ||
-                  avatar
+                  session?.user?.profilePicture
                 }
               />
+              <AvatarFallback className=" size-full text-white bg-primary text-2xl font-semibold">
+                {session?.user?.name
+                  ?.split(" ")
+                  .map((word) => word[0])
+                  .join("")}
+              </AvatarFallback>
             </Avatar>
           ) : (
             <Image src={avatar} className="rounded-lg " alt="avatar" />
@@ -165,7 +171,7 @@ const User = () => {
                   //@ts-ignore
                   <Card
                     key={i}
-                    className="group p-0 overflow-hidden w-[300px]  hover:scale-105 transition-all cursor-pointer border-none outline-none shadow-lg ease-in-out duration-200"
+                    className="group p-0 overflow-hidden h-max w-[300px]  hover:scale-105 transition-all cursor-pointer border-none outline-none shadow-lg ease-in-out duration-200"
                   >
                     <Link href={`/recipePage/${userRec._id}`}>
                       <CardHeader className="p-0 mb-5">
@@ -243,10 +249,11 @@ const User = () => {
                 favoriteRecipes.map((recipe, i) => {
                   //@ts-ignore
                   const favRecipe = recipe.recipe;
+                  console.log(favRecipe);
                   return (
                     <Card
                       key={i}
-                      className="group p-0 overflow-hidden w-[300px]  hover:scale-105 transition-all cursor-pointer border-none outline-none shadow-lg ease-in-out duration-200"
+                      className="group p-0 overflow-hidden w-[300px] h-max  hover:scale-105 transition-all cursor-pointer border-none outline-none shadow-lg ease-in-out duration-200"
                     >
                       <Link href={`/recipePage/${favRecipe._id}`}>
                         <CardHeader className="p-0 mb-5">
@@ -254,10 +261,8 @@ const User = () => {
                             src={favRecipe.image}
                             alt={favRecipe.title}
                             width={300}
-                            height={300}
-                            className="object-cover max-[300px] w-[300px]"
-                            placeholder="blur"
-                            blurDataURL={favRecipe.image}
+                            height={200}
+                            className="object-cover h-max"
                           />
                         </CardHeader>
                       </Link>

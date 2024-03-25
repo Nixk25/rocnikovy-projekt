@@ -152,17 +152,21 @@ const EditUser = ({ id, name, email, profilePicture }: editUserProps) => {
               render={({ field }) => (
                 <FormItem>
                   <div>
-                    <>
-                      <div className="mt-5 rounded-lg flex justify-center items-center flex-col">
-                        <h3 className="text-lg mb-3">Váš profilový obrázek</h3>
-                        <Avatar className="h-[150px] w-[150px]">
-                          <AvatarImage
-                            className="rounded-lg object-cover "
-                            src={preview}
-                          />
-                        </Avatar>
-                      </div>
-                    </>
+                    {preview === "" ? (
+                      <p>Ještě nemáte žádný profilový obrázek</p>
+                    ) : (
+                      <>
+                        <div className="flex flex-col items-center justify-center mt-5 rounded-lg">
+                          <h3 className="mb-3 text-lg">Nový obrázek receptu</h3>
+                          <Avatar className="h-[150px] w-[150px]">
+                            <AvatarImage
+                              className="object-cover rounded-lg "
+                              src={preview}
+                            />
+                          </Avatar>
+                        </div>
+                      </>
+                    )}
 
                     <FormControl>
                       <CldUploadWidget
@@ -175,7 +179,7 @@ const EditUser = ({ id, name, email, profilePicture }: editUserProps) => {
                           setPreview(result?.info?.url);
                           //@ts-ignore
                           widget.close();
-                          toast.success("Profilový obrázek byl nahrán");
+                          toast.success("Obrázek receptu nahrán");
                         }}
                       >
                         {({ open }) => {
@@ -186,10 +190,10 @@ const EditUser = ({ id, name, email, profilePicture }: editUserProps) => {
                             <Button
                               type="button"
                               variant="outline"
-                              className=" mt-5 outline-primary outline hover:scale-105 active:scale-95 transition-all duration-300"
+                              className="mt-5 transition-all duration-300  outline-primary outline hover:scale-105 active:scale-95"
                               onClick={handleOnClick}
                             >
-                              Změnit profilový obrázek
+                              Vyberte nový obrázek receptu
                             </Button>
                           );
                         }}

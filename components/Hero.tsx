@@ -63,8 +63,6 @@ const Hero = () => {
   //@ts-ignore
   const [recipes, setRecipes] = useState([]);
   const [open, setOpen] = useState<boolean>(false);
-  const [value, setValue] = useState<string>("Vyhledejte recept...");
-  const [isHidden, setIsHidden] = useState<boolean>(false);
   useEffect(() => {
     const pressed = (e: KeyboardEvent) => {
       if (e.key === "h" && (e.metaKey || e.ctrlKey)) {
@@ -76,15 +74,6 @@ const Hero = () => {
     document.addEventListener("keydown", pressed);
     return () => document.removeEventListener("keydown", pressed);
   }, []);
-
-  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    if (value === "") {
-      setIsHidden(false);
-    } else {
-      setIsHidden(true);
-    }
-  };
 
   useEffect(() => {
     getRecipes().then((data) => setRecipes(data.recipes));
@@ -113,7 +102,7 @@ const Hero = () => {
                 className="w-full px-20 text-text"
                 onClick={() => setOpen((open) => !open)}
               >
-                {value}
+                Vyhledejte recept
               </Button>
               <Search
                 color="#bfc3cc"
@@ -126,51 +115,32 @@ const Hero = () => {
             </div>
 
             <CommandDialog open={open} onOpenChange={setOpen}>
-              <CommandInput
-                placeholder="Vyhledejte recept..."
-                onChangeCapture={handleInput}
-              />
-              <CommandList>
+              <CommandInput placeholder="Vyhledejte recept..." />
+              <CommandList className="max-h-[200px]">
                 <CommandEmpty>
                   <h3>Nic nebylo nalezeno</h3>
                   <Button className="mt-5 text-white">Vytvořte recept</Button>
                 </CommandEmpty>
-                {isHidden ? (
-                  <CommandGroup heading="Máte na mysli">
-                    {recipes.map((rec: any, i: number) => (
-                      <CommandItem
-                        key={i}
-                        //@ts-ignore
-                        value={rec.title}
-                        onSelect={() => {
-                          router.push(`/recipePage/${rec._id}`);
 
-                          setOpen(false);
-                        }}
-                      >
-                        <div className="flex items-center justify-between w-full">
-                          <span>{rec.title}</span>
-                          <span>{rec.time} minut</span>
-                        </div>
-                      </CommandItem>
-                    ))}
-                  </CommandGroup>
-                ) : (
-                  <CommandGroup heading="Populární">
-                    {popular.map((pop) => (
-                      <CommandItem
-                        key={pop.value}
-                        value={pop.value}
-                        onSelect={(currentValue) => {
-                          setValue(currentValue === value ? "" : currentValue);
-                          setOpen(false);
-                        }}
-                      >
-                        {pop.label}
-                      </CommandItem>
-                    ))}
-                  </CommandGroup>
-                )}
+                <CommandGroup heading="Máte na mysli">
+                  {recipes.map((rec: any, i: number) => (
+                    <CommandItem
+                      key={i}
+                      //@ts-ignore
+                      value={rec.title}
+                      onSelect={() => {
+                        router.push(`/recipePage/${rec._id}`);
+
+                        setOpen(false);
+                      }}
+                    >
+                      <div className="flex items-center justify-between w-full">
+                        <span>{rec.title}</span>
+                        <span>{rec.time} minut</span>
+                      </div>
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
               </CommandList>
             </CommandDialog>
           </div>

@@ -1,23 +1,10 @@
-import React from "react";
-import Image, { StaticImageData } from "next/image";
-import { FaChevronRight } from "react-icons/fa6";
-import { IoIosStar } from "react-icons/io";
+"use client";
 
-import firstImage from "../public/first-img.png";
-import secondImage from "../public/second-img.png";
-import thirdImage from "../public/third-img.png";
-import fourthImage from "../public/fourth-img.png";
-import fifthImage from "../public/fifth-img.png";
-import sixthImage from "../public/sixth-img.png";
-import smoothieBowlImage from "../public/fruitSmothie.jpg";
-import quinoaSaladImage from "../public/quionaSalad.jpg";
-import turkeySteakImage from "../public/turkeySteak.jpg";
-import grilledMeatImage from "../public/grilledMeat.jpg";
-import veganBowl from "../public/veganBowl.jpg";
-import pumpinSoup from "../public/pumpkinSoup.jpg";
-import salmonImage from "../public/salmonGrilled.jpg";
-import tunaTartareImage from "../public/rawSalmon.jpg";
-import grilledFishImage from "../public/grilledFish.jpg";
+import React, { useState, useEffect } from "react";
+import Image from "next/image";
+import { FaChevronRight } from "react-icons/fa6";
+import Link from "next/link";
+import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import {
   Card,
   CardContent,
@@ -27,240 +14,156 @@ import {
 import { ScrollArea, ScrollBar } from "./ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-export interface recipe {
-  name: string;
-  img: StaticImageData;
-  time: string;
-  stars: number;
+interface recipe {
+  title: string;
+  image: string;
+  time: number;
+  authorProfilePicture: string;
+  author: string;
 }
 
-const popular: recipe[] = [
-  {
-    name: "Těstoviny Aglio",
-    img: firstImage,
-    time: "5-10 min",
-    stars: 3.7,
-  },
-  {
-    name: "Kuře na česneku",
-    img: secondImage,
-    time: "2-3 hodiny",
-    stars: 4.8,
-  },
-  {
-    name: "Domácí lasagne",
-    img: thirdImage,
-    time: "30 min",
-    stars: 4.5,
-  },
-  {
-    name: "Snídaňové lívance",
-    img: fourthImage,
-    time: "20 min",
-    stars: 4.1,
-  },
-];
-
-const recommended: recipe[] = [
-  {
-    name: "Kuřecí Salát",
-    img: fifthImage,
-    time: "15 min",
-    stars: 4.9,
-  },
-  {
-    name: "Smoothie Bowl",
-    img: smoothieBowlImage,
-    time: "10 min",
-    stars: 4.5,
-  },
-  {
-    name: "Quinoa Salát",
-    img: quinoaSaladImage,
-    time: "20 min",
-    stars: 4.7,
-  },
-];
-
-const meat: recipe[] = [
-  {
-    name: "Krůtí Steak",
-    img: turkeySteakImage,
-    time: "30 min",
-    stars: 4.8,
-  },
-  {
-    name: "Grilované Maso s Bylinkovým Máslem",
-    img: grilledMeatImage,
-    time: "45 min",
-    stars: 4.6,
-  },
-  {
-    name: "Hovězí Burger",
-    img: sixthImage,
-    time: "25 min",
-    stars: 4.7,
-  },
-];
-
-const vegan: recipe[] = [
-  {
-    name: "Vegan bowl",
-    img: veganBowl,
-    time: "30 min",
-    stars: 4.5,
-  },
-  {
-    name: "Brokolicová Polévka",
-    img: pumpinSoup,
-    time: "20 min",
-    stars: 4.2,
-  },
-  {
-    name: "Ovocný Smoothie",
-    img: smoothieBowlImage,
-    time: "15 min",
-    stars: 4.6,
-  },
-];
-
-const fish: recipe[] = [
-  {
-    name: "Losos s Medovým Glazúrem",
-    img: salmonImage,
-    time: "35 min",
-    stars: 4.9,
-  },
-  {
-    name: "Tunaková Tatarák",
-    img: tunaTartareImage,
-    time: "25 min",
-    stars: 4.7,
-  },
-  {
-    name: "Ryba na Grilu",
-    img: grilledFishImage,
-    time: "30 min",
-    stars: 4.6,
-  },
-];
-
 const Choose = () => {
+  const [lastCreated, setLastCreated] = useState([]);
+  const [meat, setMeat] = useState([]);
+  const [vegan, setVegan] = useState([]);
+  const [fish, setFish] = useState([]);
+
+  const getRecipes = async (category: string) => {
+    try {
+      const res = await fetch(`/api/recipes/choose?category=${category}`);
+
+      if (!res.ok) {
+        throw new Error("failed to fetch");
+      }
+
+      return res.json();
+    } catch (err) {
+      console.log("Error loading recipes", err);
+    }
+  };
+
+  useEffect(() => {
+    getRecipes("").then((data) => setLastCreated(data.recipes));
+    getRecipes("Maso").then((data) => setMeat(data.recipes));
+    getRecipes("Vegan").then((data) => setVegan(data.recipes));
+    getRecipes("Ryby").then((data) => setFish(data.recipes));
+  }, []);
+
   return (
-    <section className="mt-12 w-full mb-20">
+    <section className="w-full mt-12 mb-20">
       <div className="container">
-        <header className="flex justify-between items-center w-full mb-5">
-          <h2 className=" uppercase text-3xl font-bold  sm-clamp">
-            Vyberte si!
-          </h2>
-          <p className="flex justify-center items-center cursor-pointer hover:text-primary transition-all all">
+        <header className="flex items-center justify-between w-full mb-5">
+          <h2 className="text-3xl font-bold uppercase sm-clamp">Vyberte si!</h2>
+          <Link
+            href="/catalog"
+            className="flex items-center justify-center transition-all cursor-pointer hover:text-primary all"
+          >
             Zobrazit více
             <FaChevronRight />
-          </p>
+          </Link>
         </header>
-        <Tabs defaultValue="populární">
-          <TabsList className="flex flex-wrap bg-transparent mb-10">
-            <TabsTrigger value="populární">Populární</TabsTrigger>
-            <TabsTrigger value="doporučujeme">Doporučujeme</TabsTrigger>
+        <Tabs defaultValue="poslední">
+          <TabsList className="flex flex-wrap mb-10 bg-transparent">
+            <TabsTrigger value="poslední">Poslední přidané</TabsTrigger>
             <TabsTrigger value="maso">Maso</TabsTrigger>
             <TabsTrigger value="vegan">Vegan</TabsTrigger>
             <TabsTrigger value="ryby">Ryby</TabsTrigger>
           </TabsList>
-          <TabsContent value="populární">
-            <ScrollArea className="w-full flex justify-center items-center">
-              <div className="flex justify-evenly w-full gap-4 md:gap-10 py-10">
-                {popular.map((pop, i) => (
-                  <Card
-                    key={i}
-                    className="p-0 overflow-hidden w-[300px]  hover:scale-105 transition-all cursor-pointer border-none outline-none shadow-lg"
-                  >
-                    <CardHeader className="p-0 mb-5">
-                      <Image
-                        src={pop.img}
-                        alt={pop.name}
-                        className="object-cover max-h-[200px] w-[300px]"
-                        placeholder="blur"
-                      />
-                    </CardHeader>
-                    <CardContent className="flex justify-between items-center flex-col text-center md:text-start gap-2 md:gap-0 md:flex-row">
-                      <h3 className="text-lg font-semibold">{pop.name}</h3>
-                      <div className="flex gap-1 justify-center items-center">
-                        <span>{pop.stars}</span>
-                        <IoIosStar color="#f4d301" fill="#f4d301" />
-                      </div>
-                    </CardContent>
-                    <CardFooter className="flex justify-between items-center flex-col text-center md:text-start gap-2 md:gap-0 md:flex-row">
-                      <span className="text-primary font-bold">{pop.time}</span>
-                    </CardFooter>
-                  </Card>
+          <TabsContent value="poslední">
+            <ScrollArea className="flex items-center justify-center w-full">
+              <div className="flex w-full gap-4 py-10 justify-evenly md:gap-10">
+                {lastCreated.map((last: recipe, i) => (
+                  <Link href={`/recipePage/${last._id}`}>
+                    <Card
+                      key={i}
+                      className="p-0 overflow-hidden w-[300px]  hover:scale-105 transition-all cursor-pointer border-none outline-none shadow-lg"
+                    >
+                      <CardHeader className="p-0 mb-5">
+                        <Image
+                          src={last.image}
+                          alt={last.title}
+                          className="object-cover max-h-[200px] w-[300px]"
+                          width={200}
+                          height={200}
+                        />
+                      </CardHeader>
+                      <CardContent className="flex flex-col items-center justify-between gap-2 text-center md:text-start md:gap-0 md:flex-row">
+                        <h3 className="text-lg font-semibold">{last.title}</h3>
+                      </CardContent>
+                      <CardFooter className="flex flex-col items-center justify-between gap-2 text-center md:text-start md:gap-0 md:flex-row">
+                        <div className="flex items-center justify-center gap-3 ">
+                          <Avatar className="flex justify-center items-center h-[30px] w-[30px] ">
+                            <AvatarImage
+                              alt="avatar"
+                              className="object-cover rounded-full "
+                              src={last.authorProfilePicture}
+                            />
+                            <AvatarFallback className="flex items-center justify-center text-sm font-semibold text-center text-white rounded-full size-full bg-primary">
+                              {last.author
+                                ?.split(" ")
+                                .map((word: any) => word[0])
+                                .join("")}
+                            </AvatarFallback>
+                          </Avatar>
+                          <span>{last.author}</span>
+                        </div>
+                        <span className="font-bold text-primary">
+                          {last.time} minut
+                        </span>
+                      </CardFooter>
+                    </Card>
+                  </Link>
                 ))}
               </div>
 
               <ScrollBar orientation="horizontal" />
             </ScrollArea>
           </TabsContent>
-          <TabsContent value="doporučujeme">
-            <ScrollArea className="w-full">
-              <div className="flex justify-evenly w-full gap-4 md:gap-10 py-10">
-                {recommended.map((rec, i) => (
-                  <Card
-                    key={i}
-                    className="p-0 overflow-hidden w-[300px]  hover:scale-105 transition-all cursor-pointer border-none outline-none shadow-lg"
-                  >
-                    <CardHeader className="p-0 mb-5">
-                      <Image
-                        src={rec.img}
-                        alt={rec.name}
-                        className="object-cover max-h-[200px] w-[300px]"
-                        placeholder="blur"
-                      />
-                    </CardHeader>
-                    <CardContent className="flex justify-between items-center flex-col text-center md:text-start gap-2 md:gap-0 md:flex-row">
-                      <h3 className="text-lg font-semibold">{rec.name}</h3>
-                      <div className="flex gap-1 justify-center items-center">
-                        <span>{rec.stars}</span>
-                        <IoIosStar color="#f4d301" fill="#f4d301" />
-                      </div>
-                    </CardContent>
-                    <CardFooter className="flex justify-between items-center flex-col text-center md:text-start gap-2 md:gap-0 md:flex-row">
-                      <span className="text-primary font-bold">{rec.time}</span>
-                    </CardFooter>
-                  </Card>
-                ))}
-              </div>
 
-              <ScrollBar orientation="horizontal" />
-            </ScrollArea>
-          </TabsContent>
           <TabsContent value="maso">
             <ScrollArea className="w-full">
-              <div className="flex justify-evenly w-full gap-4 md:gap-10 py-10">
-                {meat.map((meat, i) => (
-                  <Card
-                    key={i}
-                    className="p-0 overflow-hidden w-[300px]  hover:scale-105 transition-all cursor-pointer border-none outline-none shadow-lg"
-                  >
-                    <CardHeader className="p-0 mb-5">
-                      <Image
-                        src={meat.img}
-                        alt={meat.name}
-                        className="object-cover max-h-[200px] w-[300px]"
-                        placeholder="blur"
-                      />
-                    </CardHeader>
-                    <CardContent className="flex justify-between items-center flex-col text-center md:text-start gap-2 md:gap-0 md:flex-row">
-                      <h3 className="text-lg font-semibold">{meat.name}</h3>
-                      <div className="flex gap-1 justify-center items-center">
-                        <span>{meat.stars}</span>
-                        <IoIosStar color="#f4d301" fill="#f4d301" />
-                      </div>
-                    </CardContent>
-                    <CardFooter className="flex justify-between items-center flex-col text-center md:text-start gap-2 md:gap-0 md:flex-row">
-                      <span className="text-primary font-bold">
-                        {meat.time}
-                      </span>
-                    </CardFooter>
-                  </Card>
+              <div className="flex w-full gap-4 py-10 justify-evenly md:gap-10">
+                {meat.map((meat: recipe, i) => (
+                  <Link href={`/recipePage/${meat._id}`}>
+                    <Card
+                      key={i}
+                      className="p-0 overflow-hidden w-[300px]  hover:scale-105 transition-all cursor-pointer border-none outline-none shadow-lg"
+                    >
+                      <CardHeader className="p-0 mb-5">
+                        <Image
+                          src={meat.image}
+                          alt={meat.title}
+                          className="object-cover max-h-[200px] w-[300px]"
+                          width={200}
+                          height={200}
+                        />
+                      </CardHeader>
+                      <CardContent className="flex flex-col items-center justify-between gap-2 text-center md:text-start md:gap-0 md:flex-row">
+                        <h3 className="text-lg font-semibold">{meat.title}</h3>
+                      </CardContent>
+                      <CardFooter className="flex flex-col items-center justify-between gap-2 text-center md:text-start md:gap-0 md:flex-row">
+                        <div className="flex items-center gap-3">
+                          <Avatar className=" flex justify-center items-center h-[30px] w-[30px]  ">
+                            <AvatarImage
+                              alt="avatar"
+                              className="object-cover rounded-full "
+                              src={meat.authorProfilePicture}
+                            />
+                            <AvatarFallback className="flex items-center justify-center text-sm font-semibold text-center text-white rounded-full size-full bg-primary">
+                              {meat.author
+                                ?.split(" ")
+                                .map((word: any) => word[0])
+                                .join("")}
+                            </AvatarFallback>
+                          </Avatar>
+                          <span>{meat.author}</span>
+                        </div>
+                        <span className="font-bold text-primary">
+                          {meat.time} minut
+                        </span>
+                      </CardFooter>
+                    </Card>
+                  </Link>
                 ))}
               </div>
 
@@ -269,31 +172,48 @@ const Choose = () => {
           </TabsContent>
           <TabsContent value="vegan">
             <ScrollArea className="w-full">
-              <div className="flex justify-evenly w-full gap-4 md:gap-10 py-10">
-                {vegan.map((veg, i) => (
-                  <Card
-                    key={i}
-                    className="p-0 overflow-hidden w-[300px]  hover:scale-105 transition-all cursor-pointer border-none outline-none shadow-lg"
-                  >
-                    <CardHeader className="p-0 mb-5">
-                      <Image
-                        src={veg.img}
-                        alt={veg.name}
-                        className="object-cover max-h-[200px] w-[300px]"
-                        placeholder="blur"
-                      />
-                    </CardHeader>
-                    <CardContent className="flex justify-between items-center flex-col text-center md:text-start gap-2 md:gap-0 md:flex-row">
-                      <h3 className="text-lg font-semibold">{veg.name}</h3>
-                      <div className="flex gap-1 justify-center items-center">
-                        <span>{veg.stars}</span>
-                        <IoIosStar color="#f4d301" fill="#f4d301" />
-                      </div>
-                    </CardContent>
-                    <CardFooter className="flex justify-between items-center flex-col text-center md:text-start gap-2 md:gap-0 md:flex-row">
-                      <span className="text-primary font-bold">{veg.time}</span>
-                    </CardFooter>
-                  </Card>
+              <div className="flex w-full gap-4 py-10 justify-evenly md:gap-10">
+                {vegan.map((veg: recipe, i) => (
+                  <Link href={`/recipePage/${vegan._id}`}>
+                    <Card
+                      key={i}
+                      className="p-0 overflow-hidden w-[300px]  hover:scale-105 transition-all cursor-pointer border-none outline-none shadow-lg"
+                    >
+                      <CardHeader className="p-0 mb-5">
+                        <Image
+                          src={veg.image}
+                          alt={veg.title}
+                          className="object-cover max-h-[200px] w-[300px]"
+                          width={200}
+                          height={200}
+                        />
+                      </CardHeader>
+                      <CardContent className="flex flex-col items-center justify-between gap-2 text-center md:text-start md:gap-0 md:flex-row">
+                        <h3 className="text-lg font-semibold">{veg.title}</h3>
+                      </CardContent>
+                      <CardFooter className="flex flex-col items-center justify-between gap-2 text-center md:text-start md:gap-0 md:flex-row">
+                        <div className="flex items-center gap-3">
+                          <Avatar className=" flex justify-center items-center h-[30px] w-[30px]  ">
+                            <AvatarImage
+                              alt="avatar"
+                              className="object-cover rounded-full "
+                              src={veg.authorProfilePicture}
+                            />
+                            <AvatarFallback className="flex items-center justify-center text-sm font-semibold text-center text-white rounded-full size-full bg-primary">
+                              {veg.author
+                                ?.split(" ")
+                                .map((word: any) => word[0])
+                                .join("")}
+                            </AvatarFallback>
+                          </Avatar>
+                          <span>{veg.author}</span>
+                        </div>
+                        <span className="font-bold text-primary">
+                          {veg.time} minut
+                        </span>
+                      </CardFooter>
+                    </Card>
+                  </Link>
                 ))}
               </div>
 
@@ -302,33 +222,48 @@ const Choose = () => {
           </TabsContent>
           <TabsContent value="ryby">
             <ScrollArea className="w-full">
-              <div className="flex justify-evenly w-full gap-4 md:gap-10 py-10">
-                {fish.map((fish, i) => (
-                  <Card
-                    key={i}
-                    className="p-0 overflow-hidden w-[300px]  hover:scale-105 transition-all cursor-pointer border-none outline-none shadow-lg"
-                  >
-                    <CardHeader className="p-0 mb-5">
-                      <Image
-                        src={fish.img}
-                        alt={fish.name}
-                        className="object-cover max-h-[200px] w-[300px]"
-                        placeholder="blur"
-                      />
-                    </CardHeader>
-                    <CardContent className="flex justify-between items-center flex-col text-center md:text-start gap-2 md:gap-0 md:flex-row">
-                      <h3 className="text-lg font-semibold">{fish.name}</h3>
-                      <div className="flex gap-1 justify-center items-center">
-                        <span>{fish.stars}</span>
-                        <IoIosStar color="#f4d301" fill="#f4d301" />
-                      </div>
-                    </CardContent>
-                    <CardFooter className="flex justify-between items-center flex-col text-center md:text-start gap-2 md:gap-0 md:flex-row">
-                      <span className="text-primary font-bold">
-                        {fish.time}
-                      </span>
-                    </CardFooter>
-                  </Card>
+              <div className="flex w-full gap-4 py-10 justify-evenly md:gap-10">
+                {fish.map((fish: recipe, i) => (
+                  <Link href={`/recipePage/${fish._id}`}>
+                    <Card
+                      key={i}
+                      className="p-0 overflow-hidden w-[300px]  hover:scale-105 transition-all cursor-pointer border-none outline-none shadow-lg"
+                    >
+                      <CardHeader className="p-0 mb-5">
+                        <Image
+                          src={fish.image}
+                          alt={fish.title}
+                          className="object-cover max-h-[200px] w-[300px]"
+                          width={200}
+                          height={200}
+                        />
+                      </CardHeader>
+                      <CardContent className="flex flex-col items-center justify-between gap-2 text-center md:text-start md:gap-0 md:flex-row">
+                        <h3 className="text-lg font-semibold">{fish.title}</h3>
+                      </CardContent>
+                      <CardFooter className="flex flex-col items-center justify-between gap-2 text-center md:text-start md:gap-0 md:flex-row">
+                        <div className="flex items-center gap-3">
+                          <Avatar className=" flex justify-center items-center h-[30px] w-[30px]  ">
+                            <AvatarImage
+                              alt="avatar"
+                              className="object-cover rounded-full"
+                              src={fish.authorProfilePicture}
+                            />
+                            <AvatarFallback className="flex items-center justify-center text-sm font-semibold text-center text-white rounded-full size-full bg-primary">
+                              {fish.author
+                                ?.split(" ")
+                                .map((word: any) => word[0])
+                                .join("")}
+                            </AvatarFallback>
+                          </Avatar>
+                          <span>{fish.author}</span>
+                        </div>
+                        <span className="font-bold text-primary">
+                          {fish.time} minut
+                        </span>
+                      </CardFooter>
+                    </Card>
+                  </Link>
                 ))}
               </div>
 

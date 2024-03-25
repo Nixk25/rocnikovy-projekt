@@ -91,7 +91,7 @@ const addNewRecipe = () => {
           authorId: session?.user?.id,
           authorProfilePicture:
             //@ts-ignore
-            session?.user?.image || session?.user?.profilePicture || avatar,
+            session?.user?.image || session?.user?.profilePicture,
           time: values.time,
           procedure: procedureArray,
           image: recipeImg,

@@ -1,7 +1,6 @@
 import React from "react";
 import { toast } from "sonner";
-import avatar from "../../../../public/avatar.png";
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { IoMdMail } from "react-icons/io";
 import { FaUser } from "react-icons/fa";
 import Image from "next/image";
@@ -58,8 +57,14 @@ const ViewProfile = async ({ params }: any) => {
             <AvatarImage
               alt="avatar"
               className="object-cover rounded-lg "
-              src={profilePicture || avatar}
+              src={profilePicture}
             />
+            <AvatarFallback className=" size-full text-white bg-primary text-2xl font-semibold">
+              {name
+                ?.split(" ")
+                .map((word: any) => word[0])
+                .join("")}
+            </AvatarFallback>
           </Avatar>
 
           <div className="flex flex-col gap-7">
@@ -116,6 +121,12 @@ const ViewProfile = async ({ params }: any) => {
                             className="object-cover rounded-lg "
                             src={userRec.authorProfilePicture}
                           />
+                          <AvatarFallback className=" size-full text-white bg-primary text-2xl font-semibold">
+                            {name
+                              ?.split(" ")
+                              .map((word: any) => word[0])
+                              .join("")}
+                          </AvatarFallback>
                         </Avatar>
                         <span>{userRec.author}</span>
                       </div>

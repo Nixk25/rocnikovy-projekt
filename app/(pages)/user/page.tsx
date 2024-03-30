@@ -25,6 +25,8 @@ import {
 import RemoveBtn from "@/components/RemoveBtn";
 import UpdateBtn from "@/components/UpdateBtn";
 import RemoveBtnFavorite from "@/components/RemoveBtnFavorite";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+
 interface Recipe {
   title: string;
   desc: string;
@@ -150,88 +152,99 @@ const User = () => {
           className="flex flex-col items-center justify-start mt-20 sm:items-start "
           defaultValue="recepty"
         >
-          <TabsList className="flex flex-wrap bg-transparent ">
+          <TabsList className="flex flex-wrap bg-transparent mb-10 ">
             <TabsTrigger value="recepty">Tvoje recepty</TabsTrigger>
             <TabsTrigger value="oblíbené">Oblíbené recepty</TabsTrigger>
           </TabsList>
           <TabsContent value="recepty" className="w-full">
-            <div className="flex flex-wrap items-stretch justify-center w-full gap-4 py-5 sm:justify-start md:gap-10 ">
-              {userRecipes.length === 0 ? (
-                <div className="flex flex-col items-center justify-center w-full gap-5">
-                  <p>Zatím nemáte vytvořené žádné recepty..😢</p>
-                  <Link href="/addNewRecipe">
-                    <Button className="text-white">
-                      {" "}
-                      Vytvořit nový recept
-                    </Button>
-                  </Link>
-                </div>
-              ) : (
-                userRecipes.map((userRec, i) => (
-                  //@ts-ignore
-                  <Card
-                    key={i}
-                    className="group p-0 overflow-hidden h-max w-[300px]  hover:scale-105 transition-all cursor-pointer border-none outline-none shadow-lg ease-in-out duration-200"
-                  >
-                    <Link href={`/recipePage/${userRec._id}`}>
-                      <CardHeader className="p-0 mb-5">
-                        <Image
-                          src={userRec.image}
-                          alt={userRec.title}
-                          width={300}
-                          height={300}
-                          className="object-cover max-[300px] w-[300px]"
-                          placeholder="blur"
-                          blurDataURL={userRec.image}
-                        />
-                      </CardHeader>
+            <ScrollArea className="flex items-center  min-h-[400px] justify-center w-full ">
+              <div className="flex w-full gap-5 p-5 h-full md:gap-10">
+                {userRecipes.length === 0 ? (
+                  <div className="flex flex-col items-center justify-center w-full gap-5">
+                    <p>Zatím nemáte vytvořené žádné recepty..😢</p>
+                    <Link href="/addNewRecipe">
+                      <Button className="text-white">
+                        {" "}
+                        Vytvořit nový recept
+                      </Button>
                     </Link>
-                    <CardContent className="flex flex-col items-center justify-between gap-2 text-center md:text-start md:gap-0 md:flex-row">
-                      <h3 className="text-lg font-semibold">{userRec.title}</h3>
-                    </CardContent>
-                    <CardFooter className="flex flex-col items-center justify-between gap-2 text-center group-hover:hidden md:text-start md:gap-0 md:flex-row">
-                      <div className="flex items-center gap-3">
-                        <Avatar className=" h-[50px] w-[50px]">
-                          <AvatarImage
-                            alt="avatar"
-                            className="object-cover rounded-lg "
-                            src={userRec.authorProfilePicture}
+                  </div>
+                ) : (
+                  userRecipes.map((userRec, i) => (
+                    //@ts-ignore
+                    <Card
+                      key={i}
+                      className="group p-0 overflow-hidden min-h-full w-max  hover:scale-105 transition-all cursor-pointer border-none outline-none shadow-lg ease-in-out duration-200"
+                    >
+                      <Link href={`/recipePage/${userRec._id}`}>
+                        <CardHeader className="p-0 mb-5">
+                          <Image
+                            src={userRec.image}
+                            alt={userRec.title}
+                            width={300}
+                            height={300}
+                            className="object-cover max-[300px] w-[300px]"
+                            placeholder="blur"
+                            blurDataURL={userRec.image}
                           />
-                        </Avatar>
-                        <span>{userRec.author}</span>
-                      </div>
-                      <span className="font-bold text-primary">
-                        {userRec.time} minut
-                      </span>
-                    </CardFooter>
-                    <CardFooter className="items-center justify-center hidden gap-5 group-hover:flex">
-                      <TooltipProvider>
-                        <Tooltip>
-                          <TooltipTrigger>
-                            <Link href={`/updateRecipe/${userRec._id}`}>
-                              <UpdateBtn />
-                            </Link>
-                          </TooltipTrigger>
-                          <TooltipContent className="text-white bg-primary">
-                            Upravte svůj recept
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
-                      <TooltipProvider>
-                        <Tooltip>
-                          <TooltipTrigger>
-                            <RemoveBtn id={userRec._id} />
-                          </TooltipTrigger>
-                          <TooltipContent className="text-white bg-red-500">
-                            Smažte tento recept
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
-                    </CardFooter>
+                        </CardHeader>
+                      </Link>
+                      <CardContent className="flex flex-col items-center justify-between gap-2 text-center md:text-start md:gap-0 md:flex-row">
+                        <h3 className="text-lg font-semibold">
+                          {userRec.title}
+                        </h3>
+                      </CardContent>
+                      <CardFooter className="flex flex-col items-center justify-between gap-2 text-center group-hover:hidden md:text-start md:gap-0 md:flex-row">
+                        <div className="flex items-center gap-3">
+                          <Avatar className=" h-[50px] w-[50px]">
+                            <AvatarImage
+                              alt="avatar"
+                              className="object-cover rounded-lg "
+                              src={userRec.authorProfilePicture}
+                            />
+                          </Avatar>
+                          <span>{userRec.author}</span>
+                        </div>
+                        <span className="font-bold text-primary">
+                          {userRec.time} minut
+                        </span>
+                      </CardFooter>
+                      <CardFooter className="items-center justify-center hidden gap-5 group-hover:flex">
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger>
+                              <Link href={`/updateRecipe/${userRec._id}`}>
+                                <UpdateBtn />
+                              </Link>
+                            </TooltipTrigger>
+                            <TooltipContent className="text-white bg-primary">
+                              Upravte svůj recept
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger>
+                              <RemoveBtn id={userRec._id} />
+                            </TooltipTrigger>
+                            <TooltipContent className="text-white bg-red-500">
+                              Smažte tento recept
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      </CardFooter>
+                    </Card>
+                  ))
+                )}
+                <Link href="/addNewRecipe">
+                  <Card className="p-0 bg-accent overflow-hidden h-full text-center flex justify-center items-center flex-col gap-5 w-[300px]  hover:scale-105 transition-all cursor-pointer border-none outline-none shadow-lg ease-in-out duration-200">
+                    <p>Vytvořte nový recept</p>
+                    <Button className="text-white text-lg font-bold">+</Button>
                   </Card>
-                ))
-              )}
-            </div>
+                </Link>
+              </div>
+              <ScrollBar orientation="horizontal" />
+            </ScrollArea>
           </TabsContent>
           <TabsContent value="oblíbené" className="w-full">
             <div className="flex flex-wrap items-stretch justify-center w-full gap-4 py-5 sm:justify-start md:gap-10 ">

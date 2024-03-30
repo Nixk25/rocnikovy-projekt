@@ -6,7 +6,7 @@ import Footer from "@/components/Footer";
 import { NextAuthProvider } from "./Providers";
 import { Toaster } from "@/components/ui/sonner";
 
-const lexend = Lexend({ subsets: ["latin"] });
+const font = Lexend({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Cookify",
@@ -21,7 +21,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="cs">
-      <body className={lexend.className}>
+      <body className={font.className}>
         <NextAuthProvider>
           <Navbar />
           {children}

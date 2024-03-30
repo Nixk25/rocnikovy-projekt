@@ -27,27 +27,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-const getRecipes = async () => {
-  try {
-    const res = await fetch(`${process.env.NEXTAUTH_URL}/api/recipes`, {
-      cache: "no-store",
-    });
-
-    if (!res.ok) {
-      throw new Error("failed to fetch");
-    }
-
-    return res.json();
-  } catch (err) {
-    console.log("Error loading recipes", err);
-  }
-};
-
 const Catalog = () => {
   const [query, setQuery] = useState("");
   const { status, data: session } = useSession();
   const [recipes, setRecipes] = useState([]);
   const [category, setCategory] = useState("");
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const searchRecipes = async (query: string, category: string) => {
     const res = await fetch(
       `/api/recipes/search?query=${query}&category=${category}`
@@ -104,18 +89,10 @@ const Catalog = () => {
         const isFavorite = localStorage.getItem(recipe._id) !== null;
         return { ...recipe, isFavorite };
       });
+      setIsLoading(false);
       setRecipes(recipesWithFavorites);
     });
   }, [query, category]);
-  useEffect(() => {
-    getRecipes().then((data) => {
-      const recipesWithFavorites = data.recipes.map((recipe: any) => {
-        const isFavorite = localStorage.getItem(recipe._id) !== null;
-        return { ...recipe, isFavorite };
-      });
-      setRecipes(recipesWithFavorites);
-    });
-  }, []);
 
   return (
     <section className="mt-20">
@@ -124,7 +101,7 @@ const Catalog = () => {
           <h1 className="mb-4 text-center sm-clamp">
             Vítejte v našem katalogu receptů
           </h1>
-          <div className="flex flex-col items-center justify-center w-full h-full gap-5 mb-5 sm:flex-row">
+          <div className="flex flex-col items-center justify-center w-full h-full gap-5 mb-10 sm:flex-row">
             <div className="relative w-full sm:w-1/2">
               <Input
                 id="recept"
@@ -132,7 +109,7 @@ const Catalog = () => {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Vyhledejte recept..."
-                className="w-full"
+                className="w-full transition-all ease-in-out duration-200"
               />
               {category !== "" && (
                 <Badge
@@ -179,8 +156,13 @@ const Catalog = () => {
             </DropdownMenu>
           </div>
         </div>
-        {recipes.length > 0 ? (
-          <div className="grid grid-cols-1 grid-rows-1 gap-5 sm:grid-cols-2 sm:grid-rows-2 md:grid-cols-3 md:grid-rows-3 xl:grid-cols-4 xl:grid-rows-4 place-items-center sm:place-items-start">
+        {isLoading ? (
+          <div className="h-screen  flex-col gap-3 flex justify-center items-center">
+            <span className="text-primary font-bold sm-clamp">Načítání...</span>
+            <div className="loader"></div>
+          </div>
+        ) : recipes.length > 0 ? (
+          <div className="grid grid-cols-1 mb-20 gap-5 sm:grid-cols-2  md:grid-cols-3 xl:grid-cols-4  place-items-center sm:place-items-start">
             {recipes.map((recipe: any, i: any) => {
               return (
                 <Card

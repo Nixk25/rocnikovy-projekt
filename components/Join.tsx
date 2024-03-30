@@ -9,7 +9,7 @@ import { useSession } from "next-auth/react";
 
 const Join = () => {
   const { status } = useSession();
-  {
+  return (
     status === "unauthenticated" && (
       <section className="mb-20">
         <div className="container">
@@ -95,8 +95,8 @@ const Join = () => {
           </div>
         </div>
       </section>
-    );
-  }
+    )
+  );
 };
 
 export default Join;

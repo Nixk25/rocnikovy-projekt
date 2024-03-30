@@ -42,6 +42,8 @@ const page = async ({ params }: any) => {
               src={image}
               width={500}
               height={500}
+              placeholder="blur"
+              blurDataURL={image}
               alt={`obrázek receptu ${title}`}
               className="object-cover w-full rounded-md"
             />

@@ -17,10 +17,23 @@ import { IoMdMenu } from "react-icons/io";
 import { useState } from "react";
 import Menu from "./Menu";
 import { motion, useScroll, useMotionValueEvent } from "framer-motion";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+//@ts-ignore
+import { useMediaQuery } from "react-responsive";
+import { Button } from "./ui/button";
 
 const Navbar = () => {
   const [isHidden, setIsHidden] = useState(false);
-
+  const isDesktop = useMediaQuery({
+    query: "(min-width: 640px)",
+  });
   const { scrollY } = useScroll();
 
   useMotionValueEvent(scrollY, "change", (latest: any) => {
@@ -129,33 +142,12 @@ const Navbar = () => {
                     Přihlásit se
                   </Link>
                 )}
+
                 {status === "authenticated" ? (
-                  <DropdownMenu>
-                    <DropdownMenuTrigger>
-                      <Avatar className="outline-none  outline-offset-0 outline-black">
-                        <AvatarImage
-                          alt="avatar"
-                          className="object-cover rounded-lg "
-                          src={
-                            session?.user?.image ||
-                            //@ts-ignore
-                            session?.user?.profilePicture
-                          }
-                        />
-                        <AvatarFallback className=" size-full text-white bg-primary text-xl font-semibold">
-                          {session?.user?.name
-                            ?.split(" ")
-                            .map((word) => word[0])
-                            .join("")}
-                        </AvatarFallback>
-                      </Avatar>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent
-                      className="mr-5 mt-2
-                    "
-                    >
-                      <div className="flex gap-3 items-center p-2">
-                        <Avatar>
+                  isDesktop ? (
+                    <DropdownMenu>
+                      <DropdownMenuTrigger>
+                        <Avatar className="outline-none  outline-offset-0 outline-black">
                           <AvatarImage
                             alt="avatar"
                             className="object-cover rounded-lg "
@@ -172,26 +164,112 @@ const Navbar = () => {
                               .join("")}
                           </AvatarFallback>
                         </Avatar>
-                        <span>{session?.user?.name}</span>
-                      </div>
-                      <Link href="/user">
-                        <DropdownMenuItem className="outline-none cursor-pointer hover:text-primary focus-visible:text-primary active:brightness-75">
-                          Můj účet
-                        </DropdownMenuItem>
-                      </Link>
-                      <Link href="/addNewRecipe">
-                        <DropdownMenuItem className="outline-none cursor-pointer hover:text-primary focus-visible:text-primary active:brightness-75">
-                          Přidat recept
-                        </DropdownMenuItem>
-                      </Link>
-                      <DropdownMenuSeparator />
-                      <Link onClick={() => signOut()} href="/login">
-                        <DropdownMenuItem className="outline-none cursor-pointer hover:text-primary focus-visible:text-primary active:brightness-75">
-                          Odhlásit se
-                        </DropdownMenuItem>
-                      </Link>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent
+                        className="mr-5 mt-2
+                    "
+                      >
+                        <div className="flex gap-3 items-center p-2">
+                          <Avatar>
+                            <AvatarImage
+                              alt="avatar"
+                              className="object-cover rounded-lg "
+                              src={
+                                session?.user?.image ||
+                                //@ts-ignore
+                                session?.user?.profilePicture
+                              }
+                            />
+                            <AvatarFallback className=" size-full text-white bg-primary text-xl font-semibold">
+                              {session?.user?.name
+                                ?.split(" ")
+                                .map((word) => word[0])
+                                .join("")}
+                            </AvatarFallback>
+                          </Avatar>
+                          <span>{session?.user?.name}</span>
+                        </div>
+                        <Link href="/user">
+                          <DropdownMenuItem className="outline-none cursor-pointer hover:text-primary focus-visible:text-primary active:brightness-75">
+                            Můj účet
+                          </DropdownMenuItem>
+                        </Link>
+                        <Link href="/addNewRecipe">
+                          <DropdownMenuItem className="outline-none cursor-pointer hover:text-primary focus-visible:text-primary active:brightness-75">
+                            Přidat recept
+                          </DropdownMenuItem>
+                        </Link>
+                        <DropdownMenuSeparator />
+                        <Link onClick={() => signOut()} href="/login">
+                          <DropdownMenuItem className="outline-none cursor-pointer hover:text-primary focus-visible:text-primary active:brightness-75">
+                            Odhlásit se
+                          </DropdownMenuItem>
+                        </Link>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  ) : (
+                    <Sheet>
+                      <SheetTrigger>
+                        <Avatar className="outline-none  outline-offset-0 outline-black">
+                          <AvatarImage
+                            alt="avatar"
+                            className="object-cover rounded-lg "
+                            src={
+                              session?.user?.image ||
+                              //@ts-ignore
+                              session?.user?.profilePicture
+                            }
+                          />
+                          <AvatarFallback className=" size-full text-white bg-primary text-xl font-semibold">
+                            {session?.user?.name
+                              ?.split(" ")
+                              .map((word) => word[0])
+                              .join("")}
+                          </AvatarFallback>
+                        </Avatar>
+                      </SheetTrigger>
+                      <SheetContent className="w-[200px] flex flex-col gap-3">
+                        <div className="flex gap-3 items-center p-2">
+                          <Avatar>
+                            <AvatarImage
+                              alt="avatar"
+                              className="object-cover rounded-lg "
+                              src={
+                                session?.user?.image ||
+                                //@ts-ignore
+                                session?.user?.profilePicture
+                              }
+                            />
+                            <AvatarFallback className=" size-full text-white bg-primary text-xl font-semibold">
+                              {session?.user?.name
+                                ?.split(" ")
+                                .map((word) => word[0])
+                                .join("")}
+                            </AvatarFallback>
+                          </Avatar>
+                          <span>{session?.user?.name}</span>
+                        </div>
+                        <Link href="/user">
+                          <div className="outline-none cursor-pointer hover:text-primary focus-visible:text-primary active:brightness-75">
+                            Můj účet
+                          </div>
+                        </Link>
+                        <Link
+                          href="/addNewRecipe"
+                          className="border-b border-slate-200 w-full pb-2"
+                        >
+                          <div className="outline-none cursor-pointer hover:text-primary focus-visible:text-primary active:brightness-75">
+                            Přidat recept
+                          </div>
+                        </Link>
+                        <Link onClick={() => signOut()} href="#">
+                          <Button className="outline-none text-white cursor-pointer hover:text-primary focus-visible:text-primary active:brightness-75">
+                            Odhlásit se
+                          </Button>
+                        </Link>
+                      </SheetContent>
+                    </Sheet>
+                  )
                 ) : (
                   <Image
                     src={avatar}

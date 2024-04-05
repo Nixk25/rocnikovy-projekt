@@ -86,7 +86,18 @@ const Register = () => {
       .min(2, { message: "Jméno musí mít alespoň 2 písmena" })
       .max(50, { message: "Jméno nesmí být delší než 50 písmen" }),
     email: z.string().email({ message: "Neplatný email" }),
-    password: z.string().min(8, { message: "Heslo musí mít alespoň 8 písmen" }),
+    password: z
+      .string()
+      .min(8, { message: "Heslo musí mít alespoň 8 písmen" })
+      .refine((value) => /[A-Z]/.test(value), {
+        message: "Heslo musí obsahovat alespoň jedno velké písmeno",
+      })
+      .refine((value) => /[0-9]/.test(value), {
+        message: "Heslo musí obsahovat alespoň jedno číslo",
+      })
+      .refine((value) => /\W|_/.test(value), {
+        message: "Heslo musí obsahovat alespoň jeden speciální znak",
+      }),
     profilePicture: z.any(),
   });
 

@@ -24,7 +24,8 @@ const Faq = () => {
             <AccordionContent>
               Ano, můžete přidat své vlastní recepty. Stačí se zaregistrovat a
               následně se přihlásit a po kliknutí na svůj profil kliknout na
-              tlačítko "Přidat recept" a vyplnit požadované informace.
+              tlačítko `&quot;`Přidat recept`&quot;` a vyplnit požadované
+              informace.
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="item-3">
@@ -42,7 +43,7 @@ const Faq = () => {
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="item-5">
-            <AccordionTrigger>Je moje data v bezpečí?</AccordionTrigger>
+            <AccordionTrigger>Jsou moje data v bezpečí?</AccordionTrigger>
             <AccordionContent>
               Ano, vaše data jsou v bezpečí. Dodržujeme všechny standardy pro
               ochranu dat a vaše data nejsou sdílena s třetími stranami bez

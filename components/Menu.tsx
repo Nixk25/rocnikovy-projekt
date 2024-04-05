@@ -92,13 +92,8 @@ const Menu = ({ isOpen, closeMenu }: MenuProps) => {
             >
               {navLinks.map(({ name, href }, i) => {
                 return (
-                  <div className="overflow-hidden">
-                    <NavLink
-                      closeMenu={closeMenu}
-                      key={i}
-                      name={name}
-                      href={href}
-                    />
+                  <div key={i} className="overflow-hidden">
+                    <NavLink closeMenu={closeMenu} name={name} href={href} />
                   </div>
                 );
               })}

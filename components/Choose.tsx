@@ -93,11 +93,8 @@ const Choose = () => {
               <ScrollArea className="flex items-center justify-center w-full">
                 <div className="flex w-full gap-4 py-10 justify-evenly md:gap-10">
                   {lastCreated.map((last, i) => (
-                    <Link href={`/recipePage/${last._id}`}>
-                      <Card
-                        key={i}
-                        className="p-0 overflow-hidden w-[300px]  hover:scale-105 transition-all cursor-pointer border-none outline-none shadow-lg"
-                      >
+                    <Link key={i} href={`/recipePage/${last._id}`}>
+                      <Card className="p-0 overflow-hidden w-[300px]  hover:scale-105 transition-all cursor-pointer border-none outline-none shadow-lg">
                         <CardHeader className="p-0 mb-5">
                           <Image
                             src={last.image}
@@ -146,11 +143,8 @@ const Choose = () => {
               <ScrollArea className="w-full">
                 <div className="flex w-full gap-4 py-10 justify-evenly md:gap-10">
                   {meat.map((meat, i) => (
-                    <Link href={`/recipePage/${meat._id}`}>
-                      <Card
-                        key={i}
-                        className="p-0 overflow-hidden w-[300px]  hover:scale-105 transition-all cursor-pointer border-none outline-none shadow-lg"
-                      >
+                    <Link key={i} href={`/recipePage/${meat._id}`}>
+                      <Card className="p-0 overflow-hidden w-[300px]  hover:scale-105 transition-all cursor-pointer border-none outline-none shadow-lg">
                         <CardHeader className="p-0 mb-5">
                           <Image
                             src={meat.image}
@@ -198,11 +192,8 @@ const Choose = () => {
               <ScrollArea className="w-full">
                 <div className="flex w-full gap-4 py-10 justify-evenly md:gap-10">
                   {vegan.map((veg, i) => (
-                    <Link href={`/recipePage/${vegan._id}`}>
-                      <Card
-                        key={i}
-                        className="p-0 overflow-hidden w-[300px]  hover:scale-105 transition-all cursor-pointer border-none outline-none shadow-lg"
-                      >
+                    <Link key={i} href={`/recipePage/${vegan._id}`}>
+                      <Card className="p-0 overflow-hidden w-[300px]  hover:scale-105 transition-all cursor-pointer border-none outline-none shadow-lg">
                         <CardHeader className="p-0 mb-5">
                           <Image
                             src={veg.image}
@@ -248,11 +239,8 @@ const Choose = () => {
               <ScrollArea className="w-full">
                 <div className="flex w-full gap-4 py-10 justify-evenly md:gap-10">
                   {fish.map((fish, i) => (
-                    <Link href={`/recipePage/${fish._id}`}>
-                      <Card
-                        key={i}
-                        className="p-0 overflow-hidden w-[300px]  hover:scale-105 transition-all cursor-pointer border-none outline-none shadow-lg"
-                      >
+                    <Link key={i} href={`/recipePage/${fish._id}`}>
+                      <Card className="p-0 overflow-hidden w-[300px]  hover:scale-105 transition-all cursor-pointer border-none outline-none shadow-lg">
                         <CardHeader className="p-0 mb-5">
                           <Image
                             src={fish.image}

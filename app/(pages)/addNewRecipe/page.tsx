@@ -24,11 +24,10 @@ import { CldUploadWidget } from "next-cloudinary";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { useSession } from "next-auth/react";
 import { Textarea } from "@/components/ui/textarea";
-import avatar from "../../../public/avatar.png";
 import { toast } from "sonner";
 import { FaCheck, FaChevronDown } from "react-icons/fa";
 
-const addNewRecipe = () => {
+const AddNewRecipe = () => {
   const { data: session } = useSession();
   const router = useRouter();
   const [recipeImg, setRecipeImg] = useState<string>("");
@@ -406,4 +405,4 @@ const addNewRecipe = () => {
   );
 };
 
-export default addNewRecipe;
+export default AddNewRecipe;

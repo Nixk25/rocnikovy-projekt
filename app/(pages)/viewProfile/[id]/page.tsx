@@ -114,11 +114,8 @@ const ViewProfile = ({ params }: any) => {
             <div className="flex flex-wrap items-stretch justify-center w-full gap-4 py-5 sm:justify-start md:gap-10 ">
               {recipes.map((userRec: any, i: any) => (
                 //@ts-ignore
-                <Link href={`/recipePage/${userRec._id}`}>
-                  <Card
-                    key={i}
-                    className=" p-0 overflow-hidden w-[300px]  hover:scale-105 transition-all cursor-pointer border-none outline-none shadow-lg ease-in-out duration-200"
-                  >
+                <Link key={i} href={`/recipePage/${userRec._id}`}>
+                  <Card className=" p-0 overflow-hidden w-[300px]  hover:scale-105 transition-all cursor-pointer border-none outline-none shadow-lg ease-in-out duration-200">
                     <CardHeader className="p-0 mb-5">
                       <Image
                         src={userRec.image}

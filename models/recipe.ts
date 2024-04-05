@@ -20,14 +20,8 @@ const recipeSchema = new Schema(
     },
     author: {
       type: String,
+      ref: "User",
       required: true,
-    },
-    authorId: {
-      type: String,
-      required: true,
-    },
-    authorProfilePicture: {
-      type: String,
     },
     time: {
       type: Number,

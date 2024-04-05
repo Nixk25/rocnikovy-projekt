@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { IoMdMail } from "react-icons/io";
@@ -12,41 +13,60 @@ import {
   CardHeader,
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import Loading from "@/app/loading";
 
-const getUserById = async (id: any) => {
-  try {
-    const res = await fetch(`${process.env.NEXTAUTH_URL}/api/user/${id}`, {
-      cache: "no-store",
-    });
-    if (!res.ok) {
-      toast.error("Tento uživatel neexistuje");
-    }
-    return await res.json();
-  } catch (err) {
-    console.log(err);
-  }
-};
-
-const getMyRecipes = async (id: any) => {
-  try {
-    const response = await fetch(
-      `${process.env.NEXTAUTH_URL}/api/recipes/getById?userId=${id}`,
-      { cache: "no-store" }
-    );
-    if (response.ok) {
-      return await response.json();
-    } else {
-      console.log("Error:", response.status);
-    }
-  } catch (err) {
-    console.log("Error getting user recipes", err);
-  }
-};
-
-const ViewProfile = async ({ params }: any) => {
+const ViewProfile = ({ params }: any) => {
   const { id } = params;
-  const { recipes } = await getMyRecipes(id);
-  const { user } = await getUserById(id);
+  const [user, setUser] = useState(null);
+  const [recipes, setRecipes] = useState([]);
+  const [author, setAuthor] = useState<string>("");
+
+  useEffect(() => {
+    const getUserById = async () => {
+      try {
+        const res = await fetch(`${process.env.NEXTAUTH_URL}/api/user/${id}`, {
+          cache: "no-store",
+        });
+        if (!res.ok) {
+          toast.error("Tento uživatel neexistuje");
+        }
+        const userData = await res.json();
+        setUser(userData.user);
+        const authorId = userData.user.googleId
+          ? userData.user.googleId
+          : userData.user._id;
+        setAuthor(authorId);
+
+        getMyRecipes(authorId);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    const getMyRecipes = async (authorId: string) => {
+      try {
+        const response = await fetch(
+          `${process.env.NEXTAUTH_URL}/api/recipes/getById?userId=${authorId}`,
+          { cache: "no-store" }
+        );
+        if (response.ok) {
+          const recipeData = await response.json();
+          setRecipes(recipeData.recipes);
+        } else {
+          console.error("Error:", response.status);
+        }
+      } catch (err) {
+        console.error("Error getting user recipes", err);
+      }
+    };
+
+    getUserById();
+  }, [id]);
+
+  if (!user || !recipes) {
+    return <Loading />;
+  }
+
   const { name, email, profilePicture } = user;
 
   return (
@@ -119,7 +139,7 @@ const ViewProfile = async ({ params }: any) => {
                           <AvatarImage
                             alt="avatar"
                             className="object-cover rounded-lg "
-                            src={userRec.authorProfilePicture}
+                            src={userRec.author.profilePicture}
                           />
                           <AvatarFallback className=" size-full text-white bg-primary text-2xl font-semibold">
                             {name
@@ -128,7 +148,7 @@ const ViewProfile = async ({ params }: any) => {
                               .join("")}
                           </AvatarFallback>
                         </Avatar>
-                        <span>{userRec.author}</span>
+                        <span>{userRec.author.name}</span>
                       </div>
                       <span className="font-bold text-primary">
                         {userRec.time} minut

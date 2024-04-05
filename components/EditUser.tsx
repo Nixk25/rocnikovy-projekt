@@ -70,7 +70,7 @@ const EditUser = ({ id, name, email, profilePicture }: editUserProps) => {
         toast.success("Uživatelské údaje změněny");
       }
     } catch (err) {
-      console.log(err);
+      console.error(err);
       toast.error("Nepodařilo se změnit údaje");
     }
   };
@@ -93,7 +93,7 @@ const EditUser = ({ id, name, email, profilePicture }: editUserProps) => {
     },
   });
   return (
-    <section className="flex justify-center items-center flex-col  w-screen my-20 h-dvh  ">
+    <section className="flex justify-center items-center flex-col  w-full my-20 h-dvh  ">
       <main className=" text-center py-8 px-10 flex flex-col relative gap-3 rounded-lg w-max ">
         <h2 className=" font-bold sm-clamp ">Změnit si své údaje</h2>
 

@@ -14,34 +14,6 @@ import {
 import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
 
-interface Recipe {
-  value: string;
-  label: string;
-}
-
-const popular: Recipe[] = [
-  {
-    value: "Kuře na paprice",
-    label: "Kuře na paprice",
-  },
-  {
-    value: "Špagety",
-    label: "Špagety",
-  },
-  {
-    value: "Kuře na česneku",
-    label: "Kuře na česneku",
-  },
-  {
-    value: "Domácí pizza",
-    label: "Domácí pizza",
-  },
-  {
-    value: "Domácí hranolky",
-    label: "Domácí hranolky",
-  },
-];
-
 const getRecipes = async () => {
   try {
     const res = await fetch(`${process.env.NEXTAUTH_URL}/api/recipes`, {
@@ -54,7 +26,7 @@ const getRecipes = async () => {
 
     return res.json();
   } catch (err) {
-    console.log("Error loading recipes", err);
+    console.error("Error loading recipes", err);
   }
 };
 
@@ -64,6 +36,8 @@ const Hero = () => {
   const [recipes, setRecipes] = useState([]);
   const [open, setOpen] = useState<boolean>(false);
   useEffect(() => {
+    getRecipes().then((data) => setRecipes(data.recipes));
+
     const pressed = (e: KeyboardEvent) => {
       if (e.key === "h" && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
@@ -73,10 +47,6 @@ const Hero = () => {
 
     document.addEventListener("keydown", pressed);
     return () => document.removeEventListener("keydown", pressed);
-  }, []);
-
-  useEffect(() => {
-    getRecipes().then((data) => setRecipes(data.recipes));
   }, []);
 
   return (

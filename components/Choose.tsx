@@ -14,20 +14,23 @@ import {
 import { ScrollArea, ScrollBar } from "./ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-interface recipe {
+interface Recipe {
   _id: string;
   title: string;
-  image: string;
-  time: number;
-  authorProfilePicture: string;
+  desc: string;
+  categories: string[];
+  ingredients: string[];
   author: string;
+  time: number;
+  procedure: string[];
+  image: string;
 }
 
 const Choose = () => {
-  const [lastCreated, setLastCreated] = useState([]);
-  const [meat, setMeat] = useState([]);
-  const [vegan, setVegan] = useState([]);
-  const [fish, setFish] = useState([]);
+  const [lastCreated, setLastCreated] = useState<Recipe[]>([]);
+  const [meat, setMeat] = useState<Recipe[]>([]);
+  const [vegan, setVegan] = useState<Recipe[]>([]);
+  const [fish, setFish] = useState<Recipe[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const getRecipes = async (category: string) => {
@@ -40,16 +43,24 @@ const Choose = () => {
       setIsLoading(false);
       return res.json();
     } catch (err) {
-      console.log("Error loading recipes", err);
+      console.error("Error loading recipes", err);
       setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    getRecipes("").then((data) => setLastCreated(data.recipes));
-    getRecipes("Maso").then((data) => setMeat(data.recipes));
-    getRecipes("Vegan").then((data) => setVegan(data.recipes));
-    getRecipes("Ryby").then((data) => setFish(data.recipes));
+    getRecipes("").then((data) => {
+      setLastCreated(data.recipes);
+    });
+    getRecipes("Maso").then((data) => {
+      setMeat(data.recipes);
+    });
+    getRecipes("Vegan").then((data) => {
+      setVegan(data.recipes);
+    });
+    getRecipes("Ryby").then((data) => {
+      setFish(data.recipes);
+    });
   }, []);
 
   return (
@@ -81,7 +92,7 @@ const Choose = () => {
             <TabsContent value="poslední" className="w-full">
               <ScrollArea className="flex items-center justify-center w-full">
                 <div className="flex w-full gap-4 py-10 justify-evenly md:gap-10">
-                  {lastCreated.map((last: recipe, i) => (
+                  {lastCreated.map((last, i) => (
                     <Link href={`/recipePage/${last._id}`}>
                       <Card
                         key={i}
@@ -107,16 +118,16 @@ const Choose = () => {
                               <AvatarImage
                                 alt="avatar"
                                 className="object-cover rounded-full "
-                                src={last.authorProfilePicture}
+                                src={last.author.profilePicture}
                               />
                               <AvatarFallback className="flex items-center justify-center text-sm font-semibold text-center text-white rounded-full size-full bg-primary">
-                                {last.author
+                                {last.author.name
                                   ?.split(" ")
                                   .map((word: any) => word[0])
                                   .join("")}
                               </AvatarFallback>
                             </Avatar>
-                            <span>{last.author}</span>
+                            <span>{last.author.name}</span>
                           </div>
                           <span className="font-bold text-primary">
                             {last.time} minut
@@ -134,7 +145,7 @@ const Choose = () => {
             <TabsContent value="maso">
               <ScrollArea className="w-full">
                 <div className="flex w-full gap-4 py-10 justify-evenly md:gap-10">
-                  {meat.map((meat: recipe, i) => (
+                  {meat.map((meat, i) => (
                     <Link href={`/recipePage/${meat._id}`}>
                       <Card
                         key={i}
@@ -160,16 +171,16 @@ const Choose = () => {
                               <AvatarImage
                                 alt="avatar"
                                 className="object-cover rounded-full "
-                                src={meat.authorProfilePicture}
+                                src={meat.author.profilePicture}
                               />
                               <AvatarFallback className="flex items-center justify-center text-sm font-semibold text-center text-white rounded-full size-full bg-primary">
-                                {meat.author
+                                {meat.author.name
                                   ?.split(" ")
                                   .map((word: any) => word[0])
                                   .join("")}
                               </AvatarFallback>
                             </Avatar>
-                            <span>{meat.author}</span>
+                            <span>{meat.author.name}</span>
                           </div>
                           <span className="font-bold text-primary">
                             {meat.time} minut
@@ -186,7 +197,7 @@ const Choose = () => {
             <TabsContent value="vegan">
               <ScrollArea className="w-full">
                 <div className="flex w-full gap-4 py-10 justify-evenly md:gap-10">
-                  {vegan.map((veg: recipe, i) => (
+                  {vegan.map((veg, i) => (
                     <Link href={`/recipePage/${vegan._id}`}>
                       <Card
                         key={i}
@@ -210,16 +221,16 @@ const Choose = () => {
                               <AvatarImage
                                 alt="avatar"
                                 className="object-cover rounded-full "
-                                src={veg.authorProfilePicture}
+                                src={veg.author.profilePicture}
                               />
                               <AvatarFallback className="flex items-center justify-center text-sm font-semibold text-center text-white rounded-full size-full bg-primary">
-                                {veg.author
+                                {veg.author.name
                                   ?.split(" ")
                                   .map((word: any) => word[0])
                                   .join("")}
                               </AvatarFallback>
                             </Avatar>
-                            <span>{veg.author}</span>
+                            <span>{veg.author.name}</span>
                           </div>
                           <span className="font-bold text-primary">
                             {veg.time} minut
@@ -236,7 +247,7 @@ const Choose = () => {
             <TabsContent value="ryby">
               <ScrollArea className="w-full">
                 <div className="flex w-full gap-4 py-10 justify-evenly md:gap-10">
-                  {fish.map((fish: recipe, i) => (
+                  {fish.map((fish, i) => (
                     <Link href={`/recipePage/${fish._id}`}>
                       <Card
                         key={i}
@@ -262,16 +273,16 @@ const Choose = () => {
                               <AvatarImage
                                 alt="avatar"
                                 className="object-cover rounded-full"
-                                src={fish.authorProfilePicture}
+                                src={fish.author.profilePicture}
                               />
                               <AvatarFallback className="flex items-center justify-center text-sm font-semibold text-center text-white rounded-full size-full bg-primary">
-                                {fish.author
+                                {fish.author.name
                                   ?.split(" ")
                                   .map((word: any) => word[0])
                                   .join("")}
                               </AvatarFallback>
                             </Avatar>
-                            <span>{fish.author}</span>
+                            <span>{fish.author.name}</span>
                           </div>
                           <span className="font-bold text-primary">
                             {fish.time} minut

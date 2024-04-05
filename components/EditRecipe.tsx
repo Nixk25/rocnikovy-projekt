@@ -72,7 +72,7 @@ const EditRecipe = ({
         toast.success("Úprava receptu byla úspěšná");
       }
     } catch (err) {
-      console.log(err);
+      console.error(err);
       toast.error("Nepodařilo se upravit recept");
     }
   };
@@ -83,12 +83,12 @@ const EditRecipe = ({
       .min(2, { message: "Název musí mít alespoň 2 písmena" })
       .max(50, { message: "Název nesmí být delší než 50 písmen" }),
     desc: z.string(),
-    ingredients: z.string(),
+    ingredients: z.any(),
     time: z.coerce
       .number()
       .int({ message: "Číslo nesmí být desetinné" })
       .positive({ message: "Číslo nesmí být zaporné" }),
-    procedure: z.string(),
+    procedure: z.any(),
     image: z.any(),
   });
 

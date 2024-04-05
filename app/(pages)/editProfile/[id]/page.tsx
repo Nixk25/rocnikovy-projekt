@@ -10,7 +10,7 @@ const getUserById = async (id: any) => {
     }
     return await res.json();
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 

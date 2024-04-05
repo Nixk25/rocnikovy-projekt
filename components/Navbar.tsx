@@ -80,7 +80,7 @@ const Navbar = () => {
         stiffness: 260,
         damping: 20,
       }}
-      className={`w-full bg-white/20 fixed top-0 left-0 backdrop-blur-md z-10 `}
+      className={`w-full bg-white/20 fixed top-0 left-0 backdrop-blur-md z-30 `}
     >
       <div className="container relative pt-3 mx-auto">
         <header className="w-full h-[80px] sm:h-max">

@@ -1,6 +1,8 @@
 import { connectDatabase } from "@/lib/mongodb";
 import { NextResponse } from "next/server";
 import Recipe from "@/models/recipe";
+import mongoose from "mongoose";
+import User from "@/models/user";
 
 export async function PUT(req: Request, { params }: any) {
   try {
@@ -29,19 +31,60 @@ export async function PUT(req: Request, { params }: any) {
       image,
     });
     if (!updatedRecipe) {
-      console.log(`No recipe found with id: ${id}`);
       return NextResponse.json("No recipe found", { status: 404 });
     }
     return NextResponse.json("Recipe updated", { status: 200 });
   } catch (error) {
-    console.error(error);
     return NextResponse.json("Server error", { status: 500 });
   }
 }
 
 export async function GET(req: Request, { params }: any) {
   const { id } = params;
-  await connectDatabase();
-  const recipe = await Recipe.findOne({ _id: id });
-  return NextResponse.json({ recipe }, { status: 200 });
+
+  try {
+    await connectDatabase();
+
+    let recipe: typeof Recipe | null = null;
+    try {
+      recipe = await Recipe.findById(id).exec();
+    } catch (error) {
+      console.error(`[GET recipe/{id}] Error finding recipe:`, error);
+      if (!recipe) {
+        throw new Error("Recipe not found");
+      }
+    }
+
+    if (!recipe) {
+      throw new Error("Recipe is null");
+    }
+
+    let user: typeof User | null = null;
+    if (mongoose.Types.ObjectId.isValid(recipe.author)) {
+      // Search author by valid ObjectId
+      try {
+        user = await User.findById(recipe.author).exec();
+      } catch (error) {
+        console.error(`[GET recipe/{id}] Error finding user:`, error);
+      }
+    } else {
+      // Search author by googleId if userId is not a valid ObjectId
+      try {
+        user = await User.findOne({ googleId: recipe.author }).exec();
+      } catch (error) {
+        console.error(`[GET recipe/{id}] Error finding user:`, error);
+      }
+    }
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    recipe.author = user;
+
+    return NextResponse.json({ recipe });
+  } catch (error) {
+    console.error(`[GET recipe/{id}] Unhandled exception:`, error);
+    return NextResponse.json({ message: "Server error" });
+  }
 }

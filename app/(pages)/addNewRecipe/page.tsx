@@ -86,12 +86,7 @@ const addNewRecipe = () => {
           desc: values.desc,
           categories: categoriesArray,
           ingredients: ingredientsArray,
-          author: session?.user?.name,
-          //@ts-ignore
-          authorId: session?.user?.id,
-          authorProfilePicture:
-            //@ts-ignore
-            session?.user?.image || session?.user?.profilePicture,
+          author: session?.user?.id,
           time: values.time,
           procedure: procedureArray,
           image: recipeImg,
@@ -104,7 +99,7 @@ const addNewRecipe = () => {
         toast.success("Recept byl přidán");
       }
     } catch (err) {
-      console.log(err);
+      console.error(err);
       toast.error("Nepodařilo se přidat recept");
     }
   };

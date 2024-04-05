@@ -65,7 +65,8 @@ const authOptions = {
       user.provider = account.provider;
       if (account.provider === "google") {
         const googleId = account.providerAccountId;
-        const { name, email } = user;
+
+        const { name, email, image } = user;
         try {
           await connectDatabase();
           const userExists = await User.findOne({ email });
@@ -80,6 +81,7 @@ const authOptions = {
                 googleId: googleId,
                 name,
                 email,
+                profilePicture: image,
               }),
             });
             if (res.ok) {

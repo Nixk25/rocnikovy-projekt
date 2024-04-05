@@ -73,7 +73,7 @@ const Register = () => {
         toast.success("Uživatel zaregistrován");
       }
     } catch (err) {
-      console.log(err);
+      console.error(err);
       toast.error("Nepodařilo se zaregistrovat");
     }
   };

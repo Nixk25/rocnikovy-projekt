@@ -83,7 +83,7 @@ const Footer = () => {
             </div>
           )}
           <div className="relative flex flex-col sm:flex-row justify-center items-center text-[#bfc3cc] pb-3 gap2 sm:gap-4">
-            <span> ©2023 Cookify s.r.o. </span>
+            <span> ©2024 Cookify s.r.o. </span>
             <span className="hidden sm:flex"> · </span>
             <span className="cursor-pointer">Ochrana osobních údajů</span>
           </div>

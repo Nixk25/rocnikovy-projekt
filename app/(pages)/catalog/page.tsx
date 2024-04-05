@@ -177,8 +177,6 @@ const Catalog = () => {
                         width={300}
                         height={300}
                         className="object-cover max-h-[200px] group-hover:scale-105 transition-all ease-in duration-200 w-[300px]"
-                        placeholder="blur"
-                        blurDataURL={recipe.image}
                       />
                     </CardHeader>
                   </Link>
@@ -201,16 +199,16 @@ const Catalog = () => {
                         <AvatarImage
                           alt="avatar"
                           className="object-cover rounded-lg "
-                          src={recipe.authorProfilePicture}
+                          src={recipe.author.profilePicture}
                         />
                         <AvatarFallback className="text-sm font-semibold text-white  size-full bg-primary">
-                          {recipe.author
+                          {recipe.author.name
                             ?.split(" ")
                             .map((word: any) => word[0])
                             .join("")}
                         </AvatarFallback>
                       </Avatar>
-                      <span>{recipe.author}</span>
+                      <span>{recipe.author.name}</span>
                     </div>
                     <span className="font-bold text-primary">
                       {recipe.time} minut

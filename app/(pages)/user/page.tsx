@@ -63,12 +63,14 @@ const User = () => {
   };
 
   const getFavoriteRecipes = async () => {
+    //@ts-ignore
     if (!session || !session.user || !session.user.id) {
       console.error("Missing session or user id in getFavoriteRecipes");
       return;
     }
 
     try {
+      //@ts-ignore
       const response = await fetch(`/api/user/${session.user.id}/favorites`);
       if (!response.ok) {
         console.error(

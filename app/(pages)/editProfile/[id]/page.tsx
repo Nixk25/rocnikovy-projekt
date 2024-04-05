@@ -1,5 +1,8 @@
-import React from "react";
+"use client";
+import React, { useState, useEffect } from "react";
 import EditUser from "@/components/EditUser";
+import Loading from "@/app/loading";
+
 const getUserById = async (id: any) => {
   try {
     const res = await fetch(`${process.env.NEXTAUTH_URL}/api/user/${id}`, {
@@ -14,9 +17,23 @@ const getUserById = async (id: any) => {
   }
 };
 
-const editProfile = async ({ params }: any) => {
+const EditProfile = ({ params }: any) => {
   const { id } = params;
-  const { user } = await getUserById(id);
+  const [user, setUser] = useState<any>(null);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const userData = await getUserById(id);
+      setUser(userData.user);
+    };
+
+    fetchUser();
+  }, [id]);
+
+  if (!user) {
+    return <Loading />;
+  }
+
   const { name, email, profilePicture } = user;
   return (
     <EditUser
@@ -28,4 +45,4 @@ const editProfile = async ({ params }: any) => {
   );
 };
 
-export default editProfile;
+export default EditProfile;

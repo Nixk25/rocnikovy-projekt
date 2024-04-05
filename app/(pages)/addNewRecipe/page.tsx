@@ -43,11 +43,13 @@ const AddNewRecipe = () => {
   const handleCategoryChange = (selected: any) => {
     const newCategory = selected[selected.length - 1];
     const alreadySelected = selectedCategories.find(
+      // @ts-ignore
       (category) => category.id === newCategory.id
     );
 
     if (alreadySelected) {
       setSelectedCategories(
+        // @ts-ignore
         selectedCategories.filter((category) => category.id !== newCategory.id)
       );
       toast.error("Tato kategorie byla odstraněna.");
@@ -85,6 +87,7 @@ const AddNewRecipe = () => {
           desc: values.desc,
           categories: categoriesArray,
           ingredients: ingredientsArray,
+          //@ts-ignore
           author: session?.user?.id,
           time: values.time,
           procedure: procedureArray,
@@ -207,6 +210,7 @@ const AddNewRecipe = () => {
                             <span className="block truncate">
                               {selectedCategories.length > 0 ? (
                                 selectedCategories
+                                  // @ts-ignore
                                   .map((category) => category.name)
                                   .join(", ")
                               ) : (

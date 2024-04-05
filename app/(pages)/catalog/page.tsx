@@ -48,7 +48,7 @@ const Catalog = () => {
     recipeToUpdate.isFavorite = !recipeToUpdate.isFavorite;
     //@ts-ignore
     const method = recipeToUpdate.isFavorite ? "POST" : "DELETE";
-
+    //@ts-ignore
     if (!session?.user?.id) {
       toast.error("Uživatel nebyl nalezen", {
         description: "Musíte být příhlášení",

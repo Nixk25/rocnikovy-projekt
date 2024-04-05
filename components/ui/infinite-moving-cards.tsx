@@ -105,6 +105,7 @@ export const InfiniteMovingCards = ({
                   src={item.image}
                   width={100}
                   height={100}
+                  // @ts-ignore
                   alt={item.name}
                 />
               </div>

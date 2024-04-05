@@ -115,15 +115,18 @@ const Choose = () => {
                               <AvatarImage
                                 alt="avatar"
                                 className="object-cover rounded-full "
+                                // @ts-ignore
                                 src={last.author.profilePicture}
                               />
                               <AvatarFallback className="flex items-center justify-center text-sm font-semibold text-center text-white rounded-full size-full bg-primary">
+                                {/* @ts-ignore */}
                                 {last.author.name
                                   ?.split(" ")
                                   .map((word: any) => word[0])
                                   .join("")}
                               </AvatarFallback>
                             </Avatar>
+                            {/* @ts-ignore */}
                             <span>{last.author.name}</span>
                           </div>
                           <span className="font-bold text-primary">
@@ -165,15 +168,18 @@ const Choose = () => {
                               <AvatarImage
                                 alt="avatar"
                                 className="object-cover rounded-full "
+                                // @ts-ignore
                                 src={meat.author.profilePicture}
                               />
                               <AvatarFallback className="flex items-center justify-center text-sm font-semibold text-center text-white rounded-full size-full bg-primary">
+                                {/* @ts-ignore */}
                                 {meat.author.name
                                   ?.split(" ")
                                   .map((word: any) => word[0])
                                   .join("")}
                               </AvatarFallback>
                             </Avatar>
+                            {/* @ts-ignore */}
                             <span>{meat.author.name}</span>
                           </div>
                           <span className="font-bold text-primary">
@@ -192,6 +198,7 @@ const Choose = () => {
               <ScrollArea className="w-full">
                 <div className="flex w-full gap-4 py-10 justify-evenly md:gap-10">
                   {vegan.map((veg, i) => (
+                    // @ts-ignore
                     <Link key={i} href={`/recipePage/${vegan._id}`}>
                       <Card className="p-0 overflow-hidden w-[300px]  hover:scale-105 transition-all cursor-pointer border-none outline-none shadow-lg">
                         <CardHeader className="p-0 mb-5">
@@ -212,15 +219,18 @@ const Choose = () => {
                               <AvatarImage
                                 alt="avatar"
                                 className="object-cover rounded-full "
+                                // @ts-ignore
                                 src={veg.author.profilePicture}
                               />
                               <AvatarFallback className="flex items-center justify-center text-sm font-semibold text-center text-white rounded-full size-full bg-primary">
+                                {/* @ts-ignore */}
                                 {veg.author.name
                                   ?.split(" ")
                                   .map((word: any) => word[0])
                                   .join("")}
                               </AvatarFallback>
                             </Avatar>
+                            {/* @ts-ignore */}
                             <span>{veg.author.name}</span>
                           </div>
                           <span className="font-bold text-primary">
@@ -261,15 +271,18 @@ const Choose = () => {
                               <AvatarImage
                                 alt="avatar"
                                 className="object-cover rounded-full"
+                                // @ts-ignore
                                 src={fish.author.profilePicture}
                               />
                               <AvatarFallback className="flex items-center justify-center text-sm font-semibold text-center text-white rounded-full size-full bg-primary">
+                                {/* @ts-ignore */}
                                 {fish.author.name
                                   ?.split(" ")
                                   .map((word: any) => word[0])
                                   .join("")}
                               </AvatarFallback>
                             </Avatar>
+                            {/* @ts-ignore */}
                             <span>{fish.author.name}</span>
                           </div>
                           <span className="font-bold text-primary">

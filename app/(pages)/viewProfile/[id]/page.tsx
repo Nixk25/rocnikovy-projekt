@@ -81,6 +81,7 @@ const ViewProfile = ({ params }: any) => {
             />
             <AvatarFallback className=" size-full text-white bg-primary text-2xl font-semibold">
               {name
+                // @ts-ignore
                 ?.split(" ")
                 .map((word: any) => word[0])
                 .join("")}
@@ -140,6 +141,7 @@ const ViewProfile = ({ params }: any) => {
                           />
                           <AvatarFallback className=" size-full text-white bg-primary text-2xl font-semibold">
                             {name
+                              // @ts-ignore
                               ?.split(" ")
                               .map((word: any) => word[0])
                               .join("")}

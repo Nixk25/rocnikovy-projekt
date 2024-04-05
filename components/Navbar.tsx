@@ -17,14 +17,7 @@ import { IoMdMenu } from "react-icons/io";
 import { useState } from "react";
 import Menu from "./Menu";
 import { motion, useScroll, useMotionValueEvent } from "framer-motion";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 //@ts-ignore
 import { useMediaQuery } from "react-responsive";
 import { Button } from "./ui/button";

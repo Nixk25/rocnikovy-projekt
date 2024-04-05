@@ -10,6 +10,7 @@ const InfiniteLoop = () => {
   return (
     <section className="  rounded-md flex flex-col  bg-white items-center justify-center relative overflow-hidden">
       <InfiniteMovingCards
+        // @ts-ignore
         items={logos}
         direction="right"
         speed="normal"

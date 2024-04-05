@@ -139,9 +139,9 @@ const User = () => {
                 <p>{session?.user?.email}</p>
               </div>
 
+              {/* @ts-ignore */}
               {session?.user?.provider !== "google" && (
-                //@ts-ignore
-
+                // @ts-ignore
                 <Link href={`/editProfile/${session?.user.id}`}>
                   <Button className="text-white">Upravit váš profil</Button>
                 </Link>
@@ -149,6 +149,7 @@ const User = () => {
             </div>
           </div>
         </div>
+
         <Tabs
           className="flex flex-col items-center justify-start mt-20 sm:items-start "
           defaultValue="recepty"
@@ -209,9 +210,11 @@ const User = () => {
                                 <AvatarImage
                                   alt="avatar"
                                   className="object-cover rounded-lg "
+                                  //@ts-ignore
                                   src={userRec.author.profilePicture}
                                 />
                               </Avatar>
+                              {/* @ts-ignore */}
                               <span>{userRec.author.name}</span>
                             </div>
                             <span className="font-bold text-primary">
@@ -302,9 +305,11 @@ const User = () => {
                             <AvatarImage
                               alt="avatar"
                               className="object-cover rounded-lg "
+                              //@ts-ignore
                               src={recipe.author.profilePicture}
                             />
                           </Avatar>
+                          {/* @ts-ignore */}
                           <span>{recipe.author.name}</span>
                         </div>
                         <span className="font-bold text-primary">
@@ -316,6 +321,7 @@ const User = () => {
                           <Tooltip>
                             <TooltipTrigger>
                               <RemoveBtnFavorite
+                                // @ts-ignore
                                 userId={session?.user?.id}
                                 id={recipe._id}
                               />

@@ -9,9 +9,11 @@ export async function GET(req: any) {
 
   await connectDatabase();
 
-  let recipes: Recipe[] | null = null;
+  let recipes: (typeof Recipe)[] | null = null;
   try {
     if (mongoose.Types.ObjectId.isValid(userId)) {
+      // @ts-ignore
+
       recipes = await Recipe.find({ author: userId })
         .populate("author")
         .catch((error) => {

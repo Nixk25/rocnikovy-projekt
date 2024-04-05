@@ -8,7 +8,7 @@ export async function GET(req: Request, { params }: any) {
 
   await connectDatabase();
 
-  let userWithFavorites: User | null = null;
+  let userWithFavorites: typeof User | null = null;
 
   let query = {};
   if (mongoose.Types.ObjectId.isValid(id)) {
@@ -24,19 +24,30 @@ export async function GET(req: Request, { params }: any) {
         console.error("[GET /user/:id/favorites]", error);
         return null;
       });
+    // @ts-ignore
 
     if (userWithFavorites && userWithFavorites.favoriteRecipes) {
+      // @ts-ignore
+
       for (let i = 0; i < userWithFavorites.favoriteRecipes.length; i++) {
         if (
           mongoose.Types.ObjectId.isValid(
+            // @ts-ignore
+
             userWithFavorites.favoriteRecipes[i].author
           )
         ) {
+          // @ts-ignore
+
           await userWithFavorites.favoriteRecipes[i].populate("author");
         } else {
           const user = await User.findOne({
+            // @ts-ignore
+
             googleId: userWithFavorites.favoriteRecipes[i].author,
           });
+          // @ts-ignore
+
           userWithFavorites.favoriteRecipes[i].author = user;
         }
       }
@@ -49,6 +60,7 @@ export async function GET(req: Request, { params }: any) {
     console.error("[GET /user/:id/favorites]", error);
     return NextResponse.json({ message: "Server error" }, { status: 500 });
   }
+  // @ts-ignore
 
   for (const recipe of userWithFavorites.favoriteRecipes) {
     if (!recipe.author) {

@@ -60,9 +60,12 @@ export async function GET(req: Request, { params }: any) {
     }
 
     let user: typeof User | null = null;
+    // @ts-ignore
+
     if (mongoose.Types.ObjectId.isValid(recipe.author)) {
       // Search author by valid ObjectId
       try {
+        // @ts-ignore
         user = await User.findById(recipe.author).exec();
       } catch (error) {
         console.error(`[GET recipe/{id}] Error finding user:`, error);
@@ -70,6 +73,8 @@ export async function GET(req: Request, { params }: any) {
     } else {
       // Search author by googleId if userId is not a valid ObjectId
       try {
+        // @ts-ignore
+
         user = await User.findOne({ googleId: recipe.author }).exec();
       } catch (error) {
         console.error(`[GET recipe/{id}] Error finding user:`, error);
@@ -79,6 +84,7 @@ export async function GET(req: Request, { params }: any) {
     if (!user) {
       throw new Error("User not found");
     }
+    // @ts-ignore
 
     recipe.author = user;
 

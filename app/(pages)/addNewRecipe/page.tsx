@@ -137,9 +137,9 @@ const AddNewRecipe = () => {
     },
   });
   return (
-    <section className="flex flex-col items-center justify-center w-screen my-20 ">
-      <main className="relative flex flex-col gap-3 px-10 py-8 text-center rounded-lg  w-max">
-        <h2 className="font-bold  sm-clamp">Přidejte recept</h2>
+    <section className="flex flex-col items-center justify-center w-full my-20 ">
+      <main className="relative flex flex-col gap-3 px-10 py-8 text-center rounded-lg w-max">
+        <h2 className="font-bold sm-clamp">Přidejte recept</h2>
         <p>
           Všechny pole jsou{" "}
           <span className="font-bold text-primary">povinná!</span>
@@ -203,10 +203,10 @@ const AddNewRecipe = () => {
                     onChange={handleCategoryChange}
                     multiple
                   >
-                    <div className="relative mt-1 z-10">
+                    <div className="relative z-10 mt-1">
                       <Listbox.Button className="w-full">
                         {({ open }) => (
-                          <div className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
+                          <div className="relative w-full py-2 pl-3 pr-10 text-left bg-white rounded-lg shadow-md cursor-default focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
                             <span className="block truncate">
                               {selectedCategories.length > 0 ? (
                                 selectedCategories
@@ -219,7 +219,7 @@ const AddNewRecipe = () => {
                                 </span>
                               )}
                             </span>
-                            <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                            <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
                               <FaChevronDown
                                 className={`h-5 w-5 text-gray-400 transform ${
                                   open ? "rotate-180" : ""
@@ -236,7 +236,7 @@ const AddNewRecipe = () => {
                         leaveFrom="opacity-100"
                         leaveTo="opacity-0"
                       >
-                        <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm">
+                        <Listbox.Options className="absolute w-full py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg max-h-60 ring-1 ring-black/5 focus:outline-none sm:text-sm">
                           {allCategories.map((category) => (
                             <Listbox.Option
                               key={category.id}
@@ -379,7 +379,7 @@ const AddNewRecipe = () => {
                               <Button
                                 type="button"
                                 variant="outline"
-                                className="mt-5 transition-all duration-300  outline-primary outline hover:scale-105 active:scale-95"
+                                className="mt-5 transition-all duration-300 outline-primary outline hover:scale-105 active:scale-95"
                                 onClick={handleOnClick}
                               >
                                 Vyberte obrázek receptu

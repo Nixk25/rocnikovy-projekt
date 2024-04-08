@@ -95,7 +95,7 @@ const Catalog = () => {
   }, [query, category]);
 
   return (
-    <section className="mt-20">
+    <section className="mt-28">
       <div className="container">
         <div className="flex flex-col items-center justify-center w-full ">
           <h1 className="mb-4 text-center sm-clamp">
@@ -109,7 +109,7 @@ const Catalog = () => {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Vyhledejte recept..."
-                className="w-full transition-all ease-in-out duration-200"
+                className="w-full transition-all duration-200 ease-in-out"
               />
               {category !== "" && (
                 <Badge
@@ -157,12 +157,12 @@ const Catalog = () => {
           </div>
         </div>
         {isLoading ? (
-          <div className="h-screen  flex-col gap-3 flex justify-center items-center">
-            <span className="text-primary font-bold sm-clamp">Načítání...</span>
+          <div className="flex flex-col items-center justify-center h-screen gap-3">
+            <span className="font-bold text-primary sm-clamp">Načítání...</span>
             <div className="loader"></div>
           </div>
         ) : recipes.length > 0 ? (
-          <div className="grid grid-cols-1 mb-20 gap-5 sm:grid-cols-2  md:grid-cols-3 xl:grid-cols-4  place-items-center sm:place-items-start">
+          <div className="grid grid-cols-1 gap-5 mb-20 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 place-items-center sm:place-items-start">
             {recipes.map((recipe: any, i: any) => {
               return (
                 <Card
@@ -201,7 +201,7 @@ const Catalog = () => {
                           className="object-cover rounded-lg "
                           src={recipe.author.profilePicture}
                         />
-                        <AvatarFallback className="text-sm font-semibold text-white  size-full bg-primary">
+                        <AvatarFallback className="text-sm font-semibold text-white size-full bg-primary">
                           {recipe.author.name
                             ?.split(" ")
                             .map((word: any) => word[0])

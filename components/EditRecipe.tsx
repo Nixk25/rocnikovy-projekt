@@ -104,9 +104,9 @@ const EditRecipe = ({
     },
   });
   return (
-    <section className="flex flex-col items-center justify-center w-screen my-20 ">
-      <main className="relative flex flex-col gap-3 px-10 py-8 text-center rounded-lg  w-max">
-        <h2 className="font-bold  sm-clamp">Upravte svůj recept</h2>
+    <section className="flex flex-col items-center justify-center w-screen pt-10 my-20 ">
+      <main className="relative flex flex-col gap-3 px-10 py-8 text-center rounded-lg w-max">
+        <h2 className="font-bold sm-clamp">Upravte svůj recept</h2>
         <p>
           Všechny pole jsou{" "}
           <span className="font-bold text-primary">povinná!</span>
@@ -260,7 +260,7 @@ const EditRecipe = ({
                             <Button
                               type="button"
                               variant="outline"
-                              className="mt-5 transition-all duration-300  outline-primary outline hover:scale-105 active:scale-95"
+                              className="mt-5 transition-all duration-300 outline-primary outline hover:scale-105 active:scale-95"
                               onClick={handleOnClick}
                             >
                               Vyberte nový obrázek receptu

@@ -39,7 +39,7 @@ const RecipePage = ({ params }: any) => {
   }
 
   return (
-    <section className="mt-20 ">
+    <section className=" mt-28">
       <div className="container">
         <h1 className="mb-10 font-bold text-center sm-clamp text-primary">
           {recipe.title}
@@ -55,7 +55,7 @@ const RecipePage = ({ params }: any) => {
               alt={`obrázek receptu ${recipe.title}`}
               className="object-cover w-full rounded-md"
             />
-            <div className="flex justify-center sm:justify-between flex-wrap items-center w-full gap-5">
+            <div className="flex flex-wrap items-center justify-center w-full gap-5 sm:justify-between">
               <Link href={`/viewProfile/${recipe.author._id}`}>
                 <div className="flex items-center gap-3 ">
                   <span>Vytvořil: </span>
@@ -65,7 +65,7 @@ const RecipePage = ({ params }: any) => {
                       className="object-cover rounded-lg "
                       src={recipe.author.profilePicture}
                     />
-                    <AvatarFallback className=" size-full text-white bg-primary text-2xl font-semibold">
+                    <AvatarFallback className="text-2xl font-semibold text-white  size-full bg-primary">
                       {recipe.author.name
                         ?.split(" ")
                         .map((word: any) => word[0])
@@ -85,7 +85,7 @@ const RecipePage = ({ params }: any) => {
             className="flex flex-col gap-3 md:w-[50%] md:max-w-[50%]  items-center  w-full 
           "
           >
-            <h3 className="text-center  sm-clamp text-primary">
+            <h3 className="text-center sm-clamp text-primary">
               Popis receptu
             </h3>
             <p className="text-center sm:text-start">{recipe.desc}</p>
@@ -94,9 +94,9 @@ const RecipePage = ({ params }: any) => {
         <div className="flex flex-col items-center justify-center gap-10 mb-20 md:flex-row">
           <div className="flex flex-col gap-3  text-center md:w-[50%] w-full">
             <h3 className="sm-clamp text-primary">Ingredience</h3>
-            <ul className=" list-disc marker:text-primary list-inside">
+            <ul className="list-disc list-inside  marker:text-primary">
               {recipe.ingredients.map((ingredient: any, i: any) => (
-                <li key={i} className=" list-item text-center sm:text-start ">
+                <li key={i} className="text-center  list-item sm:text-start">
                   <span>{ingredient}</span>
                 </li>
               ))}
@@ -108,7 +108,7 @@ const RecipePage = ({ params }: any) => {
               {recipe.procedure.map((proc: any, i: any) => (
                 <li
                   key={i}
-                  className="flex items-center sm:justify-start text-center sm:text-start justify-center gap-3"
+                  className="flex items-center justify-center gap-3 text-center sm:justify-start sm:text-start"
                 >
                   <span className="text-primary">{i + 1})</span>
                   <span>{proc}</span>

@@ -57,12 +57,12 @@ const Login = () => {
   });
 
   return (
-    <section className="flex justify-center items-center flex-col  h-dvh w-screen ">
-      <main className=" text-center py-8 px-10 flex flex-col relative gap-3 rounded-lg ">
-        <h2 className="mb-5  font-bold sm-clamp ">Vítejte zpět! 👋</h2>
+    <section className="flex flex-col items-center justify-center w-full pt-10 h-dvh ">
+      <main className="relative flex flex-col gap-3 px-10 py-8 text-center rounded-lg ">
+        <h2 className="mb-5 font-bold sm-clamp ">Vítejte zpět! 👋</h2>
         <Form {...form}>
           <form
-            className="w-full flex flex-col gap-5"
+            className="flex flex-col w-full gap-5"
             onSubmit={form.handleSubmit(onSubmit)}
           >
             <FormField
@@ -77,10 +77,10 @@ const Login = () => {
                         autoFocus
                         type="email"
                         placeholder="Zadejte svůj email..."
-                        className="outline-2 outline-transparent shadow-lg  py-2 rounded-lg px-5 pl-10 w-full focus-within:outline-primary focus-within:outline-2 transition-all duration-300 input"
+                        className="w-full px-5 py-2 pl-10 transition-all duration-300 rounded-lg shadow-lg outline-2 outline-transparent focus-within:outline-primary focus-within:outline-2 input"
                         {...field}
                       />
-                      <IoMdMail className="absolute top-1/2 -translate-y-1/2 left-2" />
+                      <IoMdMail className="absolute -translate-y-1/2 top-1/2 left-2" />
                     </div>
                   </FormControl>
 
@@ -99,19 +99,19 @@ const Login = () => {
                       <Input
                         type={showPassword ? "text" : "password"}
                         placeholder="Zadejte své heslo..."
-                        className="outline-2 shadow-lg px-5 py-2 rounded-lg pl-10 w-full focus-within:outline-primary focus-within:outline-2 transition-all duration-300 input"
+                        className="w-full px-5 py-2 pl-10 transition-all duration-300 rounded-lg shadow-lg outline-2 focus-within:outline-primary focus-within:outline-2 input"
                         {...field}
                       />
-                      <FaLock className="absolute top-1/2 -translate-y-1/2 left-2" />
+                      <FaLock className="absolute -translate-y-1/2 top-1/2 left-2" />
                       {showPassword ? (
                         <FaEyeSlash
                           onClick={() => setShowPassword(false)}
-                          className="absolute top-1/2 -translate-y-1/2 right-2 cursor-pointer"
+                          className="absolute -translate-y-1/2 cursor-pointer top-1/2 right-2"
                         />
                       ) : (
                         <FaEye
                           onClick={() => setShowPassword(true)}
-                          className="absolute top-1/2 -translate-y-1/2 right-2 cursor-pointer"
+                          className="absolute -translate-y-1/2 cursor-pointer top-1/2 right-2"
                         />
                       )}
                     </div>
@@ -124,7 +124,7 @@ const Login = () => {
 
             <button
               type="submit"
-              className="p-3 bg-primary text-white border-none outline-none rounded-lg mt-3 cursor-pointer transition-all hover:scale-105 hover:brightness-105 active:scale-95 active:brightness-95 duration-300"
+              className="p-3 mt-3 text-white transition-all duration-300 border-none rounded-lg outline-none cursor-pointer bg-primary hover:scale-105 hover:brightness-105 active:scale-95 active:brightness-95"
             >
               Přihlásit se
             </button>
@@ -132,11 +132,11 @@ const Login = () => {
         </Form>
         <div className="w-full h-[2px] #bfc3cc] relative mt-5">
           <div className=" h-px bg-[#212121] w-full" />
-          <span className="absolute left-1/2 -top-3 -translate-x-1/2 bg-white px-3">
+          <span className="absolute px-3 -translate-x-1/2 bg-white left-1/2 -top-3">
             NEBO
           </span>
         </div>
-        <div className="flex  justify-center items-center my-5">
+        <div className="flex items-center justify-center my-5">
           <GoogleLoginBtn />
         </div>
         <Link href="/register">

@@ -39,17 +39,21 @@ const Menu = ({ isOpen, closeMenu }: MenuProps) => {
 
   const menuVariants = {
     initial: {
-      translateX: "-100%",
+      x: "-100%",
+      transition: {
+        duration: 0.5,
+        ease: [0.22, 1, 0.36, 1],
+      },
     },
     animate: {
-      translateX: 0,
+      x: 0,
       transition: {
         duration: 0.5,
         ease: [0.12, 0, 0.39, 0],
       },
     },
     exit: {
-      translateX: "-100%",
+      x: "-100%",
       transition: {
         delay: 0.5,
         duration: 0.5,
@@ -80,15 +84,15 @@ const Menu = ({ isOpen, closeMenu }: MenuProps) => {
           initial="initial"
           animate="animate"
           exit="exit"
-          className="fixed w-full h-screen bg-white inset-0 z-50 origin-left"
+          className="fixed inset-0 z-50 w-full origin-left bg-white h-dvh"
         >
-          <div className="container relative h-full flex justify-center items-center ">
+          <div className="container relative flex items-center justify-center h-full ">
             <motion.ul
               variants={listVariants}
               initial="initial"
               animate="visible"
               exit="initial"
-              className="flex justify-center items-center flex-col gap-3 hover:text-primary transition-all duration-300 text-2xl font-bold"
+              className="flex flex-col items-center justify-center gap-3 text-2xl font-bold transition-all duration-300 hover:text-primary"
             >
               {navLinks.map(({ name, href }, i) => {
                 return (
@@ -100,14 +104,14 @@ const Menu = ({ isOpen, closeMenu }: MenuProps) => {
             </motion.ul>
             <button
               onClick={closeMenu}
-              className="absolute top-3 right-5 text-white   "
+              className="absolute text-white top-3 right-5 "
             >
               <X color="#212121" size={35} />
             </button>
             {status === "authenticated" ? (
               <Button
                 onClick={handleButtonClick}
-                className="absolute bottom-5 left-1/2 -translate-x-1/2 text-white"
+                className="absolute text-white -translate-x-1/2 bottom-5 left-1/2"
               >
                 Odhlásit se
               </Button>
@@ -115,7 +119,7 @@ const Menu = ({ isOpen, closeMenu }: MenuProps) => {
               <Button asChild>
                 <Link
                   onClick={closeMenu}
-                  className="absolute bottom-5 left-1/2 -translate-x-1/2 text-white"
+                  className="absolute text-white -translate-x-1/2 bottom-5 left-1/2"
                   href="/login"
                 >
                   Přihlásit se

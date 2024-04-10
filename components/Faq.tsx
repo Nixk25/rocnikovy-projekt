@@ -39,7 +39,7 @@ const Faq = () => {
             <AccordionTrigger>Jak mohu kontaktovat podporu?</AccordionTrigger>
             <AccordionContent>
               Můžete nás kontaktovat prostřednictvím zprávy na náš e-mail na
-              adresu podpora@receptyapp.cz.
+              adresu podpora@cookify.cz.
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="item-5">

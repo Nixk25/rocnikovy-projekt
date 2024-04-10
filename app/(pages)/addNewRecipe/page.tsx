@@ -323,7 +323,7 @@ const AddNewRecipe = () => {
               name="procedure"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Postup</FormLabel>
+                  <FormLabel>Postup (každý krok oddělte čárkou)</FormLabel>
                   <FormControl>
                     <div className="relative w-full">
                       <Textarea

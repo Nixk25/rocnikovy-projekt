@@ -6,12 +6,29 @@ import people from "../public/people.png";
 import dot from "../public/dot.png";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-
+import { motion } from "framer-motion";
 const Join = () => {
+  const reasons = [
+    {
+      value: "Neustálý přehled o novinkách",
+    },
+    {
+      value: "Možnost přidat si oblíbený recept do oblíbených",
+    },
+    {
+      value: "Možnost přidat své vlastní recepty",
+    },
+  ];
   const { status } = useSession();
   return (
     status === "unauthenticated" && (
-      <section className="mb-20">
+      <motion.section
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3, ease: "easeInOut" }}
+        viewport={{ once: true, amount: 0.5 }}
+        className="mb-20"
+      >
         <div className="container flex">
           <div className="w-full text-text lg:w-1/2 ">
             <div className="w-full p-8 text-center border-2 rounded-md lg:text-start lg:pl-10 lg:p-5 border-primary lg:border-none">
@@ -24,54 +41,28 @@ const Join = () => {
               </p>
               <p className="mb-6 text-xl text-primary">Proč se k nám přidat?</p>
               <ul className="flex flex-col items-center justify-center gap-6 list-none lg:items-start lg:justify-start">
-                <li className="flex items-center gap-3">
-                  <Image
-                    src={dot}
-                    width={40}
-                    height={40}
-                    className="object-cover "
-                    alt="dot"
-                  />
-                  <span className="text-text">
-                    Neustálý přehled o novinkách
-                  </span>
-                </li>
-                <li className="flex items-center gap-3">
-                  <Image
-                    src={dot}
-                    width={40}
-                    height={40}
-                    className="object-cover "
-                    alt="dot"
-                  />
-                  <span className="text-text">
-                    Možnost přidat si oblíbený recept do oblíbených
-                  </span>
-                </li>
-                <li className="flex items-center gap-3">
-                  <Image
-                    src={dot}
-                    width={40}
-                    height={40}
-                    className="object-cover "
-                    alt="dot"
-                  />
-                  <span className="text-text">
-                    Možnost přidat své vlastní recepty
-                  </span>
-                </li>
-                <li className="flex items-center gap-3">
-                  <Image
-                    src={dot}
-                    width={40}
-                    height={40}
-                    className="object-cover "
-                    alt="dot"
-                  />
-                  <span className="text-text">
-                    Možnost hodnotit recepty ostatních
-                  </span>
-                </li>
+                {reasons.map((reason, i) => (
+                  <motion.li
+                    initial={{ opacity: 0, x: -50 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{
+                      duration: 0.5,
+                      ease: "easeInOut",
+                      delay: i * 0.1,
+                    }}
+                    viewport={{ once: true, amount: 1 }}
+                    className="flex items-center gap-3"
+                  >
+                    <Image
+                      src={dot}
+                      width={40}
+                      height={40}
+                      className="object-cover"
+                      alt="dot"
+                    />
+                    <span>{reason.value}</span>
+                  </motion.li>
+                ))}
               </ul>
               <div className="flex items-center justify-center mt-10 lg:justify-start">
                 <Link href="/login">
@@ -90,7 +81,7 @@ const Join = () => {
             />
           </div>
         </div>
-      </section>
+      </motion.section>
     )
   );
 };

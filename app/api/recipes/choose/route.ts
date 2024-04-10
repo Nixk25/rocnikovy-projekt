@@ -9,10 +9,8 @@ export async function GET(req: Request) {
   const category = req.nextUrl.searchParams.get("category");
 
   await connectDatabase();
-  // Create object to search with
   const criteria = category ? { categories: category } : {};
 
-  // Find recipes matching criteria and limit number of returned recipes
   let recipes: (typeof Recipe)[] | null = null;
   try {
     recipes = await Recipe.find(criteria).sort({ _id: -1 }).limit(4);
@@ -21,7 +19,6 @@ export async function GET(req: Request) {
     return NextResponse.json({ message: "Server error" });
   }
 
-  // For each recipe, check if author is a valid ObjectId
   if (recipes) {
     for (const recipe of recipes) {
       try {
@@ -36,22 +33,18 @@ export async function GET(req: Request) {
         // @ts-ignore
 
         if (mongoose.Types.ObjectId.isValid(recipe.author)) {
-          // Populate author if it is a valid ObjectId
           // @ts-ignore
 
           await recipe.populate("author");
         } else {
-          // Find user using googleId if author is not a valid ObjectId
           // @ts-ignore
 
           const user = await User.findOne({ googleId: recipe.author });
           if (user) {
-            // Assign found user to author if it exists
             // @ts-ignore
 
             recipe.author = user;
           } else {
-            // Remove recipe with invalid author from array
             // @ts-ignore
 
             recipes = recipes.filter((r) => r._id !== recipe._id);

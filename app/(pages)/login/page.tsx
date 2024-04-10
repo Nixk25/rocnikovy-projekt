@@ -19,7 +19,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-
+import { motion } from "framer-motion";
 const Login = () => {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
@@ -58,7 +58,12 @@ const Login = () => {
 
   return (
     <section className="flex flex-col items-center justify-center w-full pt-10 h-dvh ">
-      <main className="relative flex flex-col gap-3 px-10 py-8 text-center rounded-lg ">
+      <motion.main
+        initial={{ y: 100, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.3, ease: "easeInOut" }}
+        className="relative flex flex-col gap-3 px-10 py-8 text-center rounded-lg "
+      >
         <h2 className="mb-5 font-bold sm-clamp ">Vítejte zpět! 👋</h2>
         <Form {...form}>
           <form
@@ -147,7 +152,7 @@ const Login = () => {
             </span>
           </p>
         </Link>
-      </main>
+      </motion.main>
     </section>
   );
 };

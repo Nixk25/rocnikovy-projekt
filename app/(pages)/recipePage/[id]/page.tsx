@@ -5,6 +5,7 @@ import Image from "next/image";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import Link from "next/link";
 import Loading from "@/app/loading";
+import { motion } from "framer-motion";
 const RecipePage = ({ params }: any) => {
   const [recipe, setRecipe] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -40,7 +41,12 @@ const RecipePage = ({ params }: any) => {
 
   return (
     <section className=" mt-28">
-      <div className="container">
+      <motion.div
+        initial={{ opacity: 0, y: 100 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3, ease: "easeInOut" }}
+        className="container"
+      >
         <h1 className="mb-10 font-bold text-center sm-clamp text-primary">
           {recipe.title}
         </h1>
@@ -65,7 +71,7 @@ const RecipePage = ({ params }: any) => {
                       className="object-cover rounded-lg "
                       src={recipe.author.profilePicture}
                     />
-                    <AvatarFallback className="text-2xl font-semibold text-white  size-full bg-primary">
+                    <AvatarFallback className="text-2xl font-semibold text-white size-full bg-primary">
                       {recipe.author.name
                         ?.split(" ")
                         .map((word: any) => word[0])
@@ -85,20 +91,38 @@ const RecipePage = ({ params }: any) => {
             className="flex flex-col gap-3 md:w-[50%] md:max-w-[50%]  items-center  w-full 
           "
           >
-            <h3 className="text-center sm-clamp text-primary">
-              Popis receptu
-            </h3>
+            <h3 className="text-center sm-clamp text-primary">Popis receptu</h3>
             <p className="text-center sm:text-start">{recipe.desc}</p>
           </div>
         </div>
-        <div className="flex flex-col items-center justify-center gap-10 mb-20 md:flex-row">
+        <div className="flex flex-col items-start justify-center gap-10 mb-20 md:flex-row">
           <div className="flex flex-col gap-3  text-center md:w-[50%] w-full">
-            <h3 className="sm-clamp text-primary">Ingredience</h3>
-            <ul className="list-disc list-inside  marker:text-primary">
+            <motion.h3
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+              viewport={{ once: true, amount: 0.5 }}
+              className="sm-clamp text-primary"
+            >
+              Ingredience
+            </motion.h3>
+            <ul className="list-disc list-inside marker:text-primary">
               {recipe.ingredients.map((ingredient: any, i: any) => (
-                <li key={i} className="text-center  list-item sm:text-start">
-                  <span>{ingredient}</span>
-                </li>
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{
+                    duration: 0.3,
+                    ease: "easeInOut",
+                    delay: i * 0.1,
+                  }}
+                  viewport={{ once: true, amount: 0.5 }}
+                >
+                  <li className="text-center list-item sm:text-start">
+                    <span>{ingredient}</span>
+                  </li>
+                </motion.div>
               ))}
             </ul>
           </div>
@@ -106,18 +130,27 @@ const RecipePage = ({ params }: any) => {
             <h3 className="sm-clamp text-primary">Postup</h3>
             <ul className="flex flex-col gap-3">
               {recipe.procedure.map((proc: any, i: any) => (
-                <li
+                <motion.div
                   key={i}
-                  className="flex items-center justify-center gap-3 text-center sm:justify-start sm:text-start"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{
+                    duration: 0.3,
+                    ease: "easeInOut",
+                    delay: i * 0.1,
+                  }}
+                  viewport={{ once: true, amount: 0.5 }}
                 >
-                  <span className="text-primary">{i + 1})</span>
-                  <span>{proc}</span>
-                </li>
+                  <li className="flex items-center justify-center gap-3 text-center sm:justify-start sm:text-start">
+                    <span className="text-primary">{i + 1})</span>
+                    <span>{proc}</span>
+                  </li>
+                </motion.div>
               ))}
             </ul>
           </div>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 };

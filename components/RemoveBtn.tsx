@@ -12,11 +12,9 @@ import {
   DialogFooter,
   DialogClose,
 } from "@/components/ui/dialog";
-import { useRouter } from "next/navigation";
 
 const RemoveBtn = ({ id }: any) => {
   const [confirmed, setConfirmed] = useState<boolean>(false);
-  const router = useRouter();
 
   const handleDeleteBtn = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -27,19 +25,20 @@ const RemoveBtn = ({ id }: any) => {
 
       if (res.ok) {
         toast.success("Recept byl smazán");
-        router.refresh();
+        window.location.reload();
       } else {
         toast.error("Nepovedlo se smazat váš recept");
       }
     }
     return;
   };
+
   return (
     <Dialog>
       <DialogTrigger asChild>
         <Button
           variant="destructive"
-          className=" hover:border-red-500 p-5 border-2 border-transparent rounded-full transition-all duration-150 ease-in"
+          className="p-5 transition-all duration-150 ease-in border-2 border-transparent rounded-full hover:border-red-500"
         >
           <IoTrashBinSharp size={20} />
         </Button>

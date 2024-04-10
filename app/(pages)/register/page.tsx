@@ -22,7 +22,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-
+import { motion } from "framer-motion";
 const Register = () => {
   const router = useRouter();
   const [profilePicture, setProfilePicture] = useState<string>("");
@@ -112,16 +112,21 @@ const Register = () => {
   });
 
   return (
-    <section className="flex justify-center items-center flex-col  w-screen my-20  ">
-      <main className=" text-center py-8 px-10 flex flex-col relative gap-3 rounded-lg w-max ">
-        <h2 className=" font-bold sm-clamp ">Zaregistruj se</h2>
-        <p className="text-sm mb-5">
+    <section className="flex flex-col items-center justify-center w-screen my-20 ">
+      <motion.main
+        initial={{ y: 100, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.3, ease: "easeInOut" }}
+        className="relative flex flex-col gap-3 px-10 py-8 text-center rounded-lg  w-max"
+      >
+        <h2 className="font-bold  sm-clamp">Zaregistruj se</h2>
+        <p className="mb-5 text-sm">
           A připoj se k největší komunitě{" "}
           <span className="font-bold text-primary">domácích kuchařů</span>!
         </p>
         <Form {...form}>
           <form
-            className="w-full flex flex-col gap-5"
+            className="flex flex-col w-full gap-5"
             onSubmit={form.handleSubmit(onSubmit)}
           >
             <FormField
@@ -136,10 +141,10 @@ const Register = () => {
                         autoFocus
                         type="text"
                         placeholder="Zadejte své jméno..."
-                        className="outline-2 outline-transparent shadow-lg  py-2 rounded-lg px-5 pl-10 w-full focus-within:outline-primary focus-within:outline-2 transition-all duration-300 input"
+                        className="w-full px-5 py-2 pl-10 transition-all duration-300 rounded-lg shadow-lg outline-2 outline-transparent focus-within:outline-primary focus-within:outline-2 input"
                         {...field}
                       />
-                      <FaUser className="absolute top-1/2 -translate-y-1/2 left-2" />
+                      <FaUser className="absolute -translate-y-1/2 top-1/2 left-2" />
                     </div>
                   </FormControl>
 
@@ -158,10 +163,10 @@ const Register = () => {
                       <Input
                         type="email"
                         placeholder="Zadejte svůj email..."
-                        className="outline-2 outline-transparent shadow-lg px-5 py-2 rounded-lg pl-10 w-full focus-within:outline-primary focus-within:outline-2 transition-all duration-300 input"
+                        className="w-full px-5 py-2 pl-10 transition-all duration-300 rounded-lg shadow-lg outline-2 outline-transparent focus-within:outline-primary focus-within:outline-2 input"
                         {...field}
                       />
-                      <IoMdMail className="absolute top-1/2 -translate-y-1/2 left-2" />
+                      <IoMdMail className="absolute -translate-y-1/2 top-1/2 left-2" />
                     </div>
                   </FormControl>
 
@@ -180,19 +185,19 @@ const Register = () => {
                       <Input
                         type={showPassword ? "text" : "password"}
                         placeholder="Zadejte své heslo..."
-                        className="outline-2 shadow-lg px-5 py-2 rounded-lg pl-10 w-full focus-within:outline-primary focus-within:outline-2 transition-all duration-300 input"
+                        className="w-full px-5 py-2 pl-10 transition-all duration-300 rounded-lg shadow-lg outline-2 focus-within:outline-primary focus-within:outline-2 input"
                         {...field}
                       />
-                      <FaLock className="absolute top-1/2 -translate-y-1/2 left-2" />
+                      <FaLock className="absolute -translate-y-1/2 top-1/2 left-2" />
                       {showPassword ? (
                         <FaEyeSlash
                           onClick={() => setShowPassword(false)}
-                          className="absolute top-1/2 -translate-y-1/2 right-2 cursor-pointer"
+                          className="absolute -translate-y-1/2 cursor-pointer top-1/2 right-2"
                         />
                       ) : (
                         <FaEye
                           onClick={() => setShowPassword(true)}
-                          className="absolute top-1/2 -translate-y-1/2 right-2 cursor-pointer"
+                          className="absolute -translate-y-1/2 cursor-pointer top-1/2 right-2"
                         />
                       )}
                     </div>
@@ -211,13 +216,13 @@ const Register = () => {
                   <div>
                     {preview ? (
                       <>
-                        <div className="mt-5 rounded-lg flex justify-center items-center flex-col">
-                          <h3 className="text-lg mb-3">
+                        <div className="flex flex-col items-center justify-center mt-5 rounded-lg">
+                          <h3 className="mb-3 text-lg">
                             Váš profilový obrázek
                           </h3>
                           <Avatar className="h-[150px] w-[150px]">
                             <MemoizedAvatarImage
-                              className="rounded-lg object-cover "
+                              className="object-cover rounded-lg "
                               src={preview}
                             />
                           </Avatar>
@@ -246,7 +251,7 @@ const Register = () => {
                               <Button
                                 type="button"
                                 variant="outline"
-                                className=" mt-5 outline-primary outline hover:scale-105 active:scale-95 transition-all duration-300"
+                                className="mt-5 transition-all duration-300  outline-primary outline hover:scale-105 active:scale-95"
                                 onClick={handleOnClick}
                               >
                                 Nahrát profilový obrázek
@@ -265,20 +270,20 @@ const Register = () => {
 
             <Button
               type="submit"
-              className="p-3 bg-primary text-white border-none outline-none rounded-lg mt-3 cursor-pointer transition-all duration-300 hover:scale-105 hover:brightness-105 active:scale-95 active:brightness-95"
+              className="p-3 mt-3 text-white transition-all duration-300 border-none rounded-lg outline-none cursor-pointer bg-primary hover:scale-105 hover:brightness-105 active:scale-95 active:brightness-95"
             >
               Zaregistrovat se
             </Button>
             <span>Už mezi nás patříte?</span>
             <Link
-              className=" text-primary font-bold hover:brightness-105"
+              className="font-bold  text-primary hover:brightness-105"
               href="/login"
             >
               Přihlašte se
             </Link>
           </form>
         </Form>
-      </main>
+      </motion.main>
     </section>
   );
 };

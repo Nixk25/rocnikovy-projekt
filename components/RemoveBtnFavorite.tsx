@@ -12,11 +12,9 @@ import {
   DialogFooter,
   DialogClose,
 } from "@/components/ui/dialog";
-import { useRouter } from "next/navigation";
 
 const RemoveBtnFavorite = ({ id, userId }: any) => {
   const [confirmed, setConfirmed] = useState<boolean>(false);
-  const router = useRouter();
 
   const handleDeleteBtn = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -34,7 +32,7 @@ const RemoveBtnFavorite = ({ id, userId }: any) => {
       if (response.ok) {
         toast.success("Recept byl smazán z oblíbených");
         localStorage.removeItem(id);
-        router.refresh();
+        window.location.reload();
       } else {
         toast.error("Nepovedlo se smazat váš recept z oblíbených");
       }

@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Loading from "@/app/loading";
-
+import { motion } from "framer-motion";
 const ViewProfile = ({ params }: any) => {
   const { id } = params;
   const [user, setUser] = useState(null);
@@ -72,14 +72,19 @@ const ViewProfile = ({ params }: any) => {
   return (
     <section className=" my-[100px] ">
       <div className="container">
-        <div className="flex flex-col items-center gap-10 mt-10 text-center sm:flex-row sm:text-start ">
+        <motion.div
+          initial={{ y: 100, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.3, ease: "easeInOut" }}
+          className="flex flex-col items-center gap-10 mt-10 text-center sm:flex-row sm:text-start "
+        >
           <Avatar className=" h-[200px] w-[200px]">
             <AvatarImage
               alt="avatar"
               className="object-cover rounded-lg "
               src={profilePicture}
             />
-            <AvatarFallback className=" size-full text-white bg-primary text-2xl font-semibold">
+            <AvatarFallback className="text-2xl font-semibold text-white size-full bg-primary">
               {name
                 // @ts-ignore
                 ?.split(" ")
@@ -103,58 +108,81 @@ const ViewProfile = ({ params }: any) => {
               </div>
             </div>
           </div>
-        </div>
+        </motion.div>
         <Tabs
           className="flex flex-col items-center justify-start mt-20 sm:items-start "
           defaultValue="recepty"
         >
           <TabsList className="flex flex-wrap bg-transparent ">
-            <TabsTrigger value="recepty">Recepty tohoto uživatele</TabsTrigger>
+            <motion.div
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{
+                duration: 0.3,
+                ease: "easeInOut",
+              }}
+            >
+              <TabsTrigger value="recepty">
+                Recepty tohoto uživatele
+              </TabsTrigger>
+            </motion.div>
           </TabsList>
           <TabsContent value="recepty" className="w-full">
             <div className="flex flex-wrap items-stretch justify-center w-full gap-4 py-5 sm:justify-start md:gap-10 ">
               {recipes.map((userRec: any, i: any) => (
-                //@ts-ignore
-                <Link key={i} href={`/recipePage/${userRec._id}`}>
-                  <Card className=" p-0 overflow-hidden w-[300px]  hover:scale-105 transition-all cursor-pointer border-none outline-none shadow-lg ease-in-out duration-200">
-                    <CardHeader className="p-0 mb-5">
-                      <Image
-                        src={userRec.image}
-                        alt={userRec.title}
-                        width={300}
-                        height={300}
-                        className="object-cover max-[300px] w-[300px]"
-                        placeholder="blur"
-                        blurDataURL={userRec.image}
-                      />
-                    </CardHeader>
-                    <CardContent className="flex flex-col items-center justify-between gap-2 text-center md:text-start md:gap-0 md:flex-row">
-                      <h3 className="text-lg font-semibold">{userRec.title}</h3>
-                    </CardContent>
-                    <CardFooter className="flex flex-col items-center justify-between gap-2 text-center  md:text-start md:gap-0 md:flex-row">
-                      <div className="flex items-center gap-3">
-                        <Avatar className=" h-[50px] w-[50px]">
-                          <AvatarImage
-                            alt="avatar"
-                            className="object-cover rounded-lg "
-                            src={userRec.author.profilePicture}
-                          />
-                          <AvatarFallback className=" size-full text-white bg-primary text-2xl font-semibold">
-                            {name
-                              // @ts-ignore
-                              ?.split(" ")
-                              .map((word: any) => word[0])
-                              .join("")}
-                          </AvatarFallback>
-                        </Avatar>
-                        <span>{userRec.author.name}</span>
-                      </div>
-                      <span className="font-bold text-primary">
-                        {userRec.time} minut
-                      </span>
-                    </CardFooter>
-                  </Card>
-                </Link>
+                <motion.div
+                  key={i}
+                  initial={{ y: 20, opacity: 0 }}
+                  whileInView={{ y: 0, opacity: 1 }}
+                  transition={{
+                    duration: 0.3,
+                    ease: "easeInOut",
+                    delay: i * 0.1,
+                  }}
+                >
+                  <Link href={`/recipePage/${userRec._id}`}>
+                    <Card className=" p-0 overflow-hidden w-[300px]  hover:scale-105 transition-all cursor-pointer border-none outline-none shadow-lg ease-in-out duration-200">
+                      <CardHeader className="p-0 mb-5">
+                        <Image
+                          src={userRec.image}
+                          alt={userRec.title}
+                          width={300}
+                          height={300}
+                          className="object-cover max-[300px] w-[300px]"
+                          placeholder="blur"
+                          blurDataURL={userRec.image}
+                        />
+                      </CardHeader>
+                      <CardContent className="flex flex-col items-center justify-between gap-2 text-center md:text-start md:gap-0 md:flex-row">
+                        <h3 className="text-lg font-semibold">
+                          {userRec.title}
+                        </h3>
+                      </CardContent>
+                      <CardFooter className="flex flex-col items-center justify-between gap-2 text-center md:text-start md:gap-0 md:flex-row">
+                        <div className="flex items-center gap-3">
+                          <Avatar className=" h-[50px] w-[50px]">
+                            <AvatarImage
+                              alt="avatar"
+                              className="object-cover rounded-lg "
+                              src={userRec.author.profilePicture}
+                            />
+                            <AvatarFallback className="text-2xl font-semibold text-white size-full bg-primary">
+                              {name
+                                // @ts-ignore
+                                ?.split(" ")
+                                .map((word: any) => word[0])
+                                .join("")}
+                            </AvatarFallback>
+                          </Avatar>
+                          <span>{userRec.author.name}</span>
+                        </div>
+                        <span className="font-bold text-primary">
+                          {userRec.time} minut
+                        </span>
+                      </CardFooter>
+                    </Card>
+                  </Link>
+                </motion.div>
               ))}
             </div>
           </TabsContent>

@@ -24,6 +24,7 @@ import { Button } from "./ui/button";
 import { CldUploadWidget } from "next-cloudinary";
 import { Avatar, AvatarImage } from "./ui/avatar";
 import { Textarea } from "./ui/textarea";
+import { motion } from "framer-motion";
 type editRecipeProps = {
   id: any;
   title: string;
@@ -105,7 +106,12 @@ const EditRecipe = ({
   });
   return (
     <section className="flex flex-col items-center justify-center w-screen pt-10 my-20 ">
-      <main className="relative flex flex-col gap-3 px-10 py-8 text-center rounded-lg w-max">
+      <motion.main
+        initial={{ opacity: 0, y: 100 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3, ease: "easeInOut" }}
+        className="relative flex flex-col gap-3 px-10 py-8 text-center rounded-lg w-max"
+      >
         <h2 className="font-bold sm-clamp">Upravte svůj recept</h2>
         <p>
           Všechny pole jsou{" "}
@@ -205,7 +211,7 @@ const EditRecipe = ({
               name="procedure"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Postup</FormLabel>
+                  <FormLabel>Postup (každý krok oddělte čárkou)</FormLabel>
                   <FormControl>
                     <div className="relative w-full">
                       <Textarea
@@ -284,7 +290,7 @@ const EditRecipe = ({
             </Button>
           </form>
         </Form>
-      </main>
+      </motion.main>
     </section>
   );
 };

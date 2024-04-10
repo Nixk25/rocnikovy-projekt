@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Search, Command } from "lucide-react";
-
+import { motion } from "framer-motion";
 import {
   CommandDialog,
   CommandEmpty,
@@ -50,21 +50,41 @@ const Hero = () => {
   }, []);
 
   return (
-    <section className="w-full hero h-dvh">
-      <div className="flex items-center justify-center w-full h-full bg-center bg-no-repeat bg-cover bg-hero">
+    <section className="w-full h-screen hero">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3, ease: "easeInOut" }}
+        className="flex items-center justify-center w-full h-full bg-center bg-no-repeat bg-cover bg-hero"
+      >
         <div className="flex items-center justify-center w-full h-full bg-white/80">
           <div className="container flex flex-col items-center justify-center">
-            <h1 className="text-primary text-center clamp leading-[55px] mb-5 mt-[100px] font-extrabold">
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+              className="text-primary text-center clamp leading-[55px] mb-5 mt-[100px] font-extrabold"
+            >
               Vyhledejte svůj recept
-            </h1>
-            <p className="mb-5 text-lg text-center ">
+            </motion.h1>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, ease: "easeInOut", delay: 0.1 }}
+              className="mb-5 text-lg text-center "
+            >
               Vítejte ve světě, kde se vaření mění ve vášeň a každý pokrm je
               <span className="font-bold text-primary"> dobrodružstvím</span>.
               Objevte recepty od vášnivých kuchařů jako jste
               <span className="font-bold text-primary"> Vy</span>. Společně
               rozvíjejte chuťové hranice!
-            </p>
-            <div className="relative max-w-[350px] flex  ">
+            </motion.p>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, ease: "easeInOut", delay: 0.2 }}
+              className="relative max-w-[350px] flex  "
+            >
               <Button
                 variant="outline"
                 role="combobox"
@@ -78,11 +98,11 @@ const Hero = () => {
                 color="#bfc3cc"
                 className="absolute top-1/2 left-0 -translate-y-1/2   w-[3rem]"
               />
-              <div className="absolute right-0 items-center justify-center hidden px-3 text-white -translate-y-1/2 cursor-pointer sm:flex top-1/2 ">
+              <div className="absolute right-0 items-center justify-center hidden px-3 text-white -translate-y-1/2 cursor-pointer pointer-events-none select-none sm:flex top-1/2 ">
                 <Command size={16} color="#bfc3cc" />
                 <span className="text-[#bfc3cc] ">H</span>
               </div>
-            </div>
+            </motion.div>
 
             <CommandDialog open={open} onOpenChange={setOpen}>
               <CommandInput placeholder="Vyhledejte recept..." />
@@ -115,7 +135,7 @@ const Hero = () => {
             </CommandDialog>
           </div>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 };

@@ -219,7 +219,7 @@ const User = () => {
                         }}
                         key={i}
                       >
-                        <Card className="min-h-full p-0 overflow-hidden transition-all duration-200 ease-in-out border-none shadow-lg outline-none cursor-pointer group w-max hover:scale-105">
+                        <Card className=" p-0 overflow-hidden transition-all duration-200 ease-in-out border-none shadow-lg outline-none cursor-pointer group max-w-[300px] hover:scale-105">
                           <Link href={`/recipePage/${userRec._id}`}>
                             <CardHeader className="p-0 mb-5">
                               <Image
@@ -234,7 +234,7 @@ const User = () => {
                             </CardHeader>
                           </Link>
                           <CardContent className="flex flex-col items-center justify-between gap-2 text-center md:text-start md:gap-0 md:flex-row">
-                            <h3 className="text-lg font-semibold">
+                            <h3 className="text-lg font-semibold w-full">
                               {userRec.title}
                             </h3>
                           </CardContent>

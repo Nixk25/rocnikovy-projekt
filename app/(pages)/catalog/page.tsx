@@ -238,7 +238,7 @@ const Catalog = () => {
             })}
           </div>
         ) : (
-          <div className="container flex flex-col items-center justify-center w-full h-screen gap-3">
+          <div className="container flex flex-col items-center justify-center w-full h-[70vh] gap-3">
             <p>Nebyl nalezen žádný takový recept</p>
             <Link href="/addNewRecipe">
               <Button className="text-white">Přidejte nový recept</Button>

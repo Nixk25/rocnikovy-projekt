@@ -51,6 +51,7 @@ const Join = () => {
                       delay: i * 0.1,
                     }}
                     viewport={{ once: true, amount: 1 }}
+                    key={i}
                     className="flex items-center gap-3"
                   >
                     <Image

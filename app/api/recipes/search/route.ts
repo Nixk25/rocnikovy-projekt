@@ -37,10 +37,6 @@ export async function GET(req: Request) {
     return NextResponse.json({ message: "Server error" });
   }
 
-  if (!recipes) {
-    return NextResponse.json({ message: "Recipes are null" });
-  }
-
   const filteredRecipes = recipes.filter(
     (recipe) =>
       removeAccents(recipe.title)
@@ -48,10 +44,6 @@ export async function GET(req: Request) {
         .includes(removeAccents(query).toLowerCase()) &&
       (!category || recipe.categories.includes(category))
   );
-
-  if (!filteredRecipes.length) {
-    return NextResponse.json({ message: "No recipes found" });
-  }
 
   for (const recipe of filteredRecipes) {
     if (!recipe.author) {

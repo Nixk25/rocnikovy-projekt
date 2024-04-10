@@ -127,10 +127,9 @@ const Choose = () => {
                     delay: i * 0.1,
                   }}
                   viewport={{ once: true, amount: 0.5 }}
+                  key={i}
                 >
-                  <TabsTrigger value={value} key={i}>
-                    {name}
-                  </TabsTrigger>
+                  <TabsTrigger value={value}>{name}</TabsTrigger>
                 </motion.div>
               ))}
             </TabsList>

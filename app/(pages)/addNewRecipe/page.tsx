@@ -110,7 +110,7 @@ const AddNewRecipe = () => {
     title: z
       .string()
       .min(2, { message: "Název musí mít alespoň 2 písmena" })
-      .max(50, { message: "Název nesmí být delší než 50 písmen" }),
+      .max(20, { message: "Název nesmí být delší než 20 písmen" }),
     desc: z.string(),
     categories: z.string({
       required_error: "Prosím vyberte kategorii",

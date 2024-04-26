@@ -17,14 +17,10 @@ import { IoMdMenu } from "react-icons/io";
 import { useState } from "react";
 import Menu from "./Menu";
 import { motion, useScroll, useMotionValueEvent } from "framer-motion";
-//@ts-ignore
-import { useMediaQuery } from "react-responsive";
 
 const Navbar = () => {
   const [isHidden, setIsHidden] = useState(false);
-  const isDesktop = useMediaQuery({
-    query: "(min-width: 640px)",
-  });
+
   const { scrollY } = useScroll();
 
   useMotionValueEvent(scrollY, "change", (latest: any) => {
@@ -89,7 +85,7 @@ const Navbar = () => {
               <li className="link">
                 <Link
                   className="text-black select-none hover:text-primary focus-visible:text-primary outline-none active:text-[#02b192] "
-                  href="stepper.html"
+                  href="/cookChat"
                 >
                   Co vařit
                 </Link>

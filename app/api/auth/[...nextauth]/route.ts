@@ -4,7 +4,7 @@ import NextAuth from "next-auth/next";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
-import { toast } from "sonner";
+import { NextResponse } from "next/server";
 const authOptions = {
   providers: [
     GoogleProvider({
@@ -36,14 +36,12 @@ const authOptions = {
           const user = await User.findOne({ email });
 
           if (!user) {
-            toast.error("Uživatel nenalezen");
             return null;
           }
 
           const passwordMatch = await bcrypt.compare(password, user.password);
 
           if (!passwordMatch) {
-            toast.error("Špatný email, nebo heslo");
             return null;
           }
           return user;

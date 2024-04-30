@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { motion } from "framer-motion";
+import { toast } from "sonner";
 const Login = () => {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
@@ -31,8 +32,9 @@ const Login = () => {
         password: values.password,
         redirect: false,
       });
-
+      console.log(res);
       if (res?.error) {
+        toast.error("Nesprávné heslo nebo email");
         return;
       } else {
         form.reset();

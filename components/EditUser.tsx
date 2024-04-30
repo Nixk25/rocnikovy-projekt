@@ -179,7 +179,7 @@ const EditUser = ({ id, name, email, profilePicture }: editUserProps) => {
                           setPreview(result?.info?.url);
                           //@ts-ignore
                           widget.close();
-                          toast.success("Obrázek receptu nahrán");
+                          toast.success("Obrázek uživatele nahrán");
                         }}
                       >
                         {({ open }) => {
@@ -193,7 +193,7 @@ const EditUser = ({ id, name, email, profilePicture }: editUserProps) => {
                               className="mt-5 transition-all duration-300  outline-primary outline hover:scale-105 active:scale-95"
                               onClick={handleOnClick}
                             >
-                              Vyberte nový obrázek receptu
+                              Vyberte nový profilový obrázek
                             </Button>
                           );
                         }}

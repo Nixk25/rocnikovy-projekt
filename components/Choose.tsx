@@ -150,12 +150,12 @@ const Choose = () => {
                       key={i}
                     >
                       <Link href={`/recipePage/${last._id}`}>
-                        <Card className="p-0 overflow-hidden w-[300px]  hover:scale-105 transition-all cursor-pointer border-none outline-none shadow-lg">
+                        <Card className="p-0 overflow-hidden w-[300px] min-h-[330px]  hover:scale-105 transition-all cursor-pointer border-none outline-none shadow-lg">
                           <CardHeader className="p-0 mb-5">
                             <Image
                               src={last.image}
                               alt={last.title}
-                              className="object-cover max-h-[200px] w-[300px]"
+                              className="object-cover h-[200px] w-[300px]"
                               width={200}
                               height={200}
                             />
@@ -214,12 +214,12 @@ const Choose = () => {
                       key={i}
                     >
                       <Link href={`/recipePage/${meat._id}`}>
-                        <Card className="p-0 overflow-hidden w-[300px]  hover:scale-105 transition-all cursor-pointer border-none outline-none shadow-lg">
+                        <Card className="p-0 overflow-hidden w-[300px] min-h-[330px]  hover:scale-105 transition-all cursor-pointer border-none outline-none shadow-lg">
                           <CardHeader className="p-0 mb-5">
                             <Image
                               src={meat.image}
                               alt={meat.title}
-                              className="object-cover max-h-[200px] w-[300px]"
+                              className="object-cover h-[200px] w-[300px]"
                               width={200}
                               height={200}
                             />
@@ -278,12 +278,12 @@ const Choose = () => {
                     >
                       {/* @ts-ignore */}
                       <Link href={`/recipePage/${vegan._id}`}>
-                        <Card className="p-0 overflow-hidden w-[300px]  hover:scale-105 transition-all cursor-pointer border-none outline-none shadow-lg">
+                        <Card className="p-0 overflow-hidden w-[300px] min-h-[330px] hover:scale-105 transition-all cursor-pointer border-none outline-none shadow-lg">
                           <CardHeader className="p-0 mb-5">
                             <Image
                               src={veg.image}
                               alt={veg.title}
-                              className="object-cover max-h-[200px] w-[300px]"
+                              className="object-cover h-[200px] w-[300px]"
                               width={200}
                               height={200}
                             />
@@ -341,12 +341,12 @@ const Choose = () => {
                       key={i}
                     >
                       <Link href={`/recipePage/${fish._id}`}>
-                        <Card className="p-0 overflow-hidden w-[300px]  hover:scale-105 transition-all cursor-pointer border-none outline-none shadow-lg">
+                        <Card className="p-0 overflow-hidden w-[300px] min-h-[330px] hover:scale-105 transition-all cursor-pointer border-none outline-none shadow-lg">
                           <CardHeader className="p-0 mb-5">
                             <Image
                               src={fish.image}
                               alt={fish.title}
-                              className="object-cover max-h-[200px] w-[300px]"
+                              className="object-cover h-[200px] w-[300px]"
                               width={200}
                               height={200}
                             />

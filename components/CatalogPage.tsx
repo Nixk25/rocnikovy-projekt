@@ -193,7 +193,7 @@ const CatalogPage = () => {
                           alt={recipe.title}
                           width={300}
                           height={300}
-                          className="object-cover max-h-[200px] group-hover:scale-105 transition-all ease-in duration-200 w-[300px]"
+                          className="object-cover h-[200px] group-hover:scale-105 transition-all ease-in duration-200 w-[300px]"
                         />
                       </CardHeader>
                     </Link>

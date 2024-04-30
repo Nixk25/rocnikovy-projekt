@@ -219,7 +219,7 @@ const User = () => {
                         }}
                         key={i}
                       >
-                        <Card className=" p-0 overflow-hidden transition-all duration-200 ease-in-out border-none shadow-lg outline-none cursor-pointer group min-h-[350px] max-w-[300px] hover:scale-105">
+                        <Card className=" p-0 overflow-hidden transition-all duration-200 ease-in-out border-none shadow-lg outline-none cursor-pointer group min-h-[330px] w-[300px] hover:scale-105">
                           <Link href={`/recipePage/${userRec._id}`}>
                             <CardHeader className="p-0 mb-5">
                               <Image
@@ -227,7 +227,7 @@ const User = () => {
                                 alt={userRec.title}
                                 width={300}
                                 height={300}
-                                className="object-cover max-[300px] w-[300px]"
+                                className="object-cover h-[200px] w-[300px]"
                                 placeholder="blur"
                                 blurDataURL={userRec.image}
                               />
